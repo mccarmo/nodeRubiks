@@ -1,0 +1,346 @@
+<html>
+
+<head>
+<title>nodeRubiks</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+<script type="text/javascript" src="../js/glMatrix-0.9.5.min.js"></script>
+<script type="text/javascript" src="../js/webgl-utils.js"></script>
+<script type="text/javascript" src="../js/geraCubo.js"></script>
+
+<script id="shader-fs" type="x-shader/x-fragment">
+    precision mediump float;
+
+    varying vec4 vColor;
+
+    void main(void) {
+        gl_FragColor = vColor;
+    }
+</script>
+
+<script id="shader-vs" type="x-shader/x-vertex">
+    attribute vec3 aVertexPosition;
+    attribute vec4 aVertexColor;
+
+    uniform mat4 uMVMatrix;
+    uniform mat4 uPMatrix;
+
+    varying vec4 vColor;
+
+    void main(void) {
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+        vColor = aVertexColor;
+    }
+</script>
+
+
+
+<script type="text/javascript">
+
+    var gl;
+    
+	//Cores das faces dos cubos
+	var VERDE = [0.0,1.0,0.0];
+	var AMARELO = [1.0,1.0,0.0];
+	var AZUL = [0.0,0.0,1.0];
+	var VERMELHO = [1.0,0.0,0.0];
+	var MAGENTA = [1.0,0.0,1.0];
+	var BRANCO = [1.0,1.0,1.0];
+	var SEM_COR = [0.8,0.8,0.8];
+    
+	var c1 = new GeraCubo(),c2 = new GeraCubo(),c3 = new GeraCubo(),c4 = new GeraCubo(),c5 = new GeraCubo(),c6 = new GeraCubo(),
+		c7 = new GeraCubo(),c8 = new GeraCubo(),c9 = new GeraCubo(),c10 = new GeraCubo(),c11 = new GeraCubo(),c12 = new GeraCubo(),
+		c13 = new GeraCubo(),c14 = new GeraCubo(),c15 = new GeraCubo(),c16 = new GeraCubo(),c17 = new GeraCubo(),c18 = new GeraCubo(),
+		c19 = new GeraCubo(),c20 = new GeraCubo(),c21 = new GeraCubo(),c22 = new GeraCubo(),c23 = new GeraCubo(),c24 = new GeraCubo(),
+		c25 = new GeraCubo(),c26 = new GeraCubo();
+	
+    function initGL(canvas) {
+        try {
+            gl = canvas.getContext("experimental-webgl");
+            gl.viewportWidth = canvas.width;
+            gl.viewportHeight = canvas.height;
+        } catch (e) {
+        }
+        if (!gl) {
+            alert("Could not initialise WebGL, sorry :-(");
+        }
+    }
+
+
+    function getShader(gl, id) {
+        var shaderScript = document.getElementById(id);
+        if (!shaderScript) {
+            return null;
+        }
+
+        var str = "";
+        var k = shaderScript.firstChild;
+        while (k) {
+            if (k.nodeType == 3) {
+                str += k.textContent;
+            }
+            k = k.nextSibling;
+        }
+
+        var shader;
+        if (shaderScript.type == "x-shader/x-fragment") {
+            shader = gl.createShader(gl.FRAGMENT_SHADER);
+        } else if (shaderScript.type == "x-shader/x-vertex") {
+            shader = gl.createShader(gl.VERTEX_SHADER);
+        } else {
+            return null;
+        }
+
+        gl.shaderSource(shader, str);
+        gl.compileShader(shader);
+
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            alert(gl.getShaderInfoLog(shader));
+            return null;
+        }
+
+        return shader;
+    }
+
+    var shaderProgram;
+
+    function initShaders() {
+        var fragmentShader = getShader(gl, "shader-fs");
+        var vertexShader = getShader(gl, "shader-vs");
+
+        shaderProgram = gl.createProgram();
+        gl.attachShader(shaderProgram, vertexShader);
+        gl.attachShader(shaderProgram, fragmentShader);
+        gl.linkProgram(shaderProgram);
+
+        if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+            alert("Could not initialise shaders");
+        }
+
+        gl.useProgram(shaderProgram);
+
+        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+        gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+
+        shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
+        gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
+
+        shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+        shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
+    }
+
+    var mvMatrix = mat4.create();
+    var pMatrix = mat4.create();
+    var mvMatrixStack = [];
+
+    function mvPushMatrix() {
+        var copy = mat4.create();
+        mat4.set(mvMatrix, copy);
+        mvMatrixStack.push(copy);
+    }
+
+    function mvPopMatrix() {
+        if (mvMatrixStack.length == 0) {
+            throw "Invalid popMatrix!";
+        }
+        mvMatrix = mvMatrixStack.pop();
+    }
+    
+    function setMatrixUniforms() {
+        gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
+        gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
+    }
+   	
+    function degToRad(degrees) {
+        return degrees * Math.PI / 180;
+    }
+    
+    function initBuffers() {
+    	//Vetor pra guardar referencias para cada cubo.
+		var vCubos = new Array();
+		    		
+		//CAMADA DA FRENTE       
+		/*1*/c1.init(gl,1,AZUL,SEM_COR,SEM_COR,VERDE,BRANCO,SEM_COR,2.1,1.0,1.0);
+			 vCubos[0] = c1;
+			 
+		/*2*/c2.init(gl,2,AZUL,SEM_COR,SEM_COR,SEM_COR,BRANCO,SEM_COR,0.0,1.0,1.0);
+			 vCubos[1] = c2;
+			
+		/*3*/c3.init(gl,3,AZUL,SEM_COR,VERMELHO,SEM_COR,BRANCO,SEM_COR,-2.1,1.0,1.0);
+			 vCubos[2] = c3;
+			 
+		/*4*/c4.init(gl,4,AZUL,SEM_COR,SEM_COR,VERDE,SEM_COR,SEM_COR,2.1,-1.1,1.0);
+			 vCubos[3] = c4;
+			 
+		/*5*/c5.init(gl,5,AZUL,SEM_COR,SEM_COR,SEM_COR,SEM_COR,SEM_COR,0.0,-1.1,1.0);
+			 vCubos[4] = c5;
+			 
+		/*6*/c6.init(gl,6,AZUL,SEM_COR,VERMELHO,SEM_COR,SEM_COR,SEM_COR,-2.1,-1.1,1.0);
+			 vCubos[5] = c6;
+			
+		/*7*/c7.init(gl,7,AZUL,SEM_COR,SEM_COR,VERDE,SEM_COR,MAGENTA,2.1,-3.2,1.0);
+			 vCubos[6] = c7;
+			 
+		/*8*/c8.init(gl,8,AZUL,SEM_COR,SEM_COR,SEM_COR,SEM_COR,MAGENTA,0.0,-3.2,1.0);
+			 vCubos[7] = c8;
+			 
+		/*9*/c9.init(gl,9,AZUL,SEM_COR,VERMELHO,SEM_COR,SEM_COR,MAGENTA,-2.1,-3.2,1.0);   
+			 vCubos[8] = c9;				 
+			   			   			
+		//CAMADA DO MEIO
+		/*1*/c10.init(gl,10,SEM_COR,SEM_COR,SEM_COR,VERDE,BRANCO,SEM_COR,2.1,1.0,-1.1);       				
+			 vCubos[9] = c10;
+			 
+		/*2*/c11.init(gl,11,SEM_COR,SEM_COR,SEM_COR,SEM_COR,BRANCO,SEM_COR,0.0,1.0,-1.1);			
+			 vCubos[10] = c11;	
+			
+		/*3*/c12.init(gl,12,SEM_COR,SEM_COR,VERMELHO,SEM_COR,BRANCO,SEM_COR,-2.1,1.0,-1.1);		
+			 vCubos[11] = c12;
+				
+		/*4*/c13.init(gl,13,SEM_COR,SEM_COR,SEM_COR,VERDE,SEM_COR,SEM_COR,2.1,-1.1,-1.1);       					
+			 vCubos[12] = c13;	
+			 	
+		/*5*/c14.init(gl,14,SEM_COR,SEM_COR,VERMELHO,SEM_COR,SEM_COR,SEM_COR,-2.1,-1.1,-1.1);		                			
+			 vCubos[13] = c14;	
+				
+		/*6*/c15.init(gl,15,SEM_COR,SEM_COR,SEM_COR,VERDE,SEM_COR,MAGENTA,2.1,-3.2,-1.1);	
+			 vCubos[14] = c15;	
+				
+		/*7*/c16.init(gl,16,SEM_COR,SEM_COR,SEM_COR,SEM_COR,SEM_COR,MAGENTA,0.0,-3.2,-1.1);        				
+			 vCubos[15] = c16;	
+			 	
+		/*8*/c17.init(gl,17,SEM_COR,SEM_COR,VERMELHO,SEM_COR,SEM_COR,MAGENTA,-2.1,-3.2,-1.1);
+			 vCubos[16] = c17;		
+				
+	       	    	   
+       //CAMADA DE TRAS      
+	   /*1*/c18.init(gl,18,SEM_COR,AMARELO,SEM_COR,VERDE,BRANCO,SEM_COR,2.1,1.0,-3.2);
+	   		vCubos[17] = c18;
+	   		
+	   /*2*/c19.init(gl,19,SEM_COR,AMARELO,SEM_COR,SEM_COR,BRANCO,SEM_COR,0.0,1.0,-3.2);
+	   		vCubos[18] = c19;
+	   		
+	   /*3*/c20.init(gl,20,SEM_COR,AMARELO,VERMELHO,SEM_COR,BRANCO,SEM_COR,-2.1,1.0,-3.2);
+	   		vCubos[19] = c20;
+	   		
+	   /*4*/c21.init(gl,21,SEM_COR,AMARELO,SEM_COR,VERDE,SEM_COR,SEM_COR,2.1,-1.1,-3.2);
+	   		vCubos[20] = c21;
+	   	
+	   /*5*/c22.init(gl,22,SEM_COR,AMARELO,SEM_COR,SEM_COR,SEM_COR,SEM_COR,0.0,-1.1,-3.2);
+	   		vCubos[21] = c22;
+	   		
+	   /*6*/c23.init(gl,23,SEM_COR,AMARELO,VERMELHO,SEM_COR,SEM_COR,SEM_COR,-2.1,-1.1,-3.2);
+	   		vCubos[22] = c23;
+	   		
+	   /*7*/c24.init(gl,24,SEM_COR,AMARELO,SEM_COR,VERDE,SEM_COR,MAGENTA,2.1,-3.2,-3.2);
+	   		vCubos[23] = c24;
+	   		
+	   /*8*/c25.init(gl,25,SEM_COR,AMARELO,SEM_COR,SEM_COR,SEM_COR,MAGENTA,0.0,-3.2,-3.2);
+	   		vCubos[24] = c25;
+	   	
+	   /*9*/c26.init(gl,26,SEM_COR,AMARELO,VERMELHO,SEM_COR,SEM_COR,MAGENTA,-2.1,-3.2,-3.2);    		  	   	
+	   		vCubos[25] = c26;		  
+	   
+	   		c1.criaCubo(); c2.criaCubo(); c3.criaCubo();						
+			c4.criaCubo(); c5.criaCubo(); c6.criaCubo();				
+			c7.criaCubo(); c8.criaCubo(); c9.criaCubo();				
+			c10.criaCubo(); c11.criaCubo(); c12.criaCubo();				
+			c13.criaCubo(); c14.criaCubo(); c15.criaCubo();				
+			c16.criaCubo(); c17.criaCubo(); c18.criaCubo();				
+			c19.criaCubo(); c20.criaCubo(); c21.criaCubo();				
+			c22.criaCubo(); c23.criaCubo(); c24.criaCubo();				
+			c25.criaCubo(); c26.criaCubo();
+    }
+    
+    var rCube = 0;
+    function drawScene() {
+        gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
+
+        mat4.identity(mvMatrix);
+        mat4.translate(mvMatrix, [0.0, 1.0, -20.0]);
+        
+        mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 0]);
+        
+        c1.desenhaCubo(); 
+        c2.desenhaCubo(); 
+        c3.desenhaCubo();			
+        
+        c4.desenhaCubo(); 
+        c5.desenhaCubo(); 
+		c6.desenhaCubo();	
+		
+		c7.desenhaCubo(); 
+		c8.desenhaCubo(); 
+		c9.desenhaCubo();				
+		
+		c10.desenhaCubo(); 
+		c11.desenhaCubo(); 
+		c12.desenhaCubo();		
+		
+		c13.desenhaCubo(); 
+		c14.desenhaCubo(); 
+		
+		c15.desenhaCubo();				
+		c16.desenhaCubo(); 
+		c17.desenhaCubo();
+		
+		c18.desenhaCubo();				
+		c19.desenhaCubo(); 
+		c20.desenhaCubo(); 
+		
+		c21.desenhaCubo();				
+		c22.desenhaCubo(); 
+		c23.desenhaCubo();
+		
+		c24.desenhaCubo();				
+		c25.desenhaCubo(); 
+		c26.desenhaCubo();
+          
+    }
+	
+    var lastTime = 0;
+
+    function animate() {
+        var timeNow = new Date().getTime();
+        if (lastTime != 0) {
+            var elapsed = timeNow - lastTime;
+            rCube += (90 * elapsed) / 1000.0;
+        }
+        lastTime = timeNow;
+    }
+
+
+    function tick() {
+        requestAnimFrame(tick);
+        drawScene();
+        animate();
+    }
+
+    
+    function webGLStart() {
+        var canvas = document.getElementById("rubiks");
+        initGL(canvas);
+        initShaders();
+        initBuffers();
+
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        gl.enable(gl.DEPTH_TEST);
+
+        tick();
+    }
+
+
+</script>
+
+
+</head>
+
+
+<body onload="webGLStart();" style="text-align: center; background-color: black;">
+    <canvas id="rubiks" style="border: none;" width="800" height="600"></canvas>
+</body>
+
+</html>
