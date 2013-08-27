@@ -155,10 +155,9 @@
         return degrees * Math.PI / 180;
     }
     
-    function initBuffers() {
-    	//Vetor pra guardar referencias para cada cubo.
-		var vCubos = new Array();
-		    		
+    //Vetor pra guardar referencias para cada cubo.
+	var vCubos = new Array();
+    function initBuffers() {    		
 		//CAMADA DA FRENTE       
 		/*1*/c1.init(gl,1,AZUL,SEM_COR,SEM_COR,VERDE,BRANCO,SEM_COR,2.1,1.0,1.0);
 			 vCubos[0] = c1;
@@ -240,19 +239,16 @@
 	   	
 	   /*9*/c26.init(gl,26,SEM_COR,AMARELO,VERMELHO,SEM_COR,SEM_COR,MAGENTA,-2.1,-3.2,-3.2);    		  	   	
 	   		vCubos[25] = c26;		  
-	   
-	   		c1.criaCubo(); c2.criaCubo(); c3.criaCubo();						
-			c4.criaCubo(); c5.criaCubo(); c6.criaCubo();				
-			c7.criaCubo(); c8.criaCubo(); c9.criaCubo();				
-			c10.criaCubo(); c11.criaCubo(); c12.criaCubo();				
-			c13.criaCubo(); c14.criaCubo(); c15.criaCubo();				
-			c16.criaCubo(); c17.criaCubo(); c18.criaCubo();				
-			c19.criaCubo(); c20.criaCubo(); c21.criaCubo();				
-			c22.criaCubo(); c23.criaCubo(); c24.criaCubo();				
-			c25.criaCubo(); c26.criaCubo();
+	   		
+	   		for(i=0;i<vCubos.length;i++) {
+	   			vCubos[i].criaCubo();
+	   		}
     }
     
-    var rCube = 0;
+    var xRot = 0;
+    var xSpeed = 0;
+    var yRot = 0;
+    var ySpeed = 0;
     function drawScene() {
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -262,42 +258,12 @@
         mat4.identity(mvMatrix);
         mat4.translate(mvMatrix, [0.0, 1.0, -20.0]);
         
-        mat4.rotate(mvMatrix, degToRad(rCube), [1, 1, 0]);
+        mat4.rotate(mvMatrix, degToRad(xRot), [1, 0, 0]);
+        mat4.rotate(mvMatrix, degToRad(yRot), [0, 1, 0]);
         
-        c1.desenhaCubo(); 
-        c2.desenhaCubo(); 
-        c3.desenhaCubo();			
-        
-        c4.desenhaCubo(); 
-        c5.desenhaCubo(); 
-		c6.desenhaCubo();	
-		
-		c7.desenhaCubo(); 
-		c8.desenhaCubo(); 
-		c9.desenhaCubo();				
-		
-		c10.desenhaCubo(); 
-		c11.desenhaCubo(); 
-		c12.desenhaCubo();		
-		
-		c13.desenhaCubo(); 
-		c14.desenhaCubo(); 
-		
-		c15.desenhaCubo();				
-		c16.desenhaCubo(); 
-		c17.desenhaCubo();
-		
-		c18.desenhaCubo();				
-		c19.desenhaCubo(); 
-		c20.desenhaCubo(); 
-		
-		c21.desenhaCubo();				
-		c22.desenhaCubo(); 
-		c23.desenhaCubo();
-		
-		c24.desenhaCubo();				
-		c25.desenhaCubo(); 
-		c26.desenhaCubo();
+        for(i=0;i<vCubos.length;i++) {
+   			vCubos[i].desenhaCubo();
+   		}
           
     }
 	
@@ -307,18 +273,62 @@
         var timeNow = new Date().getTime();
         if (lastTime != 0) {
             var elapsed = timeNow - lastTime;
-            rCube += (90 * elapsed) / 1000.0;
+            xRot += (xSpeed * elapsed) / 1000.0;
+            yRot += (ySpeed * elapsed) / 1000.0;
         }
         lastTime = timeNow;
     }
 
-
+    function handleKeys() {
+        if (currentlyPressedKeys[33]) {
+          // Page Up
+          z -= 0.05;
+        }
+        if (currentlyPressedKeys[34]) {
+          // Page Down
+          z += 0.05;
+        }
+        if (currentlyPressedKeys[37]) {
+          // Left cursor key
+          ySpeed -= 1;
+        }
+        if (currentlyPressedKeys[39]) {
+          // Right cursor key
+          ySpeed += 1;
+        }
+        if (currentlyPressedKeys[38]) {
+          // Up cursor key
+          xSpeed -= 1;
+        }
+        if (currentlyPressedKeys[40]) {
+          // Down cursor key
+          xSpeed += 1;
+        }
+    }
+    
     function tick() {
         requestAnimFrame(tick);
+        handleKeys();
         drawScene();
         animate();
     }
 
+    var currentlyPressedKeys = {};
+
+    function handleKeyDown(event) {
+      currentlyPressedKeys[event.keyCode] = true;
+
+      if (String.fromCharCode(event.keyCode) == "R") {
+        xRot = 0;
+        yRot = 0;
+        xSpeed = 0;
+        ySpeed = 0;
+      }
+    }
+
+    function handleKeyUp(event) {
+      currentlyPressedKeys[event.keyCode] = false;
+    }
     
     function webGLStart() {
         var canvas = document.getElementById("rubiks");
@@ -328,7 +338,10 @@
 
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
-
+		
+        document.onkeydown = handleKeyDown;
+        document.onkeyup = handleKeyUp;
+        
         tick();
     }
 
@@ -341,6 +354,12 @@
 
 <body onload="webGLStart();" style="text-align: center; background-color: black;">
     <canvas id="rubiks" style="border: none;" width="800" height="600"></canvas>
+    <section style="width: 200px;">
+		<ul style="text-decoration: none; color: white;">
+			<li>r/R - Reset Cube</li>
+			<li>arrows - Rotate Cube</li>
+		</ul>
+	</section>
 </body>
 
 </html>
