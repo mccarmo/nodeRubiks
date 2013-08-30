@@ -10,9 +10,7 @@
 
 <script id="shader-fs" type="x-shader/x-fragment">
     precision mediump float;
-
     varying vec4 vColor;
-
     void main(void) {
         gl_FragColor = vColor;
     }
@@ -21,19 +19,14 @@
 <script id="shader-vs" type="x-shader/x-vertex">
     attribute vec3 aVertexPosition;
     attribute vec4 aVertexColor;
-
     uniform mat4 uMVMatrix;
     uniform mat4 uPMatrix;
-
     varying vec4 vColor;
-
     void main(void) {
         gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
         vColor = aVertexColor;
     }
 </script>
-
-
 
 <script type="text/javascript">
 
@@ -47,12 +40,12 @@
 	var MAGENTA = [1.0,0.0,1.0];
 	var BRANCO = [1.0,1.0,1.0];
 	var SEM_COR = [0.8,0.8,0.8];
-    
-	var c1 = new GeraCubo(),c2 = new GeraCubo(),c3 = new GeraCubo(),c4 = new GeraCubo(),c5 = new GeraCubo(),c6 = new GeraCubo(),
-		c7 = new GeraCubo(),c8 = new GeraCubo(),c9 = new GeraCubo(),c10 = new GeraCubo(),c11 = new GeraCubo(),c12 = new GeraCubo(),
-		c13 = new GeraCubo(),c14 = new GeraCubo(),c15 = new GeraCubo(),c16 = new GeraCubo(),c17 = new GeraCubo(),c18 = new GeraCubo(),
-		c19 = new GeraCubo(),c20 = new GeraCubo(),c21 = new GeraCubo(),c22 = new GeraCubo(),c23 = new GeraCubo(),c24 = new GeraCubo(),
-		c25 = new GeraCubo(),c26 = new GeraCubo();
+    //Vetor pra guardar referencias para cada cubo.
+	var vCubos = new Array(26);
+	
+	for(i=0;i<vCubos.length;i++) {
+		vCubos[i] = new GeraCubo();
+	}	
 	
     function initGL(canvas) {
         try {
@@ -154,101 +147,53 @@
     function degToRad(degrees) {
         return degrees * Math.PI / 180;
     }
-    
-    //Vetor pra guardar referencias para cada cubo.
-	var vCubos = new Array();
+        
     function initBuffers() {    		
 		//CAMADA DA FRENTE       
-		/*1*/c1.init(gl,1,AZUL,SEM_COR,SEM_COR,VERDE,BRANCO,SEM_COR,2.1,1.0,1.0);
-			 vCubos[0] = c1;
-			 
-		/*2*/c2.init(gl,2,AZUL,SEM_COR,SEM_COR,SEM_COR,BRANCO,SEM_COR,0.0,1.0,1.0);
-			 vCubos[1] = c2;
-			
-		/*3*/c3.init(gl,3,AZUL,SEM_COR,VERMELHO,SEM_COR,BRANCO,SEM_COR,-2.1,1.0,1.0);
-			 vCubos[2] = c3;
-			 
-		/*4*/c4.init(gl,4,AZUL,SEM_COR,SEM_COR,VERDE,SEM_COR,SEM_COR,2.1,-1.1,1.0);
-			 vCubos[3] = c4;
-			 
-		/*5*/c5.init(gl,5,AZUL,SEM_COR,SEM_COR,SEM_COR,SEM_COR,SEM_COR,0.0,-1.1,1.0);
-			 vCubos[4] = c5;
-			 
-		/*6*/c6.init(gl,6,AZUL,SEM_COR,VERMELHO,SEM_COR,SEM_COR,SEM_COR,-2.1,-1.1,1.0);
-			 vCubos[5] = c6;
-			
-		/*7*/c7.init(gl,7,AZUL,SEM_COR,SEM_COR,VERDE,SEM_COR,MAGENTA,2.1,-3.2,1.0);
-			 vCubos[6] = c7;
-			 
-		/*8*/c8.init(gl,8,AZUL,SEM_COR,SEM_COR,SEM_COR,SEM_COR,MAGENTA,0.0,-3.2,1.0);
-			 vCubos[7] = c8;
-			 
-		/*9*/c9.init(gl,9,AZUL,SEM_COR,VERMELHO,SEM_COR,SEM_COR,MAGENTA,-2.1,-3.2,1.0);   
-			 vCubos[8] = c9;				 
-			   			   			
+		vCubos[0].init(gl,1,AZUL,SEM_COR,SEM_COR,VERDE,BRANCO,SEM_COR,2.0,1.0,1.0);			 			 
+		vCubos[1] .init(gl,2,AZUL,SEM_COR,SEM_COR,SEM_COR,BRANCO,SEM_COR,0.0,1.0,1.0);			 			
+		vCubos[2].init(gl,3,AZUL,SEM_COR,VERMELHO,SEM_COR,BRANCO,SEM_COR,-2.0,1.0,1.0);
+		vCubos[3].init(gl,4,AZUL,SEM_COR,SEM_COR,VERDE,SEM_COR,SEM_COR,2.0,-1.0,1.0);
+		vCubos[4].init(gl,5,AZUL,SEM_COR,SEM_COR,SEM_COR,SEM_COR,SEM_COR,0.0,-1.0,1.0);
+		vCubos[5].init(gl,6,AZUL,SEM_COR,VERMELHO,SEM_COR,SEM_COR,SEM_COR,-2.0,-1.0,1.0);
+		vCubos[6].init(gl,7,AZUL,SEM_COR,SEM_COR,VERDE,SEM_COR,MAGENTA,2.0,-3.0,1.0);
+		vCubos[7].init(gl,8,AZUL,SEM_COR,SEM_COR,SEM_COR,SEM_COR,MAGENTA,0.0,-3.0,1.0);
+		vCubos[8].init(gl,9,AZUL,SEM_COR,VERMELHO,SEM_COR,SEM_COR,MAGENTA,-2.0,-3.0,1.0);   			     		
 		//CAMADA DO MEIO
-		/*1*/c10.init(gl,10,SEM_COR,SEM_COR,SEM_COR,VERDE,BRANCO,SEM_COR,2.1,1.0,-1.1);       				
-			 vCubos[9] = c10;
-			 
-		/*2*/c11.init(gl,11,SEM_COR,SEM_COR,SEM_COR,SEM_COR,BRANCO,SEM_COR,0.0,1.0,-1.1);			
-			 vCubos[10] = c11;	
-			
-		/*3*/c12.init(gl,12,SEM_COR,SEM_COR,VERMELHO,SEM_COR,BRANCO,SEM_COR,-2.1,1.0,-1.1);		
-			 vCubos[11] = c12;
-				
-		/*4*/c13.init(gl,13,SEM_COR,SEM_COR,SEM_COR,VERDE,SEM_COR,SEM_COR,2.1,-1.1,-1.1);       					
-			 vCubos[12] = c13;	
-			 	
-		/*5*/c14.init(gl,14,SEM_COR,SEM_COR,VERMELHO,SEM_COR,SEM_COR,SEM_COR,-2.1,-1.1,-1.1);		                			
-			 vCubos[13] = c14;	
-				
-		/*6*/c15.init(gl,15,SEM_COR,SEM_COR,SEM_COR,VERDE,SEM_COR,MAGENTA,2.1,-3.2,-1.1);	
-			 vCubos[14] = c15;	
-				
-		/*7*/c16.init(gl,16,SEM_COR,SEM_COR,SEM_COR,SEM_COR,SEM_COR,MAGENTA,0.0,-3.2,-1.1);        				
-			 vCubos[15] = c16;	
-			 	
-		/*8*/c17.init(gl,17,SEM_COR,SEM_COR,VERMELHO,SEM_COR,SEM_COR,MAGENTA,-2.1,-3.2,-1.1);
-			 vCubos[16] = c17;		
-				
-	       	    	   
+		vCubos[9].init(gl,10,SEM_COR,SEM_COR,SEM_COR,VERDE,BRANCO,SEM_COR,2.0,1.0,-1.0);       				 
+		vCubos[10].init(gl,11,SEM_COR,SEM_COR,SEM_COR,SEM_COR,BRANCO,SEM_COR,0.0,1.0,-1.0);			
+		vCubos[11].init(gl,12,SEM_COR,SEM_COR,VERMELHO,SEM_COR,BRANCO,SEM_COR,-2.0,1.0,-1.0);		
+		vCubos[12].init(gl,13,SEM_COR,SEM_COR,SEM_COR,VERDE,SEM_COR,SEM_COR,2.0,-1.0,-1.0);       						 	
+		vCubos[13].init(gl,14,SEM_COR,SEM_COR,VERMELHO,SEM_COR,SEM_COR,SEM_COR,-2.0,-1.0,-1.0);
+		vCubos[14].init(gl,15,SEM_COR,SEM_COR,SEM_COR,VERDE,SEM_COR,MAGENTA,2.0,-3.0,-1.0);	
+		vCubos[15].init(gl,16,SEM_COR,SEM_COR,SEM_COR,SEM_COR,SEM_COR,MAGENTA,0.0,-3.0,-1.0);        				
+		vCubos[16].init(gl,17,SEM_COR,SEM_COR,VERMELHO,SEM_COR,SEM_COR,MAGENTA,-2.0,-3.0,-1.0);
        //CAMADA DE TRAS      
-	   /*1*/c18.init(gl,18,SEM_COR,AMARELO,SEM_COR,VERDE,BRANCO,SEM_COR,2.1,1.0,-3.2);
-	   		vCubos[17] = c18;
-	   		
-	   /*2*/c19.init(gl,19,SEM_COR,AMARELO,SEM_COR,SEM_COR,BRANCO,SEM_COR,0.0,1.0,-3.2);
-	   		vCubos[18] = c19;
-	   		
-	   /*3*/c20.init(gl,20,SEM_COR,AMARELO,VERMELHO,SEM_COR,BRANCO,SEM_COR,-2.1,1.0,-3.2);
-	   		vCubos[19] = c20;
-	   		
-	   /*4*/c21.init(gl,21,SEM_COR,AMARELO,SEM_COR,VERDE,SEM_COR,SEM_COR,2.1,-1.1,-3.2);
-	   		vCubos[20] = c21;
-	   	
-	   /*5*/c22.init(gl,22,SEM_COR,AMARELO,SEM_COR,SEM_COR,SEM_COR,SEM_COR,0.0,-1.1,-3.2);
-	   		vCubos[21] = c22;
-	   		
-	   /*6*/c23.init(gl,23,SEM_COR,AMARELO,VERMELHO,SEM_COR,SEM_COR,SEM_COR,-2.1,-1.1,-3.2);
-	   		vCubos[22] = c23;
-	   		
-	   /*7*/c24.init(gl,24,SEM_COR,AMARELO,SEM_COR,VERDE,SEM_COR,MAGENTA,2.1,-3.2,-3.2);
-	   		vCubos[23] = c24;
-	   		
-	   /*8*/c25.init(gl,25,SEM_COR,AMARELO,SEM_COR,SEM_COR,SEM_COR,MAGENTA,0.0,-3.2,-3.2);
-	   		vCubos[24] = c25;
-	   	
-	   /*9*/c26.init(gl,26,SEM_COR,AMARELO,VERMELHO,SEM_COR,SEM_COR,MAGENTA,-2.1,-3.2,-3.2);    		  	   	
-	   		vCubos[25] = c26;		  
-	   		
-	   		for(i=0;i<vCubos.length;i++) {
-	   			vCubos[i].criaCubo();
-	   		}
+	   vCubos[17].init(gl,18,SEM_COR,AMARELO,SEM_COR,VERDE,BRANCO,SEM_COR,2.0,1.0,-3.0);
+	   vCubos[18].init(gl,19,SEM_COR,AMARELO,SEM_COR,SEM_COR,BRANCO,SEM_COR,0.0,1.0,-3.0);
+	   vCubos[19].init(gl,20,SEM_COR,AMARELO,VERMELHO,SEM_COR,BRANCO,SEM_COR,-2.0,1.0,-3.0);
+	   vCubos[20].init(gl,21,SEM_COR,AMARELO,SEM_COR,VERDE,SEM_COR,SEM_COR,2.0,-1.0,-3.0);
+	   vCubos[21].init(gl,22,SEM_COR,AMARELO,SEM_COR,SEM_COR,SEM_COR,SEM_COR,0.0,-1.0,-3.0);
+	   vCubos[22].init(gl,23,SEM_COR,AMARELO,VERMELHO,SEM_COR,SEM_COR,SEM_COR,-2.0,-1.0,-3.0);
+	   vCubos[23].init(gl,24,SEM_COR,AMARELO,SEM_COR,VERDE,SEM_COR,MAGENTA,2.0,-3.0,-3.0);
+	   vCubos[24].init(gl,25,SEM_COR,AMARELO,SEM_COR,SEM_COR,SEM_COR,MAGENTA,0.0,-3.0,-3.0);
+	   vCubos[25].init(gl,26,SEM_COR,AMARELO,VERMELHO,SEM_COR,SEM_COR,MAGENTA,-2.0,-3.0,-3.0);    		
+	   
+	   for(i=0;i<vCubos.length;i++) {
+	   	  vCubos[i].criaCubo();
+	   }
     }
     
     var xRot = 0;
     var xSpeed = 0;
     var yRot = 0;
     var ySpeed = 0;
+    var rotationMatrix = mat4.create();
+    mat4.identity(rotationMatrix);
+    var mouseDown = false;
+    var lastMouseX = null;
+    var lastMouseY = null;
+    
     function drawScene() {
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -256,10 +201,11 @@
         mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
 
         mat4.identity(mvMatrix);
-        mat4.translate(mvMatrix, [0.0, 1.0, -20.0]);
+        mat4.translate(mvMatrix, [0.0, 0.0, -20.0]);
         
         mat4.rotate(mvMatrix, degToRad(xRot), [1, 0, 0]);
         mat4.rotate(mvMatrix, degToRad(yRot), [0, 1, 0]);
+        mat4.multiply(mvMatrix, rotationMatrix);
         
         for(i=0;i<vCubos.length;i++) {
    			vCubos[i].desenhaCubo();
@@ -280,14 +226,6 @@
     }
 
     function handleKeys() {
-        if (currentlyPressedKeys[33]) {
-          // Page Up
-          z -= 0.05;
-        }
-        if (currentlyPressedKeys[34]) {
-          // Page Down
-          z += 0.05;
-        }
         if (currentlyPressedKeys[37]) {
           // Left cursor key
           ySpeed -= 1;
@@ -304,13 +242,6 @@
           // Down cursor key
           xSpeed += 1;
         }
-    }
-    
-    function tick() {
-        requestAnimFrame(tick);
-        handleKeys();
-        drawScene();
-        animate();
     }
 
     var currentlyPressedKeys = {};
@@ -329,6 +260,45 @@
     function handleKeyUp(event) {
       currentlyPressedKeys[event.keyCode] = false;
     }
+
+    function handleMouseDown(event) {
+        mouseDown = true;
+        lastMouseX = event.clientX;
+        lastMouseY = event.clientY;
+    }
+
+
+    function handleMouseUp(event) {
+        mouseDown = false;
+    }
+
+    function handleMouseMove(event) {
+        if (!mouseDown) {
+            return;
+        }
+        var newX = event.clientX;
+        var newY = event.clientY;
+
+        var deltaX = newX - lastMouseX
+        var newRotationMatrix = mat4.create();
+        mat4.identity(newRotationMatrix);
+        mat4.rotate(newRotationMatrix, degToRad(deltaX / 10), [0, 1, 0]);
+
+        var deltaY = newY - lastMouseY;
+        mat4.rotate(newRotationMatrix, degToRad(deltaY / 10), [1, 0, 0]);
+
+        mat4.multiply(newRotationMatrix, rotationMatrix, rotationMatrix);
+
+        lastMouseX = newX
+        lastMouseY = newY;
+    }
+    
+    function tick() {
+        requestAnimFrame(tick);
+        //handleKeys();
+        drawScene();
+        animate();
+    }
     
     function webGLStart() {
         var canvas = document.getElementById("rubiks");
@@ -339,8 +309,11 @@
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
 		
-        document.onkeydown = handleKeyDown;
-        document.onkeyup = handleKeyUp;
+        canvas.onmousedown = handleMouseDown;
+        document.onmouseup = handleMouseUp;
+        document.onmousemove = handleMouseMove;
+        //document.onkeydown = handleKeyDown;
+        //document.onkeyup = handleKeyUp;
         
         tick();
     }
@@ -356,8 +329,7 @@
     <canvas id="rubiks" style="border: none;" width="800" height="600"></canvas>
     <section style="width: 200px;">
 		<ul style="text-decoration: none; color: white;">
-			<li>r/R - Reset Cube</li>
-			<li>arrows - Rotate Cube</li>
+			<li>Mouse - Rotate Cube</li>
 		</ul>
 	</section>
 </body>
