@@ -12,45 +12,27 @@
     precision mediump float;
 
     varying vec2 vTextureCoord;
-    varying float vFace;
-    	
-    uniform sampler2D front;
-    uniform sampler2D back;
-    uniform sampler2D top;
-    uniform sampler2D bottom;
-    uniform sampler2D right;
-    uniform sampler2D left;
-	
+
+    uniform sampler2D uSampler;
+
     void main(void) {
-      if (vFace < 0.1)
-              gl_FragColor = texture2D(front, vTextureCoord);
-      else if (vFace < 1.1)
-              gl_FragColor = texture2D(back, vTextureCoord);
-      else if (vFace < 2.1)
-             gl_FragColor = texture2D(top, vTextureCoord);
-      else if (vFace < 3.1)
-            gl_FragColor = texture2D(bottom, vTextureCoord);
-      else if (vFace < 4.1)
-            gl_FragColor = texture2D(right, vTextureCoord);
-      else
-             gl_FragColor = texture2D(left, vTextureCoord);
+        gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
     }
 </script>
 
 <script id="shader-vs" type="x-shader/x-vertex">
     attribute vec3 aVertexPosition;
     attribute vec2 aTextureCoord;
-    attribute float aFace;
+
     uniform mat4 uMVMatrix;
     uniform mat4 uPMatrix;
 
     varying vec2 vTextureCoord;
-    varying float vFace;
+
 
     void main(void) {
-       gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-       vTextureCoord = aTextureCoord;
-       vFace = aFace;
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+        vTextureCoord = aTextureCoord;
     }
 </script>
 
@@ -58,14 +40,6 @@
 
     var gl;
     
-    //Cores das faces dos cubos
-    var VERDE = [0.0,1.0,0.0];
-    var AMARELO = [1.0,1.0,0.0];
-    var AZUL = [0.0,0.0,1.0];
-    var VERMELHO = [1.0,0.0,0.0];
-    var MAGENTA = [1.0,0.0,1.0];
-    var BRANCO = [1.0,1.0,1.0];
-    var SEM_COR = [0.8,0.8,0.8];
     //Vetor pra guardar referencias para cada cubo.
     var vCubos = new Array(26);
 	
@@ -140,9 +114,6 @@
 
         shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
         gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-
-        //shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
-        //gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
 		
         shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
         gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
@@ -243,34 +214,34 @@
         
     function initBuffers() {    		
        //CAMADA DA FRENTE       
-       vCubos[0].init(gl,1,AZUL,SEM_COR,SEM_COR,VERDE,BRANCO,SEM_COR,2.0,1.0,1.0);			 			 
-       vCubos[1] .init(gl,2,AZUL,SEM_COR,SEM_COR,SEM_COR,BRANCO,SEM_COR,0.0,1.0,1.0);			 			
-       vCubos[2].init(gl,3,AZUL,SEM_COR,VERMELHO,SEM_COR,BRANCO,SEM_COR,-2.0,1.0,1.0);
-       vCubos[3].init(gl,4,AZUL,SEM_COR,SEM_COR,VERDE,SEM_COR,SEM_COR,2.0,-1.0,1.0);
-       vCubos[4].init(gl,5,AZUL,SEM_COR,SEM_COR,SEM_COR,SEM_COR,SEM_COR,0.0,-1.0,1.0);
-       vCubos[5].init(gl,6,AZUL,SEM_COR,VERMELHO,SEM_COR,SEM_COR,SEM_COR,-2.0,-1.0,1.0);
-       vCubos[6].init(gl,7,AZUL,SEM_COR,SEM_COR,VERDE,SEM_COR,MAGENTA,2.0,-3.0,1.0);
-       vCubos[7].init(gl,8,AZUL,SEM_COR,SEM_COR,SEM_COR,SEM_COR,MAGENTA,0.0,-3.0,1.0);
-       vCubos[8].init(gl,9,AZUL,SEM_COR,VERMELHO,SEM_COR,SEM_COR,MAGENTA,-2.0,-3.0,1.0);   			     		
+       vCubos[0].init(gl,1,2.0,1.0,1.0);			 			 
+       vCubos[1] .init(gl,2,0.0,1.0,1.0);			 			
+       vCubos[2].init(gl,3,-2.0,1.0,1.0);
+       vCubos[3].init(gl,4,2.0,-1.0,1.0);
+       vCubos[4].init(gl,5,0.0,-1.0,1.0);
+       vCubos[5].init(gl,6,-2.0,-1.0,1.0);
+       vCubos[6].init(gl,7,2.0,-3.0,1.0);
+       vCubos[7].init(gl,8,0.0,-3.0,1.0);
+       vCubos[8].init(gl,9,-2.0,-3.0,1.0);   			     		
        //CAMADA DO MEIO
-       vCubos[9].init(gl,10,SEM_COR,SEM_COR,SEM_COR,VERDE,BRANCO,SEM_COR,2.0,1.0,-1.0);       				 
-       vCubos[10].init(gl,11,SEM_COR,SEM_COR,SEM_COR,SEM_COR,BRANCO,SEM_COR,0.0,1.0,-1.0);          
-       vCubos[11].init(gl,12,SEM_COR,SEM_COR,VERMELHO,SEM_COR,BRANCO,SEM_COR,-2.0,1.0,-1.0);		
-       vCubos[12].init(gl,13,SEM_COR,SEM_COR,SEM_COR,VERDE,SEM_COR,SEM_COR,2.0,-1.0,-1.0);       						 	
-       vCubos[13].init(gl,14,SEM_COR,SEM_COR,VERMELHO,SEM_COR,SEM_COR,SEM_COR,-2.0,-1.0,-1.0);
-       vCubos[14].init(gl,15,SEM_COR,SEM_COR,SEM_COR,VERDE,SEM_COR,MAGENTA,2.0,-3.0,-1.0);	
-       vCubos[15].init(gl,16,SEM_COR,SEM_COR,SEM_COR,SEM_COR,SEM_COR,MAGENTA,0.0,-3.0,-1.0);        				
-       vCubos[16].init(gl,17,SEM_COR,SEM_COR,VERMELHO,SEM_COR,SEM_COR,MAGENTA,-2.0,-3.0,-1.0);
+       vCubos[9].init(gl,10,2.0,1.0,-1.0);       				 
+       vCubos[10].init(gl,11,0.0,1.0,-1.0);          
+       vCubos[11].init(gl,12,-2.0,1.0,-1.0);		
+       vCubos[12].init(gl,13,2.0,-1.0,-1.0);       						 	
+       vCubos[13].init(gl,14,-2.0,-1.0,-1.0);
+       vCubos[14].init(gl,15,2.0,-3.0,-1.0);	
+       vCubos[15].init(gl,16,0.0,-3.0,-1.0);        				
+       vCubos[16].init(gl,17,-2.0,-3.0,-1.0);
        //CAMADA DE TRAS      
-       vCubos[17].init(gl,18,SEM_COR,AMARELO,SEM_COR,VERDE,BRANCO,SEM_COR,2.0,1.0,-3.0);
-       vCubos[18].init(gl,19,SEM_COR,AMARELO,SEM_COR,SEM_COR,BRANCO,SEM_COR,0.0,1.0,-3.0);
-       vCubos[19].init(gl,20,SEM_COR,AMARELO,VERMELHO,SEM_COR,BRANCO,SEM_COR,-2.0,1.0,-3.0);
-       vCubos[20].init(gl,21,SEM_COR,AMARELO,SEM_COR,VERDE,SEM_COR,SEM_COR,2.0,-1.0,-3.0);
-       vCubos[21].init(gl,22,SEM_COR,AMARELO,SEM_COR,SEM_COR,SEM_COR,SEM_COR,0.0,-1.0,-3.0);
-       vCubos[22].init(gl,23,SEM_COR,AMARELO,VERMELHO,SEM_COR,SEM_COR,SEM_COR,-2.0,-1.0,-3.0);
-       vCubos[23].init(gl,24,SEM_COR,AMARELO,SEM_COR,VERDE,SEM_COR,MAGENTA,2.0,-3.0,-3.0);
-       vCubos[24].init(gl,25,SEM_COR,AMARELO,SEM_COR,SEM_COR,SEM_COR,MAGENTA,0.0,-3.0,-3.0);
-       vCubos[25].init(gl,26,SEM_COR,AMARELO,VERMELHO,SEM_COR,SEM_COR,MAGENTA,-2.0,-3.0,-3.0);    		
+       vCubos[17].init(gl,18,2.0,1.0,-3.0);
+       vCubos[18].init(gl,19,0.0,1.0,-3.0);
+       vCubos[19].init(gl,20,-2.0,1.0,-3.0);
+       vCubos[20].init(gl,21,2.0,-1.0,-3.0);
+       vCubos[21].init(gl,22,0.0,-1.0,-3.0);
+       vCubos[22].init(gl,23,-2.0,-1.0,-3.0);
+       vCubos[23].init(gl,24,2.0,-3.0,-3.0);
+       vCubos[24].init(gl,25,0.0,-3.0,-3.0);
+       vCubos[25].init(gl,26,-2.0,-3.0,-3.0);    		
 	   
        for(i=0;i<vCubos.length;i++) {
 	  vCubos[i].criaCubo();
@@ -295,14 +266,14 @@
 
         mat4.identity(mvMatrix);
         mat4.translate(mvMatrix, [0.0, 0.0, -20.0]);
-        
+
         mat4.rotate(mvMatrix, degToRad(xRot), [1, 0, 0]);
         mat4.rotate(mvMatrix, degToRad(yRot), [0, 1, 0]);
         mat4.multiply(mvMatrix, rotationMatrix);
         
         for(i=0;i<vCubos.length;i++) {
-   			vCubos[i].desenhaCubo();
-   		}
+   	    vCubos[i].desenhaCubo();
+   	}
           
     }
 	
@@ -421,11 +392,6 @@
 
 <body onload="webGLStart();" style="text-align: center; background-color: black;">
     <canvas id="rubiks" style="border: none; cursor: pointer;" width="800" height="600"></canvas>
-    <section style="width: 200px;">
-		<ul style="text-decoration: none; color: white;">
-			<li>Mouse - Rotate Cube</li>
-		</ul>
-	</section>
 </body>
 
 </html>
