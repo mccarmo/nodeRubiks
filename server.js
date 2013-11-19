@@ -22,6 +22,10 @@ app.get('/geraCubo.js', function (request, response) {
     fs.createReadStream('./pages/js/geraCubo.js').pipe(response)
 })
 
+app.get('/geraCubo.js', function (request, response) {
+    fs.createReadStream('./pages/js/hammer .js').pipe(response)
+})
+
 app.get('/blue.png', function (request, response) {
     fs.createReadStream('./pages/img/blue.png').pipe(response)
 })
