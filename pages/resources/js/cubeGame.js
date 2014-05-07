@@ -1,12 +1,10 @@
 var gl;
-
 var theShaderFs = " precision mediump float; " +
 		          " varying vec2 vTextureCoord; " +
                   " uniform sampler2D uSampler; " +
                   " void main(void) { " +
                   "   gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t)); " +
                   " } ";
-
 var theShaderVs = " attribute vec3 aVertexPosition; " +
 				  " attribute vec2 aTextureCoord; " +
 				  " uniform mat4 uMVMatrix; " +
@@ -16,9 +14,23 @@ var theShaderVs = " attribute vec3 aVertexPosition; " +
 				  "    gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0); " +
 				  "    vTextureCoord = aTextureCoord; " +
 				  " }";
-
-//store the references for the 26 cubes
-var vCubos = new Array(26);
+var lastTime = 0;
+var vCubos = new Array(26);//store the references for the 26 cubes
+var shaderProgram;
+var textureBlue,textureRed,textureMagent,
+	textureGreen,textureYellow,textureWhite,textureNoColor;
+var mvMatrix = mat4.create();
+var pMatrix = mat4.create();
+var mvMatrixStack = [];
+var xRot = 0;
+var xSpeed = 0;
+var yRot = 0;
+var ySpeed = 0;
+var rotationMatrix = mat4.create();
+	mat4.identity(rotationMatrix);
+var mouseDown = false;
+var lastMouseX = null;
+var lastMouseY = null;
 
 for(i=0;i<vCubos.length;i++) {
     vCubos[i] = new GeraCubo();
@@ -57,8 +69,6 @@ function getShader(gl, shaderSource, type) {
     return shader;
 }
 
-var shaderProgram;
-
 function initShaders() {
     var fragmentShader = getShader(gl, theShaderFs, "fs");
     var vertexShader = getShader(gl, theShaderVs, "vs");
@@ -85,73 +95,6 @@ function initShaders() {
     shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
 }
 
-function handleLoadedTexture(texture) {
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    gl.bindTexture(gl.TEXTURE_2D, null);
-}
-
-var textureBlue,textureRed,textureMagent,
-textureGreen,textureYellow,textureWhite,textureNoColor;
-
-function initTextures() {
-    textureBlue = gl.createTexture();
-    textureBlue.image = new Image();
-    textureBlue.image.onload = function () {
-        handleLoadedTexture(textureBlue)
-    }
-    textureBlue.image.src = "blue.png";
-
-textureRed = gl.createTexture();
-    textureRed.image = new Image();
-    textureRed.image.onload = function () {
-        handleLoadedTexture(textureRed)
-    }
-    textureRed.image.src = "red.png";
-
-textureMagent = gl.createTexture();
-    textureMagent.image = new Image();
-    textureMagent.image.onload = function () {
-        handleLoadedTexture(textureMagent)
-    }
-    textureMagent.image.src = "magent.png";
-
-textureGreen = gl.createTexture();
-    textureGreen.image = new Image();
-    textureGreen.image.onload = function () {
-        handleLoadedTexture(textureGreen)
-    }
-    textureGreen.image.src = "green.png";
-
-textureYellow = gl.createTexture();
-    textureYellow.image = new Image();
-    textureYellow.image.onload = function () {
-        handleLoadedTexture(textureYellow)
-    }
-    textureYellow.image.src = "yellow.png";
-
-textureWhite = gl.createTexture();
-    textureWhite.image = new Image();
-    textureWhite.image.onload = function () {
-        handleLoadedTexture(textureWhite)
-    }
-    textureWhite.image.src = "white.png";
-
-textureNoColor = gl.createTexture();
-    textureNoColor.image = new Image();
-    textureNoColor.image.onload = function () {
-        handleLoadedTexture(textureNoColor)
-    }
-    textureNoColor.image.src = "nocolor.png";
-}
-
-var mvMatrix = mat4.create();
-var pMatrix = mat4.create();
-var mvMatrixStack = [];
-
 function mvPushMatrix() {
     var copy = mat4.create();
     mat4.set(mvMatrix, copy);
@@ -175,7 +118,7 @@ function degToRad(degrees) {
 }
     
 function initBuffers() {    		
-   //CAMADA DA FRENTE       
+   //Front      
    vCubos[0].init(gl,1,2.0,1.0,1.0);			 			 
    vCubos[1] .init(gl,2,0.0,1.0,1.0);			 			
    vCubos[2].init(gl,3,-2.0,1.0,1.0);
@@ -185,7 +128,7 @@ function initBuffers() {
    vCubos[6].init(gl,7,2.0,-3.0,1.0);
    vCubos[7].init(gl,8,0.0,-3.0,1.0);
    vCubos[8].init(gl,9,-2.0,-3.0,1.0);   			     		
-   //CAMADA DO MEIO
+   //Middle
    vCubos[9].init(gl,10,2.0,1.0,-1.0);       				 
    vCubos[10].init(gl,11,0.0,1.0,-1.0);          
    vCubos[11].init(gl,12,-2.0,1.0,-1.0);		
@@ -194,7 +137,7 @@ function initBuffers() {
    vCubos[14].init(gl,15,2.0,-3.0,-1.0);	
    vCubos[15].init(gl,16,0.0,-3.0,-1.0);        				
    vCubos[16].init(gl,17,-2.0,-3.0,-1.0);
-   //CAMADA DE TRAS      
+   //Back      
    vCubos[17].init(gl,18,2.0,1.0,-3.0);
    vCubos[18].init(gl,19,0.0,1.0,-3.0);
    vCubos[19].init(gl,20,-2.0,1.0,-3.0);
@@ -206,19 +149,9 @@ function initBuffers() {
    vCubos[25].init(gl,26,-2.0,-3.0,-3.0);    		
    
    for(i=0;i<vCubos.length;i++) {
-  vCubos[i].criaCubo();
+	   vCubos[i].criaCubo();
    }
 }
-
-var xRot = 0;
-var xSpeed = 0;
-var yRot = 0;
-var ySpeed = 0;
-var rotationMatrix = mat4.create();
-mat4.identity(rotationMatrix);
-var mouseDown = false;
-var lastMouseX = null;
-var lastMouseY = null;
 
 function drawScene() {
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
@@ -237,12 +170,10 @@ function drawScene() {
     mat4.multiply(mvMatrix, rotationMatrix);
     
     for(i=0;i<vCubos.length;i++) {
-    vCubos[i].desenhaCubo();
-}
+    	vCubos[i].desenhaCubo();
+    }
       
 }
-
-var lastTime = 0;
 
 function animate() {
     var timeNow = new Date().getTime();
@@ -325,6 +256,66 @@ function handleMouseMove(event) {
     lastMouseY = newY;
 }
 
+function handleLoadedTexture(texture) {
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+}
+
+function initTextures() {
+    textureBlue = gl.createTexture();
+    textureBlue.image = new Image();
+    textureBlue.image.onload = function () {
+        handleLoadedTexture(textureBlue)
+    }
+    textureBlue.image.src = "blue.png";
+
+    textureRed = gl.createTexture();
+    textureRed.image = new Image();
+    textureRed.image.onload = function () {
+        handleLoadedTexture(textureRed)
+    }
+    textureRed.image.src = "red.png";
+
+    textureMagent = gl.createTexture();
+    textureMagent.image = new Image();
+    textureMagent.image.onload = function () {
+        handleLoadedTexture(textureMagent)
+    }
+    textureMagent.image.src = "magent.png";
+
+    textureGreen = gl.createTexture();
+    textureGreen.image = new Image();
+    textureGreen.image.onload = function () {
+        handleLoadedTexture(textureGreen)
+    }
+    textureGreen.image.src = "green.png";
+
+    textureYellow = gl.createTexture();
+    textureYellow.image = new Image();
+    textureYellow.image.onload = function () {
+        handleLoadedTexture(textureYellow)
+    }
+    textureYellow.image.src = "yellow.png";
+
+    textureWhite = gl.createTexture();
+    textureWhite.image = new Image();
+    textureWhite.image.onload = function () {
+        handleLoadedTexture(textureWhite)
+    }
+    textureWhite.image.src = "white.png";
+
+    textureNoColor = gl.createTexture();
+    textureNoColor.image = new Image();
+    textureNoColor.image.onload = function () {
+        handleLoadedTexture(textureNoColor)
+    }
+    textureNoColor.image.src = "nocolor.png";
+}
+
 function tick() {
     requestAnimFrame(tick);
     handleKeys();
@@ -334,10 +325,11 @@ function tick() {
 
 function webGLStart() {
     var canvas = document.getElementById("rubiks");
+  
     initGL(canvas);
     initShaders();
-    initBuffers();
     initTextures();
+    initBuffers();
     
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);

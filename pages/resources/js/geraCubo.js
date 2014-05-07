@@ -30,19 +30,19 @@ function GeraCubo() {
 	this.criaCubo = function() {	
 	    this.geraVertices();
 	    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexPositionBuffer);           	
-	    	var vertices = [
+    	var vertices = [
 			this.v1[0],this.v1[1],this.v1[2], //Frente
-                	this.v2[0],this.v2[1],this.v2[2],
-                	this.v3[0],this.v3[1],this.v3[2],
-                	this.v4[0],this.v4[1],this.v4[2],    
-                
-                	this.v5[0],this.v5[1],this.v5[2], //Traz
-            		this.v6[0],this.v6[1],this.v6[2],
-            		this.v7[0],this.v7[1],this.v7[2],
-            		this.v8[0],this.v8[1],this.v8[2],
-		            
-            		this.v6[0],this.v6[1],this.v6[2],
-            		this.v4[0],this.v4[1],this.v4[2], //Cima
+        	this.v2[0],this.v2[1],this.v2[2],
+        	this.v3[0],this.v3[1],this.v3[2],
+        	this.v4[0],this.v4[1],this.v4[2],    
+        
+        	this.v5[0],this.v5[1],this.v5[2], //Traz
+    		this.v6[0],this.v6[1],this.v6[2],
+    		this.v7[0],this.v7[1],this.v7[2],
+    		this.v8[0],this.v8[1],this.v8[2],
+            
+    		this.v6[0],this.v6[1],this.v6[2],
+    		this.v4[0],this.v4[1],this.v4[2], //Cima
 			this.v3[0],this.v3[1],this.v3[2],      	
 			this.v7[0],this.v7[1],this.v7[2],
 
@@ -52,14 +52,14 @@ function GeraCubo() {
 			this.v1[0],this.v1[1],this.v1[2], //Baixo
 		            
 			this.v8[0],this.v8[1],this.v8[2], //Direita
-                	this.v7[0],this.v7[1],this.v7[2],
-                	this.v3[0],this.v3[1],this.v3[2],
-                	this.v2[0],this.v2[1],this.v2[2],   
-       	
-    			this.v5[0],this.v5[1],this.v5[2], //Esquerda
-           		this.v1[0],this.v1[1],this.v1[2],
-            		this.v4[0],this.v4[1],this.v4[2],
-            		this.v6[0],this.v6[1],this.v6[2]];
+        	this.v7[0],this.v7[1],this.v7[2],
+        	this.v3[0],this.v3[1],this.v3[2],
+        	this.v2[0],this.v2[1],this.v2[2],   
+
+			this.v5[0],this.v5[1],this.v5[2], //Esquerda
+       		this.v1[0],this.v1[1],this.v1[2],
+    		this.v4[0],this.v4[1],this.v4[2],
+    		this.v6[0],this.v6[1],this.v6[2]];
 	    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices), this.gl.STATIC_DRAW);
 		
 	    this.cubeVertexTextureCoordBuffer = this.gl.createBuffer();
@@ -117,40 +117,54 @@ function GeraCubo() {
 	    this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeVertexIndices), this.gl.STATIC_DRAW);
 		    
 	}
-	this.desenhaCubo = function() {	
-	    mvPushMatrix();
-		mat4.translate(mvMatrix, [this.x,this.y,this.z]);
+	this.desenhaCubo = function() {
+		    mvPushMatrix();
+			mat4.translate(mvMatrix, [this.x,this.y,this.z]);
 	        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexPositionBuffer);
 	        this.gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 3, this.gl.FLOAT, false, 0, 0);
-	        
+		        
 	        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexTextureCoordBuffer);
 	        this.gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.cubeVertexTextureCoordBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
-
-	        this.gl.activeTexture(this.gl.TEXTURE0);	        
-		this.gl.bindTexture(this.gl.TEXTURE_2D, textureBlue);
-	        this.gl.uniform1i(shaderProgram.samplerUniform, 0);
-		this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0);
-		setMatrixUniforms();
-		this.gl.bindTexture(this.gl.TEXTURE_2D, textureYellow);
-		this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 12);
-		setMatrixUniforms();
-		this.gl.bindTexture(this.gl.TEXTURE_2D, textureWhite);
-		this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 24);
-		setMatrixUniforms();
-		this.gl.bindTexture(this.gl.TEXTURE_2D, textureMagent);
-                this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 36);
-		setMatrixUniforms();
-		this.gl.bindTexture(this.gl.TEXTURE_2D, textureGreen);
-		this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 48);
-		setMatrixUniforms();
-		this.gl.bindTexture(this.gl.TEXTURE_2D, textureRed);
-		this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 60);
-		setMatrixUniforms();
-	        this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
-	        setMatrixUniforms();
-		
-	    mvPopMatrix();
-	   
+	        
+	        this.gl.activeTexture(this.gl.TEXTURE0);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, textureBlue);
+			this.gl.uniform1i(shaderProgram.samplerUniform, 0);
+			this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0);
+			setMatrixUniforms();
+	        
+			this.gl.activeTexture(this.gl.TEXTURE1);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, textureYellow);
+			this.gl.uniform1i(shaderProgram.samplerUniform, 1);
+			this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 12);
+			setMatrixUniforms();
+			
+			this.gl.activeTexture(this.gl.TEXTURE2);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, textureWhite);
+			this.gl.uniform1i(shaderProgram.samplerUniform, 2);
+			this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 24);
+			setMatrixUniforms();
+			
+			this.gl.activeTexture(this.gl.TEXTURE3);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, textureMagent);
+			this.gl.uniform1i(shaderProgram.samplerUniform, 3);
+	        this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 36);
+			setMatrixUniforms();
+			
+			this.gl.activeTexture(this.gl.TEXTURE4);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, textureGreen);
+			this.gl.uniform1i(shaderProgram.samplerUniform, 4);
+			this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 48);
+			setMatrixUniforms();
+			
+			this.gl.activeTexture(this.gl.TEXTURE5);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, textureRed);
+			this.gl.uniform1i(shaderProgram.samplerUniform, 5);
+			this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 60);
+			setMatrixUniforms();
+	        
+			this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
+	        setMatrixUniforms();		
+	    mvPopMatrix();	   
 	}
 	this.geraVertices = function() {
 		this.v1 = [-1.0,-1.0,1.0];
@@ -163,3 +177,5 @@ function GeraCubo() {
     		this.v8 = [1.0,-1.0,-1.0];
 	}
 }
+
+
