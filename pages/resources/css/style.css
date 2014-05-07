@@ -1,0 +1,9 @@
+.body-class {
+	text-align: center; 
+	background-color: black;	
+}
+
+.canvas-class {
+	border: none; 
+	cursor: pointer;
+}
