@@ -265,7 +265,7 @@ function handleLoadedTexture(texture) {
 	gl.generateMipmap(gl.TEXTURE_2D);   
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); //My textures are power-of-2
     gl.bindTexture(gl.TEXTURE_2D, null);
-	//Workaround...yes...it is.
+	//Workaround...yes...it is...and yes i comment that here, sorry.
 	if(loadedTextures>=numTextures) {
 		tick();//Loaded the last texture, so i call here the "tick" for avoid texture warnings.
 	}
@@ -278,7 +278,7 @@ function initTextures() {
         handleLoadedTexture(textureBlue);
 		loadedTextures++;
     }
-    textureBlue.image.src = "blue.png";
+    textureBlue.image.src = "/resources/img/blue.png";
 	
 	textureYellow = gl.createTexture();
     textureYellow.image = new Image();
@@ -286,7 +286,7 @@ function initTextures() {
         handleLoadedTexture(textureYellow);
 		loadedTextures++;
     }
-    textureYellow.image.src = "yellow.png";
+    textureYellow.image.src = "/resources/img/yellow.png";
 	
 	textureWhite = gl.createTexture();
     textureWhite.image = new Image();
@@ -294,7 +294,7 @@ function initTextures() {
         handleLoadedTexture(textureWhite);
 		loadedTextures++;
     }
-    textureWhite.image.src = "white.png";
+    textureWhite.image.src = "/resources/img/white.png";
 	
 	textureMagent = gl.createTexture();
     textureMagent.image = new Image();
@@ -302,7 +302,7 @@ function initTextures() {
         handleLoadedTexture(textureMagent);
 		loadedTextures++;
     }
-    textureMagent.image.src = "magent.png";
+    textureMagent.image.src = "/resources/img/magent.png";
 	
 	textureGreen = gl.createTexture();
     textureGreen.image = new Image();
@@ -310,7 +310,7 @@ function initTextures() {
         handleLoadedTexture(textureGreen);
 		loadedTextures++;
     }
-    textureGreen.image.src = "green.png";
+    textureGreen.image.src = "/resources/img/green.png";
 	
     textureRed = gl.createTexture();
     textureRed.image = new Image();
@@ -318,7 +318,7 @@ function initTextures() {
         handleLoadedTexture(textureRed);
 		loadedTextures++;
     }
-    textureRed.image.src = "red.png";
+    textureRed.image.src = "/resources/img/red.png";
 
     textureNoColor = gl.createTexture();
     textureNoColor.image = new Image();
@@ -326,7 +326,7 @@ function initTextures() {
         handleLoadedTexture(textureNoColor);
 		loadedTextures++;	    
     }
-    textureNoColor.image.src = "nocolor.png";	
+    textureNoColor.image.src = "/resources/img/nocolor.png";	
 }
 
 function tick() {
