@@ -31,6 +31,8 @@ var rotationMatrix = mat4.create();
 var mouseDown = false;
 var lastMouseX = null;
 var lastMouseY = null;
+var numTextures = 6;
+var loadedTextures = 0;
 
 for(i=0;i<vCubos.length;i++) {
     vCubos[i] = new GeraCubo();
@@ -260,85 +262,94 @@ function handleLoadedTexture(texture) {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+	gl.generateMipmap(gl.TEXTURE_2D);   
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); //My textures are power-of-2
     gl.bindTexture(gl.TEXTURE_2D, null);
+	//Workaround...yes...it is.
+	if(loadedTextures>=numTextures) {
+		tick();//Loaded the last texture, so i call here the "tick" for avoid texture warnings.
+	}
 }
 
 function initTextures() {
     textureBlue = gl.createTexture();
     textureBlue.image = new Image();
     textureBlue.image.onload = function () {
-        handleLoadedTexture(textureBlue)
+        handleLoadedTexture(textureBlue);
+		loadedTextures++;
     }
     textureBlue.image.src = "blue.png";
-
+	
+	textureYellow = gl.createTexture();
+    textureYellow.image = new Image();
+    textureYellow.image.onload = function () {
+        handleLoadedTexture(textureYellow);
+		loadedTextures++;
+    }
+    textureYellow.image.src = "yellow.png";
+	
+	textureWhite = gl.createTexture();
+    textureWhite.image = new Image();
+    textureWhite.image.onload = function () {
+        handleLoadedTexture(textureWhite);
+		loadedTextures++;
+    }
+    textureWhite.image.src = "white.png";
+	
+	textureMagent = gl.createTexture();
+    textureMagent.image = new Image();
+    textureMagent.image.onload = function () {
+        handleLoadedTexture(textureMagent);
+		loadedTextures++;
+    }
+    textureMagent.image.src = "magent.png";
+	
+	textureGreen = gl.createTexture();
+    textureGreen.image = new Image();
+    textureGreen.image.onload = function () {
+        handleLoadedTexture(textureGreen);
+		loadedTextures++;
+    }
+    textureGreen.image.src = "green.png";
+	
     textureRed = gl.createTexture();
     textureRed.image = new Image();
     textureRed.image.onload = function () {
-        handleLoadedTexture(textureRed)
+        handleLoadedTexture(textureRed);
+		loadedTextures++;
     }
     textureRed.image.src = "red.png";
-
-    textureMagent = gl.createTexture();
-    textureMagent.image = new Image();
-    textureMagent.image.onload = function () {
-        handleLoadedTexture(textureMagent)
-    }
-    textureMagent.image.src = "magent.png";
-
-    textureGreen = gl.createTexture();
-    textureGreen.image = new Image();
-    textureGreen.image.onload = function () {
-        handleLoadedTexture(textureGreen)
-    }
-    textureGreen.image.src = "green.png";
-
-    textureYellow = gl.createTexture();
-    textureYellow.image = new Image();
-    textureYellow.image.onload = function () {
-        handleLoadedTexture(textureYellow)
-    }
-    textureYellow.image.src = "yellow.png";
-
-    textureWhite = gl.createTexture();
-    textureWhite.image = new Image();
-    textureWhite.image.onload = function () {
-        handleLoadedTexture(textureWhite)
-    }
-    textureWhite.image.src = "white.png";
 
     textureNoColor = gl.createTexture();
     textureNoColor.image = new Image();
     textureNoColor.image.onload = function () {
-        handleLoadedTexture(textureNoColor)
+        handleLoadedTexture(textureNoColor);
+		loadedTextures++;	    
     }
-    textureNoColor.image.src = "nocolor.png";
+    textureNoColor.image.src = "nocolor.png";	
 }
 
 function tick() {
     requestAnimFrame(tick);
     handleKeys();
     drawScene();
-    animate();
+    animate();	
 }
 
 function webGLStart() {
     var canvas = document.getElementById("rubiks");
   
     initGL(canvas);
-    initShaders();
-    initTextures();
+    initShaders();	
     initBuffers();
-    
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+	initTextures();
+	
+	gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
 	
     canvas.onmousedown = handleMouseDown;
     document.onmouseup = handleMouseUp;
     document.onmousemove = handleMouseMove;
     document.onkeydown = handleKeyDown;
-    document.onkeyup = handleKeyUp;
-    
-    tick();
+    document.onkeyup = handleKeyUp;		
 }		
