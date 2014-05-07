@@ -30,7 +30,7 @@ function GeraCubo() {
 	this.criaCubo = function() {	
 	    this.geraVertices();
 	    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexPositionBuffer);           	
-    	var vertices = [
+    	    var vertices = [
 			this.v1[0],this.v1[1],this.v1[2], //Frente
         	this.v2[0],this.v2[1],this.v2[2],
         	this.v3[0],this.v3[1],this.v3[2],
@@ -43,28 +43,30 @@ function GeraCubo() {
             
     		this.v6[0],this.v6[1],this.v6[2],
     		this.v4[0],this.v4[1],this.v4[2], //Cima
-			this.v3[0],this.v3[1],this.v3[2],      	
-			this.v7[0],this.v7[1],this.v7[2],
+		this.v3[0],this.v3[1],this.v3[2],      	
+		this.v7[0],this.v7[1],this.v7[2],
 
-			this.v5[0],this.v5[1],this.v5[2],
-			this.v8[0],this.v8[1],this.v8[2],
-			this.v2[0],this.v2[1],this.v2[2],
-			this.v1[0],this.v1[1],this.v1[2], //Baixo
+		this.v5[0],this.v5[1],this.v5[2],
+		this.v8[0],this.v8[1],this.v8[2],
+		this.v2[0],this.v2[1],this.v2[2],
+		this.v1[0],this.v1[1],this.v1[2], //Baixo
 		            
-			this.v8[0],this.v8[1],this.v8[2], //Direita
+		this.v8[0],this.v8[1],this.v8[2], //Direita
         	this.v7[0],this.v7[1],this.v7[2],
         	this.v3[0],this.v3[1],this.v3[2],
         	this.v2[0],this.v2[1],this.v2[2],   
 
-			this.v5[0],this.v5[1],this.v5[2], //Esquerda
+		this.v5[0],this.v5[1],this.v5[2], //Esquerda
        		this.v1[0],this.v1[1],this.v1[2],
     		this.v4[0],this.v4[1],this.v4[2],
-    		this.v6[0],this.v6[1],this.v6[2]];
+    		this.v6[0],this.v6[1],this.v6[2]
+    	    ];
+	    
 	    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices), this.gl.STATIC_DRAW);
 		
 	    this.cubeVertexTextureCoordBuffer = this.gl.createBuffer();
 	    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexTextureCoordBuffer);
-		var textureCoords = [
+	    var textureCoords = [
 		  // Front face
 		  0.0, 0.0,
 		  1.0, 0.0,
@@ -100,10 +102,10 @@ function GeraCubo() {
 		  1.0, 0.0,
 		  1.0, 1.0,
 		  0.0, 1.0,
-		];
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(textureCoords), this.gl.STATIC_DRAW);
-        this.cubeVertexTextureCoordBuffer.itemSize = 2;
-        this.cubeVertexTextureCoordBuffer.numItems = 24;
+	    ];
+            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(textureCoords), this.gl.STATIC_DRAW);
+            this.cubeVertexTextureCoordBuffer.itemSize = 2;
+            this.cubeVertexTextureCoordBuffer.numItems = 24;
         
 	    this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
 		    var cubeVertexIndices = [
