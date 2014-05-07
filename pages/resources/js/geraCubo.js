@@ -31,7 +31,7 @@ function GeraCubo() {
 	    this.geraVertices();
 	    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexPositionBuffer);           	
     	    var vertices = [
-			this.v1[0],this.v1[1],this.v1[2], //Frente
+		this.v1[0],this.v1[1],this.v1[2], //Frente
         	this.v2[0],this.v2[1],this.v2[2],
         	this.v3[0],this.v3[1],this.v3[2],
         	this.v4[0],this.v4[1],this.v4[2],    
