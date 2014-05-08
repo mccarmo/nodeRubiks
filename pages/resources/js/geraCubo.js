@@ -27,7 +27,7 @@ function GeraCubo() {
 		this.cubeVertexTextureCoordBuffer = this.gl.createBuffer();
 		this.cubeVertexIndexBuffer = this.gl.createBuffer();
 	}
-	this.criaCubo = function() {	
+	this.criaCubo = function() {
 	    this.geraVertices();
 	    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexPositionBuffer);           	
     	    var vertices = [
@@ -117,9 +117,7 @@ function GeraCubo() {
 		      20, 21, 22,   20, 22, 23  // Left face
 		    ]
 	    this.gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeVertexIndices), this.gl.STATIC_DRAW);
-		    
-	}
-	this.desenhaCubo = function() {
+		
 	    mvPushMatrix();
 		mat4.translate(mvMatrix, [this.x,this.y,this.z]);
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexPositionBuffer);
@@ -166,8 +164,9 @@ function GeraCubo() {
 	
 		this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
 		setMatrixUniforms();		
-	    mvPopMatrix();	   
+	    mvPopMatrix();	    		    
 	}
+
 	this.geraVertices = function() {
 		this.v1 = [-1.0,-1.0,1.0];
     		this.v2 = [1.0,-1.0,1.0];    		
@@ -178,6 +177,7 @@ function GeraCubo() {
     		this.v7 = [1.0,1.0,-1.0];
     		this.v8 = [1.0,-1.0,-1.0];
 	}
+	
 }
 
 
