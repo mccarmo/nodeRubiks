@@ -121,34 +121,34 @@ function degToRad(degrees) {
     
 function initBuffers() {    		
    //Front      
-   vCubos[0].init(gl,1,2.0,1.0,1.0);			 			 
-   vCubos[1] .init(gl,2,0.0,1.0,1.0);			 			
-   vCubos[2].init(gl,3,-2.0,1.0,1.0);
-   vCubos[3].init(gl,4,2.0,-1.0,1.0);
-   vCubos[4].init(gl,5,0.0,-1.0,1.0);
-   vCubos[5].init(gl,6,-2.0,-1.0,1.0);
-   vCubos[6].init(gl,7,2.0,-3.0,1.0);
-   vCubos[7].init(gl,8,0.0,-3.0,1.0);
-   vCubos[8].init(gl,9,-2.0,-3.0,1.0);   			     		
+   vCubos[0].init(gl,1,2.0,1.0,1.0,0,0,0);			 			 
+   vCubos[1] .init(gl,2,0.0,1.0,1.0,0,0,0);			 			
+   vCubos[2].init(gl,3,-2.0,1.0,1.0,0,0,0);
+   vCubos[3].init(gl,4,2.0,-1.0,1.0,0,0,0);
+   vCubos[4].init(gl,5,0.0,-1.0,1.0,0,0,0);
+   vCubos[5].init(gl,6,-2.0,-1.0,1.0,0,0,0);
+   vCubos[6].init(gl,7,2.0,-3.0,1.0,0,0,0);
+   vCubos[7].init(gl,8,0.0,-3.0,1.0,0,0,0);
+   vCubos[8].init(gl,9,-2.0,-3.0,1.0,0,0,0);   			     		
    //Middle
-   vCubos[9].init(gl,10,2.0,1.0,-1.0);       				 
-   vCubos[10].init(gl,11,0.0,1.0,-1.0);          
-   vCubos[11].init(gl,12,-2.0,1.0,-1.0);		
-   vCubos[12].init(gl,13,2.0,-1.0,-1.0);       						 	
-   vCubos[13].init(gl,14,-2.0,-1.0,-1.0);
-   vCubos[14].init(gl,15,2.0,-3.0,-1.0);	
-   vCubos[15].init(gl,16,0.0,-3.0,-1.0);        				
-   vCubos[16].init(gl,17,-2.0,-3.0,-1.0);
+   vCubos[9].init(gl,10,2.0,1.0,-1.0,0,0,1);       				 
+   vCubos[10].init(gl,11,0.0,1.0,-1.0,0,0,1);          
+   vCubos[11].init(gl,12,-2.0,1.0,-1.0,0,0,1);		
+   vCubos[12].init(gl,13,2.0,-1.0,-1.0,0,0,1);       						 	
+   vCubos[13].init(gl,14,-2.0,-1.0,-1.0,0,0,1);
+   vCubos[14].init(gl,15,2.0,-3.0,-1.0,0,0,1);	
+   vCubos[15].init(gl,16,0.0,-3.0,-1.0,0,0,1);        				
+   vCubos[16].init(gl,17,-2.0,-3.0,-1.0,0,0,1);
    //Back      
-   vCubos[17].init(gl,18,2.0,1.0,-3.0);
-   vCubos[18].init(gl,19,0.0,1.0,-3.0);
-   vCubos[19].init(gl,20,-2.0,1.0,-3.0);
-   vCubos[20].init(gl,21,2.0,-1.0,-3.0);
-   vCubos[21].init(gl,22,0.0,-1.0,-3.0);
-   vCubos[22].init(gl,23,-2.0,-1.0,-3.0);
-   vCubos[23].init(gl,24,2.0,-3.0,-3.0);
-   vCubos[24].init(gl,25,0.0,-3.0,-3.0);
-   vCubos[25].init(gl,26,-2.0,-3.0,-3.0);    		
+   vCubos[17].init(gl,18,2.0,1.0,-3.0,0,0,2);
+   vCubos[18].init(gl,19,0.0,1.0,-3.0,0,0,2);
+   vCubos[19].init(gl,20,-2.0,1.0,-3.0,0,0,2);
+   vCubos[20].init(gl,21,2.0,-1.0,-3.0,0,0,2);
+   vCubos[21].init(gl,22,0.0,-1.0,-3.0,0,0,2);
+   vCubos[22].init(gl,23,-2.0,-1.0,-3.0,0,0,2);
+   vCubos[23].init(gl,24,2.0,-3.0,-3.0,0,0,2);
+   vCubos[24].init(gl,25,0.0,-3.0,-3.0,0,0,2);
+   vCubos[25].init(gl,26,-2.0,-3.0,-3.0,0,0,2);    		
    
    
 }
@@ -216,8 +216,59 @@ function handleKeyDown(event) {
     ySpeed = 0;
   }
   if (currKey == "Q") {
-	  eventOnZaxis("Lista1 ->",0,45.0); 
-  } 		
+	  eventOnZaxis("Lista1 ->",8.0,90.0); 	   
+  } 
+  if (currKey == "W") {
+	  eventOnZaxis("Lista2 ->",0.0,90.0); 
+  } 	
+  if (currKey == "E") {
+	  eventOnZaxis("Lista3 ->",-8.0,90.0); 
+  }   
+  if (currKey == "A") {
+	  eventOnZaxis("Lista1 <-",8.0,-90.0); 
+  } 
+  if (currKey == "S") {
+	  eventOnZaxis("Lista2 <-",0.0,-90.0)
+  } 
+  if (currKey == "D") {
+	  eventOnZaxis("Lista3 <-",-8.0,-90.0);
+  } 
+  if (currKey == "R") {
+	  eventOnXaxis("Lista4 ->",8.0,90.0);
+  } 
+  if (currKey == "T") {
+	  eventOnXaxis("Lista5 ->",0.0,90.0);	
+  } 
+  if (currKey == "Y") {
+	  eventOnXaxis("Lista6 ->",-8.0,90.0); 	                         		     
+  }   
+  if (currKey == "F") {
+	  eventOnXaxis("Lista4 <-",8.0,-90.0);  
+  } 
+  if (currKey == "G") {
+	  eventOnXaxis("Lista5 <-",0.0,-90.0);
+  } 
+  if (currKey == "H") {
+	  eventOnXaxis("Lista6 <-",-8.0,-90.0);  
+  } 
+  if (currKey == "U") {
+	  eventOnYaxis("Lista7 ->",8.0,90.0);
+  } 
+  if (currKey == "I") {
+	  eventOnYaxis("Lista8 ->",0.0,90.0);
+  } 
+  if (currKey == "O") {
+	  eventOnYaxis("Lista9 ->",-8.0,90.0);  
+  }   
+  if (currKey == "J") {
+	  eventOnYaxis("Lista7 <-",8.0,-90.0); 	
+  }   
+  if (currKey == "K") {
+	  eventOnYaxis("Lista8 <-",0.0,-90.0);
+  } 
+  if (currKey == "L") {
+	  eventOnYaxis("Lista9 <-",-8.0,-90.0);
+  } 
 }
 
 function handleKeyUp(event) {
@@ -352,190 +403,29 @@ function webGLStart() {
     document.onkeyup = handleKeyUp;	
 }		
 
-/** Converts numeric degrees to radians */
-if (typeof(Number.prototype.toRad) === "undefined") {
-  Number.prototype.toRad = function() {
-    return this * Math.PI / 180;
-  }
-}
-
-function rotateZ(v,a)
-{		
-	var xref = 0.0; //Não há necessidade de usar o ponto de referência
-	var yref = 0.0; //de rotação, por isso vamos usar (0,0,0)
-	var zref = 0.0;		
-	var x = v[0] - xref;
-	var y = v[1] - yref;
-	var z = v[2] - zref;
-	
-	/*|x|   |cos@ -sen@ 0|
-	 *|y| * |sen@ cos@  0|
-	 *|z|   | 0    0    1|		 
-	 */
-	
-	//Rotação eixo Z			
-	var matriz1 = [
-			[Math.cos(a.toRad()),-Math.sin(a.toRad()),0.0],
-			[Math.sin(a.toRad()),Math.cos(a.toRad()),0.0],
-			[0.0, 0.0, 1.0]
-	];				
-			
-	var nx = matriz1[0][0]*x + matriz1[0][1]*y + matriz1[0][2]*z + xref;
-	var ny = matriz1[1][0]*x + matriz1[1][1]*y + matriz1[1][2]*z + yref;
-	var nz = matriz1[2][0]*x + matriz1[2][1]*y + matriz1[2][2]*z + zref;
-	
-	v[0] = nx;		
-	v[1] = ny;
-	v[2] = nz;	
-}	
-
-function rotateX(v,a)
-{
-	
-	var xref = 0.0; //Não há necessidade de usar o ponto de referência
-	var yref = 0.0; //de rotação, por isso vamos usar (0,0,0)
-	var zref = 0.0;		
-	var x = v[0] - xref;
-	var y = v[1] - yref;
-	var z = v[2] - zref;
-	
-	/*|x|   |1    0     0 |
-	 *|y| * |0   cos@ sen@|
-	 *|z|   |0  -sen@ cos@|		 
-	 */
-		
-	//Rotation on X axis					
-	var matriz2 = [
-		 [1.0, 0.0, 0.0],
-		 [0.0, Math.cos(a.toRad()), Math.sin(a.toRad())],
-		 [0.0, -Math.sin(a.toRad()), Math.cos(a.toRad())]
-	];
-
-	var nx = matriz2[0][0]*x + matriz2[0][1]*y + matriz2[0][2]*z + xref;
-	var ny = matriz2[1][0]*x + matriz2[1][1]*y + matriz2[1][2]*z + yref;
-	var nz = matriz2[2][0]*x + matriz2[2][1]*y + matriz2[2][2]*z + zref;
-	
-	v[0] = nx;		
-	v[1] = ny;
-	v[2] = nz;	
-}
-
-function rotateY(v,a)
-{		
-	var xref = 0.0; //Não há necessidade de usar o ponto de referência
-	var yref = 0.0; //de rotação, por isso vamos usar (0,0,0)
-	var zref = 0.0;		
-	var x = v[0] - xref;
-	var y = v[1] - yref;
-	var z = v[2] - zref;
-	
-	/* |x|   | cos@   0   sin@|
-	 * |y| * |  0     1    0  |
-	 * |z|   |-sin@   0   cos@|		 
-	 */
-						
-	//Rotação eixo Y		
-	var matriz3 = [
-		[Math.cos(a.toRad()), 0.0, Math.sin(a.toRad())],
-		[0.0, 1.0, 0.0],
-		[-Math.sin(a.toRad()), 0.0, Math.cos(a.toRad())]
-	];
-		
-	var nx = matriz3[0][0]*x + matriz3[0][1]*y + matriz3[0][2]*z + xref;
-	var ny = matriz3[1][0]*x + matriz3[1][1]*y + matriz3[1][2]*z + yref;
-	var nz = matriz3[2][0]*x + matriz3[2][1]*y + matriz3[2][2]*z + zref;
-	
-	v[0] = nx;		
-	v[1] = ny;
-	v[2] = nz;	
-}
-
-//Recebe o cubo e rotaciona em Z no angulo "angulo" todos os vértices	
-function rotateCubeZ(cubo,angulo) {
-	rotateZ(cubo.v1,angulo);		
-	rotateZ(cubo.v2,angulo);		
-	rotateZ(cubo.v3,angulo);		
-	rotateZ(cubo.v4,angulo);		
-	rotateZ(cubo.v5,angulo);		
-	rotateZ(cubo.v6,angulo);		
-	rotateZ(cubo.v7,angulo);		
-	rotateZ(cubo.v8,angulo);									
-}
-
-//Recebe o cubo e rotaciona em X no angulo "angulo" todos os vértices	
-function rotateCubeX(cubo,angulo) {
-	rotateX(cubo.v1,angulo);		
-	rotateX(cubo.v2,angulo);		
-	rotateX(cubo.v3,angulo);		
-	rotateX(cubo.v4,angulo);		
-	rotateX(cubo.v5,angulo);		
-	rotateX(cubo.v6,angulo);		
-	rotateX(cubo.v7,angulo);		
-	rotateX(cubo.v8,angulo);									
-}	
-
-//Recebe o cubo e rotaciona em Y no angulo "angulo" todos os vértices
-function rotateCubeY(cubo,angulo) {
-	rotateY(cubo.v1,angulo);
-	rotateY(cubo.v2,angulo);		
-	rotateY(cubo.v3,angulo);		
-	rotateY(cubo.v4,angulo);		
-	rotateY(cubo.v5,angulo);		
-	rotateY(cubo.v6,angulo);		
-	rotateY(cubo.v7,angulo);		
-	rotateY(cubo.v8,angulo);									
-}		
-
 function eventOnZaxis(lista,comparacao,angulo) {
-	console.log(lista);              			          			    	            		            
-	valrotlista = angulo;					
-	var temp = new GeraCubo();
-	for(i=0;i<vCubos.length;i++) {
-		temp = vCubos[i];
-		//Aqui geramos um vertice "virtual" do centro do cubo para calcular onde o cubo está"
-		var centro = [
-			temp.v1[0]+temp.v2[0]+temp.v3[0]+temp.v4[0]+temp.v5[0]+temp.v6[0]+temp.v7[0]+temp.v8[0],
-		    temp.v1[1]+temp.v2[1]+temp.v3[1]+temp.v4[1]+temp.v5[1]+temp.v6[1]+temp.v7[1]+temp.v8[1],
-		    temp.v1[2]+temp.v2[2]+temp.v3[2]+temp.v4[2]+temp.v5[2]+temp.v6[2]+temp.v7[2]+temp.v8[2]
-		];
-		if(Math.round(centro[2])==comparacao) {
-			rotateCubeZ(vCubos[i],valrotlista);
+	console.log(lista);              			          			    	            		            	
+	for(i=0;i<this.vCubos.length;i++) {	    		
+		if(vCubos[i].zRef==comparacao) {			
+			vCubos[i].rotateCubeZ(angulo);			  			
 		}						
 	}								
 }
 
 function eventOnXaxis(lista,comparacao,angulo) {
-	console.log(lista);              			          			    	            		            
-	valrotlista = angulo;					
-	var temp = new GeraCubo();
-	for(i=0;i<vCubos.length;i++) {
-		temp = vCubos[i];
-		//Aqui geramos um vertice "virtual" do centro do cubo para calcular onde o cubo está"
-		var centro = [
-			temp.v1[0]+temp.v2[0]+temp.v3[0]+temp.v4[0]+temp.v5[0]+temp.v6[0]+temp.v7[0]+temp.v8[0],
-		    temp.v1[1]+temp.v2[1]+temp.v3[1]+temp.v4[1]+temp.v5[1]+temp.v6[1]+temp.v7[1]+temp.v8[1],
-		    temp.v1[2]+temp.v2[2]+temp.v3[2]+temp.v4[2]+temp.v5[2]+temp.v6[2]+temp.v7[2]+temp.v8[2]
-		];
-		if(Math.round(centro[0])==comparacao) {
-			rotateCubeX(temp,valrotlista);	
+	console.log(lista);              			          			    	            		            	
+	for(i=0;i<vCubos.length;i++) {				
+		if(vCubos[i].xRef==comparacao) {			
+			vCubos[i].rotateCubeX(angulo);			  			
 		}						
 	}					
 }	
 
 function eventOnYaxis(lista,comparacao,angulo) {
 	console.log(lista);              			          			    	            		            
-	valrotlista = angulo;					
-	var temp = new GeraCubo();
 	for(i=0;i<vCubos.length;i++) {
-		//Aqui geramos um vertice "virtual" do centro do cubo para calcular onde o cubo está"
-		temp = vCubos[i];
-		var centro = [
-			temp.v1[0]+temp.v2[0]+temp.v3[0]+temp.v4[0]+temp.v5[0]+temp.v6[0]+temp.v7[0]+temp.v8[0],
-		    temp.v1[1]+temp.v2[1]+temp.v3[1]+temp.v4[1]+temp.v5[1]+temp.v6[1]+temp.v7[1]+temp.v8[1],
-		    temp.v1[2]+temp.v2[2]+temp.v3[2]+temp.v4[2]+temp.v5[2]+temp.v6[2]+temp.v7[2]+temp.v8[2]
-		];
-		if(Math.round(centro[1])==comparacao) {
-			rotateCubeY(temp,valrotlista);	
+		if(vCubos[i].yRef==comparacao) {			
+			vCubos[i].rotateCubeY(angulo);			  			
 		}						
 	}					
 }	

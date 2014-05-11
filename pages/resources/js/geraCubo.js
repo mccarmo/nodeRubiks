@@ -2,6 +2,7 @@ function GeraCubo() {
 	
 	var id;
 	var x,y,z;
+	var xRef,yRef,zRef;
 	var v1 = new Array();
 	var v2 = new Array();
 	var v3 = new Array();
@@ -9,29 +10,39 @@ function GeraCubo() {
 	var v5 = new Array();
 	var v6 = new Array();
 	var v7 = new Array();
-	var v8 = new Array();
+	var v8 = new Array();	
 	var gl;
 	
 	var cubeVertexPositionBuffer;
 	var cubeVertexTextureCoordBuffer;
 	var cubeVertexIndexBuffer;
 	
-	this.init = function(gl,id,px,py,pz) {
+	this.init = function(gl,id,px,py,pz,xRef,yRef,zRef) {
 		this.gl = gl;
 		this.id = id;        	    	    	
 		this.x = px;
 		this.y = py;
-		this.z = pz;
-		
+		this.z = pz;		
+		this.xRef = xRef;
+		this.yRef = yRef;
+		this.zRef = zRef;
+		this.v1 = [-1.0,-1.0,1.0];
+		this.v2 = [1.0,-1.0,1.0];    		
+		this.v3 = [1.0,1.0,1.0];
+		this.v4 = [-1.0,1.0,1.0];
+		this.v5 = [-1.0,-1.0,-1.0];
+		this.v6 = [-1.0,1.0,-1.0];
+		this.v7 = [1.0,1.0,-1.0];
+		this.v8 = [1.0,-1.0,-1.0];
+	
 		this.cubeVertexPositionBuffer = this.gl.createBuffer();
 		this.cubeVertexTextureCoordBuffer = this.gl.createBuffer();
 		this.cubeVertexIndexBuffer = this.gl.createBuffer();
 	}
-	this.criaCubo = function() {
-	    this.geraVertices();
+	this.criaCubo = function() {	    	    
 	    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexPositionBuffer);           	
-    	    var vertices = [
-		this.v1[0],this.v1[1],this.v1[2], //Frente
+    	var vertices = [
+			this.v1[0],this.v1[1],this.v1[2], //Frente
         	this.v2[0],this.v2[1],this.v2[2],
         	this.v3[0],this.v3[1],this.v3[2],
         	this.v4[0],this.v4[1],this.v4[2],    
@@ -43,24 +54,24 @@ function GeraCubo() {
             
     		this.v6[0],this.v6[1],this.v6[2],
     		this.v4[0],this.v4[1],this.v4[2], //Cima
-		this.v3[0],this.v3[1],this.v3[2],      	
-		this.v7[0],this.v7[1],this.v7[2],
+			this.v3[0],this.v3[1],this.v3[2],      	
+			this.v7[0],this.v7[1],this.v7[2],
 
-		this.v5[0],this.v5[1],this.v5[2],
-		this.v8[0],this.v8[1],this.v8[2],
-		this.v2[0],this.v2[1],this.v2[2],
-		this.v1[0],this.v1[1],this.v1[2], //Baixo
+			this.v5[0],this.v5[1],this.v5[2],
+			this.v8[0],this.v8[1],this.v8[2],
+			this.v2[0],this.v2[1],this.v2[2],
+			this.v1[0],this.v1[1],this.v1[2], //Baixo
 		            
-		this.v8[0],this.v8[1],this.v8[2], //Direita
+			this.v8[0],this.v8[1],this.v8[2], //Direita
         	this.v7[0],this.v7[1],this.v7[2],
         	this.v3[0],this.v3[1],this.v3[2],
         	this.v2[0],this.v2[1],this.v2[2],   
 
-		this.v5[0],this.v5[1],this.v5[2], //Esquerda
+			this.v5[0],this.v5[1],this.v5[2], //Esquerda
        		this.v1[0],this.v1[1],this.v1[2],
     		this.v4[0],this.v4[1],this.v4[2],
     		this.v6[0],this.v6[1],this.v6[2]
-    	    ];
+    	];
 	    
 	    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices), this.gl.STATIC_DRAW);
 		
@@ -103,9 +114,10 @@ function GeraCubo() {
 		  1.0, 1.0,
 		  0.0, 1.0,
 	    ];
-            this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(textureCoords), this.gl.STATIC_DRAW);
-            this.cubeVertexTextureCoordBuffer.itemSize = 2;
-            this.cubeVertexTextureCoordBuffer.numItems = 24;
+		
+		this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(textureCoords), this.gl.STATIC_DRAW);
+		this.cubeVertexTextureCoordBuffer.itemSize = 2;
+		this.cubeVertexTextureCoordBuffer.numItems = 24;
         
 	    this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
 		    var cubeVertexIndices = [
@@ -167,17 +179,132 @@ function GeraCubo() {
 	    mvPopMatrix();	    		    
 	}
 
-	this.geraVertices = function() {
-		this.v1 = [-1.0,-1.0,1.0];
-    		this.v2 = [1.0,-1.0,1.0];    		
-    		this.v3 = [1.0,1.0,1.0];
-    		this.v4 = [-1.0,1.0,1.0];
-    		this.v5 = [-1.0,-1.0,-1.0];
-    		this.v6 = [-1.0,1.0,-1.0];
-    		this.v7 = [1.0,1.0,-1.0];
-    		this.v8 = [1.0,-1.0,-1.0];
+	this.rotateZ = function(v,a)
+	{				
+		var xref = 0.0; //Não há necessidade de usar o ponto de referência
+		var yref = 0.0; //de rotação, por isso vamos usar (0,0,0)
+		var zref = 0.0;		
+		var x = v[0] - xref;
+		var y = v[1] - yref;
+		var z = v[2] - zref;
+		
+		/*|x|   |cos@ -sen@ 0|
+		 *|y| * |sen@ cos@  0|
+		 *|z|   | 0    0    1|		 
+		 */
+		
+		//Rotação eixo Z			
+		var matriz1 = [
+				[Math.cos(degToRad(a)),-Math.sin(degToRad(a)),0.0],
+				[Math.sin(degToRad(a)),Math.cos(degToRad(a)),0.0],
+				[0.0, 0.0, 1.0]
+		];				
+				
+		var nx = (matriz1[0][0]*x) + (matriz1[0][1]*y) + (matriz1[0][2]*z) + xref;
+		var ny = (matriz1[1][0]*x) + (matriz1[1][1]*y) + (matriz1[1][2]*z) + yref;
+		var nz = (matriz1[2][0]*x) + (matriz1[2][1]*y) + (matriz1[2][2]*z) + zref;
+				
+		v[0] = nx;		
+		v[1] = ny;
+		v[2] = nz;	
+	}	
+
+	this.rotateX = function(v,a)
+	{
+		
+		var xref = 0.0; //Não há necessidade de usar o ponto de referência
+		var yref = 0.0; //de rotação, por isso vamos usar (0,0,0)
+		var zref = 0.0;		
+		var x = v[0] - xref;
+		var y = v[1] - yref;
+		var z = v[2] - zref;
+		
+		/*|x|   |1    0     0 |
+		 *|y| * |0   cos@ sen@|
+		 *|z|   |0  -sen@ cos@|		 
+		 */
+			
+		//Rotation on X axis					
+		var matriz2 = [
+			 [1.0, 0.0, 0.0],
+			 [0.0, Math.cos(degToRad(a)), Math.sin(degToRad(a))],
+			 [0.0, -Math.sin(degToRad(a)), Math.cos(degToRad(a))]
+		];
+
+		var nx = (matriz2[0][0]*x) + (matriz2[0][1]*y) + (matriz2[0][2]*z) + xref;
+		var ny = (matriz2[1][0]*x) + (matriz2[1][1]*y) + (matriz2[1][2]*z) + yref;
+		var nz = (matriz2[2][0]*x) + (matriz2[2][1]*y) + (matriz2[2][2]*z) + zref;
+		
+		v[0] = nx;		
+		v[1] = ny;
+		v[2] = nz;	
 	}
-	
+
+	this.rotateY = function(v,a)
+	{		
+		var xref = 0.0; //Não há necessidade de usar o ponto de referência
+		var yref = 0.0; //de rotação, por isso vamos usar (0,0,0)
+		var zref = 0.0;		
+		var x = v[0] - xref;
+		var y = v[1] - yref;
+		var z = v[2] - zref;
+		
+		/* |x|   | cos@   0   sin@|
+		 * |y| * |  0     1    0  |
+		 * |z|   |-sin@   0   cos@|		 
+		 */
+							
+		//Rotação eixo Y		
+		var matriz3 = [
+			[Math.cos(degToRad(a)), 0.0, Math.sin(degToRad(a))],
+			[0.0, 1.0, 0.0],
+			[-Math.sin(degToRad(a)), 0.0, Math.cos(degToRad(a))]
+		];
+			
+		var nx = (matriz3[0][0]*x) + (matriz3[0][1]*y) + (matriz3[0][2]*z) + xref;
+		var ny = (matriz3[1][0]*x) + (matriz3[1][1]*y) + (matriz3[1][2]*z) + yref;
+		var nz = (matriz3[2][0]*x) + (matriz3[2][1]*y) + (matriz3[2][2]*z) + zref;
+		
+		v[0] = nx;		
+		v[1] = ny;
+		v[2] = nz;	
+	}
+
+	//Recebe o cubo e rotaciona em Z no angulo "angulo" todos os vértices	
+	this.rotateCubeZ = function(angulo) {	    
+		this.rotateZ(this.v1,angulo);		
+		this.rotateZ(this.v2,angulo);		
+		this.rotateZ(this.v3,angulo);		
+		this.rotateZ(this.v4,angulo);		
+		this.rotateZ(this.v5,angulo);		
+		this.rotateZ(this.v6,angulo);		
+		this.rotateZ(this.v7,angulo);		
+		this.rotateZ(this.v8,angulo);											
+	}
+
+	//Recebe o cubo e rotaciona em X no angulo "angulo" todos os vértices	
+	this.rotateCubeX = function(angulo) {	    
+		this.rotateX(this.v1,angulo);		
+		this.rotateX(this.v2,angulo);		
+		this.rotateX(this.v3,angulo);		
+		this.rotateX(this.v4,angulo);		
+		this.rotateX(this.v5,angulo);		
+		this.rotateX(this.v6,angulo);		
+		this.rotateX(this.v7,angulo);		
+		this.rotateX(this.v8,angulo);									
+	}	
+
+	//Recebe o cubo e rotaciona em Y no angulo "angulo" todos os vértices
+	this.rotateCubeY = function(angulo) {
+		this.rotateY(this.v1,angulo);
+		this.rotateY(this.v2,angulo);		
+		this.rotateY(this.v3,angulo);		
+		this.rotateY(this.v4,angulo);		
+		this.rotateY(this.v5,angulo);		
+		this.rotateY(this.v6,angulo);		
+		this.rotateY(this.v7,angulo);		
+		this.rotateY(this.v8,angulo);									
+	}		
 }
 
 
