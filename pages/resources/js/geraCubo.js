@@ -134,49 +134,60 @@ function GeraCubo() {
 		mat4.translate(mvMatrix, [this.x,this.y,this.z]);
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexPositionBuffer);
 		this.gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, 3, this.gl.FLOAT, false, 0, 0);
-		        
+		
+		setMatrixUniforms();
+		
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexTextureCoordBuffer);
 		this.gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.cubeVertexTextureCoordBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
-	
-		this.gl.activeTexture(this.gl.TEXTURE0);
-		this.gl.bindTexture(this.gl.TEXTURE_2D, textureBlue);
-		this.gl.uniform1i(shaderProgram.samplerUniform, 0);
-		this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0);
-		setMatrixUniforms();
-	
-		this.gl.activeTexture(this.gl.TEXTURE1);
-		this.gl.bindTexture(this.gl.TEXTURE_2D, textureYellow);
-		this.gl.uniform1i(shaderProgram.samplerUniform, 1);
-		this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 12);
-		setMatrixUniforms();
+		
+		if(this.id >= 10 && this.id <= 26) {
+			this.gl.activeTexture(this.gl.TEXTURE6);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, textureNoColor);
+			this.gl.uniform1i(shaderProgram.samplerUniform, 6);
+			this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0);
+		} else {
+			this.gl.activeTexture(this.gl.TEXTURE0);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, textureBlue);
+			this.gl.uniform1i(shaderProgram.samplerUniform, 0);
+			this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 0);			
+		}
+		
+		if(this.id >= 1 && this.id <= 17) {
+			this.gl.activeTexture(this.gl.TEXTURE6);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, textureNoColor);
+			this.gl.uniform1i(shaderProgram.samplerUniform, 6);
+			this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 12);
+		} else {
+			this.gl.activeTexture(this.gl.TEXTURE1);
+			this.gl.bindTexture(this.gl.TEXTURE_2D, textureYellow);
+			this.gl.uniform1i(shaderProgram.samplerUniform, 1);
+			this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 12);			
+		}
+		
 		
 		this.gl.activeTexture(this.gl.TEXTURE2);
 		this.gl.bindTexture(this.gl.TEXTURE_2D, textureWhite);
 		this.gl.uniform1i(shaderProgram.samplerUniform, 2);
 		this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 24);
-		setMatrixUniforms();
 		
 		this.gl.activeTexture(this.gl.TEXTURE3);
 		this.gl.bindTexture(this.gl.TEXTURE_2D, textureMagent);
 		this.gl.uniform1i(shaderProgram.samplerUniform, 3);
 		this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 36);
-		setMatrixUniforms();
 		
 		this.gl.activeTexture(this.gl.TEXTURE4);
 		this.gl.bindTexture(this.gl.TEXTURE_2D, textureGreen);
 		this.gl.uniform1i(shaderProgram.samplerUniform, 4);
 		this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 48);
-		setMatrixUniforms();
 		
 		this.gl.activeTexture(this.gl.TEXTURE5);
 		this.gl.bindTexture(this.gl.TEXTURE_2D, textureRed);
 		this.gl.uniform1i(shaderProgram.samplerUniform, 5);
 		this.gl.drawElements(this.gl.TRIANGLES, 6, this.gl.UNSIGNED_SHORT, 60);
-		setMatrixUniforms();
-	
-		this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);
-		setMatrixUniforms();		
-	    mvPopMatrix();	    		    
+
+		this.gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.cubeVertexIndexBuffer);		
+	    mvPopMatrix();	 
+	   
 	}
 
 	this.rotateZ = function(v,a)

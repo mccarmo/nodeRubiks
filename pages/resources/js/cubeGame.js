@@ -216,58 +216,58 @@ function handleKeyDown(event) {
     ySpeed = 0;
   }
   if (currKey == "Q") {
-	  eventOnZaxis("Lista1 ->",8.0,90.0); 	   
+	  eventOnZaxis("Lista1 ->",8.0,45.0); 	   
   } 
   if (currKey == "W") {
-	  eventOnZaxis("Lista2 ->",0.0,90.0); 
+	  eventOnZaxis("Lista2 ->",0.0,45.0); 
   } 	
   if (currKey == "E") {
-	  eventOnZaxis("Lista3 ->",-8.0,90.0); 
+	  eventOnZaxis("Lista3 ->",-8.0,45.0); 
   }   
   if (currKey == "A") {
-	  eventOnZaxis("Lista1 <-",8.0,-90.0); 
+	  eventOnZaxis("Lista1 <-",8.0,-45.0); 
   } 
   if (currKey == "S") {
-	  eventOnZaxis("Lista2 <-",0.0,-90.0)
+	  eventOnZaxis("Lista2 <-",0.0,-45.0)
   } 
   if (currKey == "D") {
-	  eventOnZaxis("Lista3 <-",-8.0,-90.0);
+	  eventOnZaxis("Lista3 <-",-8.0,-45.0);
   } 
   if (currKey == "R") {
-	  eventOnXaxis("Lista4 ->",8.0,90.0);
+	  eventOnXaxis("Lista4 ->",8.0,45.0);
   } 
   if (currKey == "T") {
-	  eventOnXaxis("Lista5 ->",0.0,90.0);	
+	  eventOnXaxis("Lista5 ->",0.0,45.0);	
   } 
   if (currKey == "Y") {
-	  eventOnXaxis("Lista6 ->",-8.0,90.0); 	                         		     
+	  eventOnXaxis("Lista6 ->",-8.0,45.0); 	                         		     
   }   
   if (currKey == "F") {
-	  eventOnXaxis("Lista4 <-",8.0,-90.0);  
+	  eventOnXaxis("Lista4 <-",8.0,-45.0);  
   } 
   if (currKey == "G") {
-	  eventOnXaxis("Lista5 <-",0.0,-90.0);
+	  eventOnXaxis("Lista5 <-",0.0,-45.0);
   } 
   if (currKey == "H") {
-	  eventOnXaxis("Lista6 <-",-8.0,-90.0);  
+	  eventOnXaxis("Lista6 <-",-8.0,-45.0);  
   } 
   if (currKey == "U") {
-	  eventOnYaxis("Lista7 ->",8.0,90.0);
+	  eventOnYaxis("Lista7 ->",8.0,45.0);
   } 
   if (currKey == "I") {
-	  eventOnYaxis("Lista8 ->",0.0,90.0);
+	  eventOnYaxis("Lista8 ->",0.0,45.0);
   } 
   if (currKey == "O") {
-	  eventOnYaxis("Lista9 ->",-8.0,90.0);  
+	  eventOnYaxis("Lista9 ->",-8.0,45.0);  
   }   
   if (currKey == "J") {
-	  eventOnYaxis("Lista7 <-",8.0,-90.0); 	
+	  eventOnYaxis("Lista7 <-",8.0,-45.0); 	
   }   
   if (currKey == "K") {
-	  eventOnYaxis("Lista8 <-",0.0,-90.0);
+	  eventOnYaxis("Lista8 <-",0.0,-45.0);
   } 
   if (currKey == "L") {
-	  eventOnYaxis("Lista9 <-",-8.0,-90.0);
+	  eventOnYaxis("Lista9 <-",-8.0,-45.0);
   } 
 }
 
