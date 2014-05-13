@@ -169,10 +169,9 @@ function drawScene() {
     mat4.rotate(mvMatrix, degToRad(yRot), [0, 1, 0]);
     mat4.multiply(mvMatrix, rotationMatrix);
     
-    for(i=0;i<vCubos.length;i++) {
- 	   vCubos[i].criaCubo();
-    }
-      
+    vCubos.map(function(c){
+    	c.criaCubo();
+    });      
 }
 
 function animate() {
@@ -405,27 +404,27 @@ function webGLStart() {
 
 function eventOnZaxis(lista,comparacao,angulo) {
 	console.log(lista);              			          			    	            		            	
-	for(i=0;i<this.vCubos.length;i++) {	    		
-		if(vCubos[i].zRef==comparacao) {			
-			vCubos[i].rotateCubeZ(angulo);			  			
-		}						
-	}								
+	vCubos.map(function(c){
+		if(c.zRef==comparacao){
+			c.rotateCubeZ(angulo);
+		}
+	});
 }
 
 function eventOnXaxis(lista,comparacao,angulo) {
 	console.log(lista);              			          			    	            		            	
-	for(i=0;i<vCubos.length;i++) {				
-		if(vCubos[i].xRef==comparacao) {			
-			vCubos[i].rotateCubeX(angulo);			  			
-		}						
-	}					
+	vCubos.map(function(c){
+		if(c.xRef==comparacao){
+			c.rotateCubeX(angulo);
+		}
+	});					
 }	
 
 function eventOnYaxis(lista,comparacao,angulo) {
 	console.log(lista);              			          			    	            		            
-	for(i=0;i<vCubos.length;i++) {
-		if(vCubos[i].yRef==comparacao) {			
-			vCubos[i].rotateCubeY(angulo);			  			
-		}						
-	}					
+	vCubos.map(function(c){
+		if(c.yRef==comparacao){
+			c.rotateCubeY(angulo);
+		}
+	});					
 }	

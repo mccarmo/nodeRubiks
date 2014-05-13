@@ -214,10 +214,12 @@ function GeraCubo() {
 		var nx = (matriz1[0][0]*x) + (matriz1[0][1]*y) + (matriz1[0][2]*z) + xref;
 		var ny = (matriz1[1][0]*x) + (matriz1[1][1]*y) + (matriz1[1][2]*z) + yref;
 		var nz = (matriz1[2][0]*x) + (matriz1[2][1]*y) + (matriz1[2][2]*z) + zref;
-				
+		
 		v[0] = nx;		
 		v[1] = ny;
-		v[2] = nz;	
+		v[2] = nz;
+		
+		return v;
 	}	
 
 	this.rotateX = function(v,a)
@@ -249,6 +251,8 @@ function GeraCubo() {
 		v[0] = nx;		
 		v[1] = ny;
 		v[2] = nz;	
+		
+		return v;
 	}
 
 	this.rotateY = function(v,a)
@@ -279,42 +283,44 @@ function GeraCubo() {
 		v[0] = nx;		
 		v[1] = ny;
 		v[2] = nz;	
+		
+		return v;
 	}
 
 	//Recebe o cubo e rotaciona em Z no angulo "angulo" todos os vértices	
 	this.rotateCubeZ = function(angulo) {	    
-		this.rotateZ(this.v1,angulo);		
-		this.rotateZ(this.v2,angulo);		
-		this.rotateZ(this.v3,angulo);		
-		this.rotateZ(this.v4,angulo);		
-		this.rotateZ(this.v5,angulo);		
-		this.rotateZ(this.v6,angulo);		
-		this.rotateZ(this.v7,angulo);		
-		this.rotateZ(this.v8,angulo);											
+		this.v1 = this.rotateZ(this.v1,angulo);		
+		this.v2 = this.rotateZ(this.v2,angulo);		
+		this.v3 = this.rotateZ(this.v3,angulo);		
+		this.v4 = this.rotateZ(this.v4,angulo);		
+		this.v5 = this.rotateZ(this.v5,angulo);		
+		this.v6 = this.rotateZ(this.v6,angulo);		
+		this.v7 = this.rotateZ(this.v7,angulo);		
+		this.v8 = this.rotateZ(this.v8,angulo);											
 	}
 
 	//Recebe o cubo e rotaciona em X no angulo "angulo" todos os vértices	
 	this.rotateCubeX = function(angulo) {	    
-		this.rotateX(this.v1,angulo);		
-		this.rotateX(this.v2,angulo);		
-		this.rotateX(this.v3,angulo);		
-		this.rotateX(this.v4,angulo);		
-		this.rotateX(this.v5,angulo);		
-		this.rotateX(this.v6,angulo);		
-		this.rotateX(this.v7,angulo);		
-		this.rotateX(this.v8,angulo);									
+		this.v1 = this.rotateX(this.v1,angulo);		
+		this.v2 = this.rotateX(this.v2,angulo);		
+		this.v3 = this.rotateX(this.v3,angulo);		
+		this.v4 = this.rotateX(this.v4,angulo);		
+		this.v5 = this.rotateX(this.v5,angulo);		
+		this.v6 = this.rotateX(this.v6,angulo);		
+		this.v7 = this.rotateX(this.v7,angulo);		
+		this.v8 = this.rotateX(this.v8,angulo);									
 	}	
 
 	//Recebe o cubo e rotaciona em Y no angulo "angulo" todos os vértices
 	this.rotateCubeY = function(angulo) {
-		this.rotateY(this.v1,angulo);
-		this.rotateY(this.v2,angulo);		
-		this.rotateY(this.v3,angulo);		
-		this.rotateY(this.v4,angulo);		
-		this.rotateY(this.v5,angulo);		
-		this.rotateY(this.v6,angulo);		
-		this.rotateY(this.v7,angulo);		
-		this.rotateY(this.v8,angulo);									
+		this.v1 = this.rotateY(this.v1,angulo);
+		this.v2 = this.rotateY(this.v2,angulo);		
+		this.v3 = this.rotateY(this.v3,angulo);		
+		this.v4 = this.rotateY(this.v4,angulo);		
+		this.v5 = this.rotateY(this.v5,angulo);		
+		this.v6 = this.rotateY(this.v6,angulo);		
+		this.v7 = this.rotateY(this.v7,angulo);		
+		this.v8 = this.rotateY(this.v8,angulo);									
 	}		
 }
 
