@@ -33,6 +33,7 @@ var lastMouseX = null;
 var lastMouseY = null;
 var numTextures = 6;
 var loadedTextures = 0;
+var movesArray = [];
 
 for(i=0;i<vCubos.length;i++) {
     vCubos[i] = new GeraCubo();
@@ -168,7 +169,7 @@ function drawScene() {
     mat4.multiply(mvMatrix, rotationMatrix);
     
 }
-var ang = 0;
+
 function animate() {
     var timeNow = new Date().getTime();
     if (lastTime != 0) {
@@ -179,14 +180,11 @@ function animate() {
         vCubos.map(function(c){
         	c.criaCubo();
         });
-        
-        
-	   /* vCubos.map(function(c){
-	    	if(Math.round(c.centro[2])==8.0){
-	    		c.rotateCubeZ(ang);
-	    		ang+=0.01;
-	    	}
-	    });*/
+                
+        var move = movesArray.shift();
+        if(typeof(move)=='function'){
+        	move();
+        };
         
     }
     lastTime = timeNow;
@@ -223,58 +221,94 @@ function handleKeyDown(event) {
     ySpeed = 0;
   }
   if (currKey == "Q") {
-	  eventOnZaxis("Lista1 ->",8.0,90.0); 	   
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnZaxis("Lista1 ->",8.0,10.0));
+	  }
   } 
   if (currKey == "W") {
-	  eventOnZaxis("Lista2 ->",0.0,90.0); 
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnZaxis("Lista2 ->",0.0,10.0));
+	  }
   } 	
   if (currKey == "E") {
-	  eventOnZaxis("Lista3 ->",-8.0,90.0); 
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnZaxis("Lista3 ->",-8.0,10.0));
+	  }
   }   
   if (currKey == "A") {
-	  eventOnZaxis("Lista1 <-",8.0,-90.0); 
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnZaxis("Lista1 <-",8.0,-10.0));
+	  }
   } 
   if (currKey == "S") {
-	  eventOnZaxis("Lista2 <-",0.0,-90.0)
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnZaxis("Lista2 <-",0.0,-10.0));
+	  }
   } 
   if (currKey == "D") {
-	  eventOnZaxis("Lista3 <-",-8.0,-90.0);
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnZaxis("Lista3 <-",-8.0,-10.0));
+	  }
   } 
   if (currKey == "R") {
-	  eventOnXaxis("Lista4 ->",8.0,90.0);
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnXaxis("Lista4 ->",8.0,10.0));
+	  }
   } 
   if (currKey == "T") {
-	  eventOnXaxis("Lista5 ->",0.0,90.0);	
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnXaxis("Lista5 ->",0.0,10.0));
+	  }
   } 
   if (currKey == "Y") {
-	  eventOnXaxis("Lista6 ->",-8.0,90.0); 	                         		     
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnXaxis("Lista6 ->",-8.0,10.0));
+	  }
   }   
   if (currKey == "F") {
-	  eventOnXaxis("Lista4 <-",8.0,-90.0);  
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnXaxis("Lista4 <-",8.0,-10.0));
+	  }
   } 
   if (currKey == "G") {
-	  eventOnXaxis("Lista5 <-",0.0,-90.0);
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnXaxis("Lista5 <-",0.0,-10.0));
+	  }
   } 
   if (currKey == "H") {
-	  eventOnXaxis("Lista6 <-",-8.0,-90.0);  
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnXaxis("Lista6 <-",-8.0,-10.0));
+	  }
   } 
   if (currKey == "U") {
-	  eventOnYaxis("Lista7 ->",8.0,90.0);
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnYaxis("Lista7 ->",8.0,10.0));
+	  }
   } 
   if (currKey == "I") {
-	  eventOnYaxis("Lista8 ->",0.0,90.0);
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnYaxis("Lista8 ->",0.0,10.0));
+	  }
   } 
   if (currKey == "O") {
-	  eventOnYaxis("Lista9 ->",-8.0,90.0);  
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnYaxis("Lista9 ->",-8.0,10.0));
+	  }
   }   
   if (currKey == "J") {
-	  eventOnYaxis("Lista7 <-",8.0,-90.0); 	
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnYaxis("Lista7 <-",8.0,-10.0));
+	  }
   }   
   if (currKey == "K") {
-	  eventOnYaxis("Lista8 <-",0.0,-90.0);
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnYaxis("Lista8 <-",0.0,-10.0));
+	  }
   } 
   if (currKey == "L") {
-	  eventOnYaxis("Lista9 <-",-8.0,-90.0);
+	  for(i=1;i<10;i++) {
+		  movesArray.push(new eventOnYaxis("Lista9 <-",-8.0,-10.0));
+	  }	  
   } 
 }
 
@@ -388,6 +422,42 @@ function initTextures() {
     textureNoColor.image.src = "/resources/img/nocolor.png";	
 }
 
+var eventOnXaxis = function (lista,comparacao,angulo) {
+	function evento() {
+		console.log(lista);
+		vCubos.map(function(c){
+			if(Math.round(c.centro[0])==comparacao){
+				c.rotateCubeX(angulo);
+			}
+		});
+	}		
+	return evento;
+}	
+
+var eventOnYaxis = function(lista,comparacao,angulo) {
+	function evento() {
+		console.log(lista);              			          			    	            		            
+		vCubos.map(function(c){
+			if(Math.round(c.centro[1])==comparacao){
+				c.rotateCubeY(angulo);
+			}
+		});			
+	}		
+	return evento;
+}	
+
+var eventOnZaxis = function (lista,comparacao,angulo) {
+	function evento() {
+		console.log(lista);              			          			    	            		            	
+		vCubos.map(function(c){
+			if(Math.round(c.centro[2])==comparacao){
+				c.rotateCubeZ(angulo);
+			}
+		});
+	}		
+	return evento;
+}
+
 function tick() {
     requestAnimFrame(tick);
     handleKeys();
@@ -413,29 +483,3 @@ function webGLStart() {
     document.onkeyup = handleKeyUp;	
 }		
 
-function eventOnXaxis(lista,comparacao,angulo) {
-	console.log(lista);              			          			    	            		            	
-	vCubos.map(function(c){
-		if(Math.round(c.centro[0])==comparacao){
-			c.rotateCubeX(angulo);
-		}
-	});					
-}	
-
-function eventOnYaxis(lista,comparacao,angulo) {
-	console.log(lista);              			          			    	            		            
-	vCubos.map(function(c){
-		if(Math.round(c.centro[1])==comparacao){
-			c.rotateCubeY(angulo);
-		}
-	});					
-}	
-
-function eventOnZaxis(lista,comparacao,angulo) {
-	console.log(lista);              			          			    	            		            	
-	vCubos.map(function(c){
-		if(Math.round(c.centro[2])==comparacao){
-			c.rotateCubeZ(angulo);
-		}
-	});
-}
