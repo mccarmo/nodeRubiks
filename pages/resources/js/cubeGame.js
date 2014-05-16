@@ -34,16 +34,19 @@ var lastMouseY = null;
 var numTextures = 6;
 var loadedTextures = 0;
 var movesArray = [];
+var currentlyPressedKeys = {};
 
-for(i=0;i<vCubos.length;i++) {
-    vCubos[i] = new GeraCubo();
-}	
 
 function initGL(canvas) {
     try {
         gl = canvas.getContext("experimental-webgl");
         gl.viewportWidth = canvas.width;
         gl.viewportHeight = canvas.height;
+        
+        for(i=0;i<vCubos.length;i++) {
+            vCubos[i] = new GeraCubo();
+        }
+        
     } catch (e) {
     }
     if (!gl) {
@@ -208,8 +211,6 @@ if (currentlyPressedKeys[37]) {
       xSpeed += 1;
     }
 }
-
-var currentlyPressedKeys = {};
 
 function handleKeyDown(event) {
   currentlyPressedKeys[event.keyCode] = true;
@@ -424,7 +425,7 @@ function initTextures() {
 
 var eventOnXaxis = function (lista,comparacao,angulo) {
 	function evento() {
-		console.log(lista);
+		//console.log(lista);
 		vCubos.map(function(c){
 			if(Math.round(c.centro[0])==comparacao){
 				c.rotateCubeX(angulo);
@@ -436,7 +437,7 @@ var eventOnXaxis = function (lista,comparacao,angulo) {
 
 var eventOnYaxis = function(lista,comparacao,angulo) {
 	function evento() {
-		console.log(lista);              			          			    	            		            
+		//console.log(lista);              			          			    	            		            
 		vCubos.map(function(c){
 			if(Math.round(c.centro[1])==comparacao){
 				c.rotateCubeY(angulo);
@@ -448,7 +449,7 @@ var eventOnYaxis = function(lista,comparacao,angulo) {
 
 var eventOnZaxis = function (lista,comparacao,angulo) {
 	function evento() {
-		console.log(lista);              			          			    	            		            	
+		//console.log(lista);              			          			    	            		            	
 		vCubos.map(function(c){
 			if(Math.round(c.centro[2])==comparacao){
 				c.rotateCubeZ(angulo);
