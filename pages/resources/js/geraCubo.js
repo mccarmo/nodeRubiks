@@ -2,31 +2,27 @@ function GeraCubo() {
 	
 	var id;
 	var x,y,z;
-	var xRef,yRef,zRef;
 	var centro;
-	var v1 = new Array();
-	var v2 = new Array();
-	var v3 = new Array();
-	var v4 = new Array();
-	var v5 = new Array();
-	var v6 = new Array();
-	var v7 = new Array();
-	var v8 = new Array();	
+	var v1 = [];
+	var v2 = [];
+	var v3 = [];
+	var v4 = [];
+	var v5 = [];
+	var v6 = [];
+	var v7 = [];
+	var v8 = [];	
 	var gl;
 	
 	var cubeVertexPositionBuffer;
 	var cubeVertexTextureCoordBuffer;
 	var cubeVertexIndexBuffer;
 	
-	this.init = function(gl,id,px,py,pz,xRef,yRef,zRef) {
+	this.init = function(gl,id,px,py,pz) {
 		this.gl = gl;
 		this.id = id;        	    	    	
 		this.x = px;
 		this.y = py;
 		this.z = pz;		
-		this.xRef = xRef;
-		this.yRef = yRef;
-		this.zRef = zRef;
 		this.v1 = [0.0,0.0,0.0];
 		this.v2 = [0.0,0.0,0.0];    		
 		this.v3 = [0.0,0.0,0.0];
@@ -43,11 +39,11 @@ function GeraCubo() {
 	}
 	this.criaCubo = function() {		
 	    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexPositionBuffer);           	
-    	var vertices = [
+            var vertices = [
 			this.v1[0],this.v1[1],this.v1[2], //Front
-        	this.v2[0],this.v2[1],this.v2[2],
-        	this.v3[0],this.v3[1],this.v3[2],
-        	this.v4[0],this.v4[1],this.v4[2], 
+        		this.v2[0],this.v2[1],this.v2[2],
+        		this.v3[0],this.v3[1],this.v3[2],
+        		this.v4[0],this.v4[1],this.v4[2], 
 			
 			this.v5[0],this.v5[1],this.v5[2], 
 			this.v6[0],this.v6[1],this.v6[2],

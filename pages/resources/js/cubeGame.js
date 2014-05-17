@@ -27,7 +27,6 @@ var xSpeed = 0;
 var yRot = 0;
 var ySpeed = 0;
 var rotationMatrix = mat4.create();
-	mat4.identity(rotationMatrix);
 var mouseDown = false;
 var lastMouseX = null;
 var lastMouseY = null;
@@ -36,13 +35,14 @@ var loadedTextures = 0;
 var movesArray = [];
 var currentlyPressedKeys = {};
 
+mat4.identity(rotationMatrix);
 
 function initGL(canvas) {
     try {
         gl = canvas.getContext("experimental-webgl");
         gl.viewportWidth = canvas.width;
         gl.viewportHeight = canvas.height;
-        
+
         for(i=0;i<vCubos.length;i++) {
             vCubos[i] = new GeraCubo();
         }
@@ -125,34 +125,34 @@ function degToRad(degrees) {
     
 function initBuffers() {    		
    //Front      
-   vCubos[0].init(gl,1,-1.0,1.0,1.0,0,0,0);			 			 
-   vCubos[1] .init(gl,2,0.0,1.0,1.0,0,0,0);			 			
-   vCubos[2].init(gl,3,1.0,1.0,1.0,0,0,0);
-   vCubos[3].init(gl,4,-1.0,0.0,1.0,0,0,0);
-   vCubos[4].init(gl,5,0.0,0.0,1.0,0,0,0);
-   vCubos[5].init(gl,6,1.0,0.0,1.0,0,0,0);
-   vCubos[6].init(gl,7,-1.0,-1.0,1.0,0,0,0);
-   vCubos[7].init(gl,8,0.0,-1.0,1.0,0,0,0);
-   vCubos[8].init(gl,9,1.0,-1.0,1.0,0,0,0);   			     		
+   vCubos[0].init(gl,1,-1.0,1.0,1.0);			 		
+   vCubos[1] .init(gl,2,0.0,1.0,1.0);			 		
+   vCubos[2].init(gl,3,1.0,1.0,1.0);
+   vCubos[3].init(gl,4,-1.0,0.0,1.0);
+   vCubos[4].init(gl,5,0.0,0.0,1.0);
+   vCubos[5].init(gl,6,1.0,0.0,1.0);
+   vCubos[6].init(gl,7,-1.0,-1.0,1.0);
+   vCubos[7].init(gl,8,0.0,-1.0,1.0);
+   vCubos[8].init(gl,9,1.0,-1.0,1.0);   			     		
    //Middle
-   vCubos[9].init(gl,10,-1.0,1.0,0.0,0,0,1);       				 
-   vCubos[10].init(gl,11,0.0,1.0,0.0,0,0,1);          
-   vCubos[11].init(gl,12,1.0,1.0,0.0,0,0,1);		
-   vCubos[12].init(gl,13,-1.0,0.0,0.0,0,0,1);       						 	
-   vCubos[13].init(gl,14,1.0,0.0,0.0,0,0,1);
-   vCubos[14].init(gl,15,-1.0,-1.0,0.0,0,0,1);	
-   vCubos[15].init(gl,16,0.0,-1.0,0.0,0,0,1);        				
-   vCubos[16].init(gl,17,1.0,-1.0,0.0,0,0,1);
+   vCubos[9].init(gl,10,-1.0,1.0,0.0);       				 
+   vCubos[10].init(gl,11,0.0,1.0,0.0);          
+   vCubos[11].init(gl,12,1.0,1.0,0.0);		
+   vCubos[12].init(gl,13,-1.0,0.0,0.0);       				 	
+   vCubos[13].init(gl,14,1.0,0.0,0.0);
+   vCubos[14].init(gl,15,-1.0,-1.0,0.0);	
+   vCubos[15].init(gl,16,0.0,-1.0,0.0);        				
+   vCubos[16].init(gl,17,1.0,-1.0,0.0);
    //Back      
-   vCubos[17].init(gl,18,-1.0,1.0,-1.0,0,0,2);
-   vCubos[18].init(gl,19,0.0,1.0,-1.0,0,0,2);
-   vCubos[19].init(gl,20,1.0,1.0,-1.0,0,0,2);
-   vCubos[20].init(gl,21,-1.0,0.0,-1.0,0,0,2);
-   vCubos[21].init(gl,22,0.0,0.0,-1.0,0,0,2);
-   vCubos[22].init(gl,23,1.0,0.0,-1.0,0,0,2);
-   vCubos[23].init(gl,24,-1.0,-1.0,-1.0,0,0,2);
-   vCubos[24].init(gl,25,0.0,-1.0,-1.0,0,0,2);
-   vCubos[25].init(gl,26,1.0,-1.0,-1.0,0,0,2);    		      
+   vCubos[17].init(gl,18,-1.0,1.0,-1.0);
+   vCubos[18].init(gl,19,0.0,1.0,-1.0);
+   vCubos[19].init(gl,20,1.0,1.0,-1.0);
+   vCubos[20].init(gl,21,-1.0,0.0,-1.0);
+   vCubos[21].init(gl,22,0.0,0.0,-1.0);
+   vCubos[22].init(gl,23,1.0,0.0,-1.0);
+   vCubos[23].init(gl,24,-1.0,-1.0,-1.0);
+   vCubos[24].init(gl,25,0.0,-1.0,-1.0);
+   vCubos[25].init(gl,26,1.0,-1.0,-1.0);    		      
 }
 
 function drawScene() {
