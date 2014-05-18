@@ -3,14 +3,7 @@ function GeraCubo() {
 	var id;
 	var x,y,z;
 	var centro;
-	var v1 = [];
-	var v2 = [];
-	var v3 = [];
-	var v4 = [];
-	var v5 = [];
-	var v6 = [];
-	var v7 = [];
-	var v8 = [];	
+	var vertices = [];	
 	var gl;
 	
 	var cubeVertexPositionBuffer;
@@ -23,62 +16,62 @@ function GeraCubo() {
 		this.x = px;
 		this.y = py;
 		this.z = pz;		
-		this.v1 = [0.0,0.0,0.0];
-		this.v2 = [0.0,0.0,0.0];    		
-		this.v3 = [0.0,0.0,0.0];
-		this.v4 = [0.0,0.0,0.0];
-		this.v5 = [0.0,0.0,0.0];
-		this.v6 = [0.0,0.0,0.0];
-		this.v7 = [0.0,0.0,0.0];
-		this.v8 = [0.0,0.0,0.0];
-		this.setaXYZ();
+		this.vertices = [[0.0,0.0,0.0],
+						 [0.0,0.0,0.0],   		
+						 [0.0,0.0,0.0],
+						 [0.0,0.0,0.0],
+						 [0.0,0.0,0.0],
+						 [0.0,0.0,0.0],
+						 [0.0,0.0,0.0],
+						 [0.0,0.0,0.0]];
+		this.setXYZ();
 		
 		this.cubeVertexPositionBuffer = this.gl.createBuffer();
 		this.cubeVertexTextureCoordBuffer = this.gl.createBuffer();
 		this.cubeVertexIndexBuffer = this.gl.createBuffer();
 	}
-	this.criaCubo = function() {		
+	this.criaCubo = function() {	
 	    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexPositionBuffer);           	
-            var vertices = [
-			this.v1[0],this.v1[1],this.v1[2], //Front
-        		this.v2[0],this.v2[1],this.v2[2],
-        		this.v3[0],this.v3[1],this.v3[2],
-        		this.v4[0],this.v4[1],this.v4[2], 
+            var facesVertices = [
+			this.vertices[0][0],this.vertices[0][1],this.vertices[0][2], //Front
+        	this.vertices[1][0],this.vertices[1][1],this.vertices[1][2],
+        	this.vertices[2][0],this.vertices[2][1],this.vertices[2][2],
+        	this.vertices[3][0],this.vertices[3][1],this.vertices[3][2], 
 			
-			this.v5[0],this.v5[1],this.v5[2], 
-			this.v6[0],this.v6[1],this.v6[2],
-			this.v7[0],this.v7[1],this.v7[2],
-			this.v8[0],this.v8[1],this.v8[2],
+			this.vertices[4][0],this.vertices[4][1],this.vertices[4][2], 
+			this.vertices[5][0],this.vertices[5][1],this.vertices[5][2],
+			this.vertices[6][0],this.vertices[6][1],this.vertices[6][2],
+			this.vertices[7][0],this.vertices[7][1],this.vertices[7][2],
 			
-			this.v6[0],this.v6[1],this.v6[2],
-			this.v4[0],this.v4[1],this.v4[2],
-			this.v3[0],this.v3[1],this.v3[2],
-			this.v7[0],this.v7[1],this.v7[2],
+			this.vertices[5][0],this.vertices[5][1],this.vertices[5][2],
+			this.vertices[3][0],this.vertices[3][1],this.vertices[3][2],
+			this.vertices[2][0],this.vertices[2][1],this.vertices[2][2],
+			this.vertices[6][0],this.vertices[6][1],this.vertices[6][2],
 			
-			this.v5[0],this.v5[1],this.v5[2],
-			this.v8[0],this.v8[1],this.v8[2],
-			this.v2[0],this.v2[1],this.v2[2],
-			this.v1[0],this.v1[1],this.v1[2],
+			this.vertices[4][0],this.vertices[4][1],this.vertices[4][2],
+			this.vertices[7][0],this.vertices[7][1],this.vertices[7][2],
+			this.vertices[1][0],this.vertices[1][1],this.vertices[1][2],
+			this.vertices[0][0],this.vertices[0][1],this.vertices[0][2],
 			
-			this.v8[0],this.v8[1],this.v8[2],
-			this.v7[0],this.v7[1],this.v7[2],
-			this.v3[0],this.v3[1],this.v3[2],
-			this.v2[0],this.v2[1],this.v2[2],
+			this.vertices[7][0],this.vertices[7][1],this.vertices[7][2],
+			this.vertices[6][0],this.vertices[6][1],this.vertices[6][2],
+			this.vertices[2][0],this.vertices[2][1],this.vertices[2][2],
+			this.vertices[1][0],this.vertices[1][1],this.vertices[1][2],
 			
-			this.v5[0],this.v5[1],this.v5[2],
-			this.v1[0],this.v1[1],this.v1[2],
-			this.v4[0],this.v4[1],this.v4[2],
-			this.v6[0],this.v6[1],this.v6[2]
+			this.vertices[4][0],this.vertices[4][1],this.vertices[4][2],
+			this.vertices[0][0],this.vertices[0][1],this.vertices[0][2],
+			this.vertices[3][0],this.vertices[3][1],this.vertices[3][2],
+			this.vertices[5][0],this.vertices[5][1],this.vertices[5][2]
     	];
 	    
     	this.centro = [
-  		  	this.v1[0]+this.v2[0]+this.v3[0]+this.v4[0]+this.v5[0]+this.v6[0]+this.v7[0]+this.v8[0],
-  		  	this.v1[1]+this.v2[1]+this.v3[1]+this.v4[1]+this.v5[1]+this.v6[1]+this.v7[1]+this.v8[1],
-  		  	this.v1[2]+this.v2[2]+this.v3[2]+this.v4[2]+this.v5[2]+this.v6[2]+this.v7[2]+this.v8[2]
+  		  	this.vertices[0][0]+this.vertices[1][0]+this.vertices[2][0]+this.vertices[3][0]+this.vertices[4][0]+this.vertices[5][0]+this.vertices[6][0]+this.vertices[7][0],
+  		  	this.vertices[0][1]+this.vertices[1][1]+this.vertices[2][1]+this.vertices[3][1]+this.vertices[4][1]+this.vertices[5][1]+this.vertices[6][1]+this.vertices[7][1],
+  		  	this.vertices[0][2]+this.vertices[1][2]+this.vertices[2][2]+this.vertices[3][2]+this.vertices[4][2]+this.vertices[5][2]+this.vertices[6][2]+this.vertices[7][2]
   		];
     	
 	    this.gl.bufferData(this.gl.ARRAY_BUFFER, 
-						   new Float32Array(vertices), 
+						   new Float32Array(facesVertices), 
 						   this.gl.STATIC_DRAW);
 	    this.cubeVertexPositionBuffer.itemSize = 3;
 	    this.cubeVertexPositionBuffer.numItems = 24;
@@ -295,73 +288,61 @@ function GeraCubo() {
 	}
 
 	//Recebe o cubo e rotaciona em Z no angulo "angulo" todos os vértices	
-	this.rotateCubeZ = function(angulo) {	    	    
-		this.v1 = this.rotateZ(this.v1,angulo);		
-		this.v2 = this.rotateZ(this.v2,angulo);		
-		this.v3 = this.rotateZ(this.v3,angulo);		
-		this.v4 = this.rotateZ(this.v4,angulo);		
-		this.v5 = this.rotateZ(this.v5,angulo);		
-		this.v6 = this.rotateZ(this.v6,angulo);		
-		this.v7 = this.rotateZ(this.v7,angulo);		
-		this.v8 = this.rotateZ(this.v8,angulo);
+	this.rotateCubeZ = function(angulo) {
+		var thisCube = this;
+		thisCube.vertices.map(function(currentValue,index){
+			thisCube.vertices[index] = thisCube.rotateZ(currentValue,angulo)
+		});
 	}
 
 	//Recebe o cubo e rotaciona em X no angulo "angulo" todos os vértices	
-	this.rotateCubeX = function(angulo) {	    
-		this.v1 = this.rotateX(this.v1,angulo);		
-		this.v2 = this.rotateX(this.v2,angulo);		
-		this.v3 = this.rotateX(this.v3,angulo);		
-		this.v4 = this.rotateX(this.v4,angulo);		
-		this.v5 = this.rotateX(this.v5,angulo);		
-		this.v6 = this.rotateX(this.v6,angulo);		
-		this.v7 = this.rotateX(this.v7,angulo);		
-		this.v8 = this.rotateX(this.v8,angulo);									
+	this.rotateCubeX = function(angulo) {	
+		var thisCube = this;
+		thisCube.vertices.map(function(currentValue,index){
+			thisCube.vertices[index] = thisCube.rotateX(currentValue,angulo)
+		});							
 	}	
 
 	//Recebe o cubo e rotaciona em Y no angulo "angulo" todos os vértices
 	this.rotateCubeY = function(angulo) {
-		this.v1 = this.rotateY(this.v1,angulo);
-		this.v2 = this.rotateY(this.v2,angulo);		
-		this.v3 = this.rotateY(this.v3,angulo);		
-		this.v4 = this.rotateY(this.v4,angulo);		
-		this.v5 = this.rotateY(this.v5,angulo);		
-		this.v6 = this.rotateY(this.v6,angulo);		
-		this.v7 = this.rotateY(this.v7,angulo);		
-		this.v8 = this.rotateY(this.v8,angulo);									
+		var thisCube = this;
+		thisCube.vertices.map(function(currentValue,index){
+			thisCube.vertices[index] = thisCube.rotateY(currentValue,angulo)
+		});									
 	}		
 	
-	this.setaXYZ = function() {
-    	this.v1[0] = -0.5 + this.x;
-		this.v1[1] = -0.5 + this.y;
-		this.v1[2] =  0.5 + this.z;		
+	this.setXYZ = function() {
+    	this.vertices[0][0] = -0.5 + this.x;
+		this.vertices[0][1] = -0.5 + this.y;
+		this.vertices[0][2] =  0.5 + this.z;		
     	
-    	this.v2[0] =  0.5 + this.x;    		
-    	this.v2[1] = -0.5 + this.y;
-    	this.v2[2] =  0.5 + this.z;
+    	this.vertices[1][0] =  0.5 + this.x;    		
+    	this.vertices[1][1] = -0.5 + this.y;
+    	this.vertices[1][2] =  0.5 + this.z;
     	
-    	this.v3[0] =  0.5 + this.x;
-    	this.v3[1] =  0.5 + this.y;
-    	this.v3[2] =  0.5 + this.z;
+    	this.vertices[2][0] =  0.5 + this.x;
+    	this.vertices[2][1] =  0.5 + this.y;
+    	this.vertices[2][2] =  0.5 + this.z;
     	
-    	this.v4[0] = -0.5 + this.x;
-    	this.v4[1] =  0.5 + this.y;
-    	this.v4[2] =  0.5 + this.z;
+    	this.vertices[3][0] = -0.5 + this.x;
+    	this.vertices[3][1] =  0.5 + this.y;
+    	this.vertices[3][2] =  0.5 + this.z;
     	
-    	this.v5[0] = -0.5 + this.x;
-    	this.v5[1] = -0.5 + this.y;
-    	this.v5[2] = -0.5 + this.z;
+    	this.vertices[4][0] = -0.5 + this.x;
+    	this.vertices[4][1] = -0.5 + this.y;
+    	this.vertices[4][2] = -0.5 + this.z;
+    			
+    	this.vertices[5][0] = -0.5 + this.x;
+    	this.vertices[5][1] =  0.5 + this.y;
+    	this.vertices[5][2] = -0.5 + this.z;
     		
-    	this.v6[0] = -0.5 + this.x;
-    	this.v6[1] =  0.5 + this.y;
-    	this.v6[2] = -0.5 + this.z;
-    		
-    	this.v7[0] =  0.5 + this.x;
-    	this.v7[1] =  0.5 + this.y;
-    	this.v7[2] = -0.5 + this.z;								
+    	this.vertices[6][0] =  0.5 + this.x;
+    	this.vertices[6][1] =  0.5 + this.y;
+    	this.vertices[6][2] = -0.5 + this.z;								
     	
-    	this.v8[0] =  0.5 + this.x;
-    	this.v8[1] =  -0.5 + this.y;
-    	this.v8[2] = -0.5 + this.z;
+    	this.vertices[7][0] =  0.5 + this.x;
+    	this.vertices[7][1] = -0.5 + this.y;
+    	this.vertices[7][2] = -0.5 + this.z;
     } 
 }
 
