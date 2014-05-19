@@ -506,6 +506,21 @@ var eventOnZaxis = function (reference,angulo) {
 	return evento;
 }
 
+/**
+ * This function will randomizing the cube
+ * @author mccarmo
+ */
+function cubeRandom() {
+	/*for(i=0;i<Math.floor((Math.random() * 10) + 1);i++) {
+		for(z=1;z<10;z++) {
+			var reference = Math.floor((Math.random() * 100) + 1);
+			var sign = Math.floor((Math.random() * 100) + 1);
+			var axis = Math.floor((Math.random() * 100) + 1);
+			movesArray.push(new eventOnXaxis(-8.0,10.0));
+		}
+	}*/
+}
+
 function tick() {
     requestAnimFrame(tick);
     handleKeys();
@@ -520,6 +535,10 @@ function initPageEvents() {
 	//New Game
     document.getElementById("btNewGame").onclick = function() {
     	gameStarted=true;
+    	
+    	//Random the Cube
+    	cubeRandom();
+    	
     	this.value="Reset";
     	this.onclick = function() {
     		alert("This will be the reset button for now on!");
@@ -536,7 +555,7 @@ function initPageEvents() {
     document.getElementById("btLoadGame").onclick = function() {
     	if(typeof(vCubosSave)!='undefined') {
     		for(i=0;i<vCubos.length;i++){
-    			vCubos[i].vertices = vCubosSave[i].vertices;
+    			vCubos[i].vertices = vCubosSave[i].vertices.slice();
         	}
     	}
     };
