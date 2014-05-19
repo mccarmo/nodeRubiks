@@ -4,8 +4,15 @@ This is a Work In Progress.
 One day i hope this will be a simple Node.js Rubik's Cube cooperative game.
 
 <h4>Commands:</h4>
+
 Mouse BT1 + MouseMove -> Rotates the Cube.
+Keys from "Q" to "O" and from "A" to "L" -> Game Moves.
 
-Arrow Keys -> Rotates the Cube on a constant movement.
+"New Game" -> Starts a new game
+"Reset" -> Return to the orinated randomized cube (WIP).
+"Save State" -> Save the current state of the cube (WIP).
+"Load State" -> Load the current saved state of the cube (WIP).
 
-'R' key -> Reset the rotation of the Cube (At the momment it only works for the movement generated from "Arrow Keys").
+
+
+
