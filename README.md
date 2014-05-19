@@ -5,7 +5,7 @@ One day i hope this will be a simple Node.js Rubik's Cube cooperative game.
 
 <h4>Commands:</h4>
 
-Mouse BT1 + MouseMove -> Rotates the Cube.
+Mouse BT1 + MouseMove or Arrow Keys -> Rotates the Cube.
 Keys from "Q" to "O" and from "A" to "L" -> Game Moves.
 
 "New Game" -> Starts a new game
