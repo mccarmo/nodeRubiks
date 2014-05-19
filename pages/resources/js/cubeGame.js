@@ -393,7 +393,7 @@ function handleLoadedTexture(texture) {
  */
 function initTextures() {
 	var realTextures = ["/resources/img/blue.png","/resources/img/yellow.png","/resources/img/white.png",
-	                    "/resources/img/magent.png","/resources/img/green.png","/resources/img/red.png"];
+	                    "/resources/img/orange.png","/resources/img/green.png","/resources/img/red.png"];
 			
     textureBlue = gl.createTexture();
     textureBlue.image = new Image();
@@ -558,10 +558,10 @@ function webGLStart() {
     initGL(canvas);
     initPageEvents();
     initShaders();	
-    initTextures();
-    initCubes();
+	initTextures();
+	initCubes();
 	
-    gl.clearColor(1.0, 1.0, 1.0, 1.0);
+	gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
 	
     canvas.onmousedown = handleMouseDown;
@@ -571,4 +571,3 @@ function webGLStart() {
     document.onkeyup = handleKeyUp;	
     
 }		
-
