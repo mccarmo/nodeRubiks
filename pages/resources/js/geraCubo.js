@@ -1,4 +1,4 @@
-function GeraCubo() {
+function Cube() {
 	
 	var id;
 	var x,y,z;
@@ -140,30 +140,17 @@ function GeraCubo() {
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexTextureCoordBuffer);
 		this.gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.cubeVertexTextureCoordBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
 		
-		if(this.id >= 10 && this.id <= 26) {
-			this.gl.activeTexture(this.gl.TEXTURE6);
-			this.gl.bindTexture(this.gl.TEXTURE_2D, textureNoColor);
-			this.gl.uniform1i(shaderProgram.samplerUniform, 6);
-			this.gl.drawElements(this.gl.TRIANGLE_STRIP, 6, this.gl.UNSIGNED_SHORT, 0);
-		} else {
-			this.gl.activeTexture(this.gl.TEXTURE0);
-			this.gl.bindTexture(this.gl.TEXTURE_2D, textureBlue);
-			this.gl.uniform1i(shaderProgram.samplerUniform, 0);
-			this.gl.drawElements(this.gl.TRIANGLE_STRIP, 6, this.gl.UNSIGNED_SHORT, 0);			
-		}
 		
-		if(this.id >= 1 && this.id <= 17) {
-			this.gl.activeTexture(this.gl.TEXTURE6);
-			this.gl.bindTexture(this.gl.TEXTURE_2D, textureNoColor);
-			this.gl.uniform1i(shaderProgram.samplerUniform, 6);
-			this.gl.drawElements(this.gl.TRIANGLE_STRIP, 6, this.gl.UNSIGNED_SHORT, 12);
-		} else {
-			this.gl.activeTexture(this.gl.TEXTURE1);
-			this.gl.bindTexture(this.gl.TEXTURE_2D, textureYellow);
-			this.gl.uniform1i(shaderProgram.samplerUniform, 1);
-			this.gl.drawElements(this.gl.TRIANGLE_STRIP, 6, this.gl.UNSIGNED_SHORT, 12);			
-		}
-				
+		this.gl.activeTexture(this.gl.TEXTURE0);
+		this.gl.bindTexture(this.gl.TEXTURE_2D, textureBlue);
+		this.gl.uniform1i(shaderProgram.samplerUniform, 0);
+		this.gl.drawElements(this.gl.TRIANGLE_STRIP, 6, this.gl.UNSIGNED_SHORT, 0);			
+	
+		this.gl.activeTexture(this.gl.TEXTURE1);
+		this.gl.bindTexture(this.gl.TEXTURE_2D, textureYellow);
+		this.gl.uniform1i(shaderProgram.samplerUniform, 1);
+		this.gl.drawElements(this.gl.TRIANGLE_STRIP, 6, this.gl.UNSIGNED_SHORT, 12);			
+						
 		this.gl.activeTexture(this.gl.TEXTURE2);
 		this.gl.bindTexture(this.gl.TEXTURE_2D, textureWhite);
 		this.gl.uniform1i(shaderProgram.samplerUniform, 2);
@@ -188,10 +175,93 @@ function GeraCubo() {
 	    mvPopMatrix();	 		
 	}
 
+	/**
+	 * This function will me responsable to calculate the new vertice position after 
+	 * the aplication of the rotation matrix on X axis.
+	 * @author mccarmo
+	 * @param v - vertice, a - angle
+	 */
+	this.rotateX = function(v,a)
+	{
+		
+		var xref = 0.0; //No need of a reference point for the rotation so we'll be using (0,0,0)
+		var yref = 0.0; 
+		var zref = 0.0;		
+		var x = v[0] - xref;
+		var y = v[1] - yref;
+		var z = v[2] - zref;
+		
+		/*|x|   |1    0     0 |
+		 *|y| * |0   cos@ sen@|
+		 *|z|   |0  -sen@ cos@|		 
+		 */
+			
+		//Rotation Matrix X					
+		var matriz2 = [
+			 [1.0, 0.0, 0.0],
+			 [0.0, Math.cos(degToRad(a)), Math.sin(degToRad(a))],
+			 [0.0, -Math.sin(degToRad(a)), Math.cos(degToRad(a))]
+		];
+
+		var nx = (matriz2[0][0]*x) + (matriz2[0][1]*y) + (matriz2[0][2]*z) + xref;
+		var ny = (matriz2[1][0]*x) + (matriz2[1][1]*y) + (matriz2[1][2]*z) + yref;
+		var nz = (matriz2[2][0]*x) + (matriz2[2][1]*y) + (matriz2[2][2]*z) + zref;
+		
+		v[0] = nx;		
+		v[1] = ny;
+		v[2] = nz;	
+		
+		return v;
+	}
+
+	/**
+	 * This function will me responsable to calculate the new vertice position after 
+	 * the aplication of the rotation matrix on Y axis.
+	 * @author mccarmo
+	 * @param v - vertice, a - angle
+	 */
+	this.rotateY = function(v,a)
+	{		
+		var xref = 0.0; //No need of a reference point for the rotation so we'll be using (0,0,0)
+		var yref = 0.0; 
+		var zref = 0.0;		
+		var x = v[0] - xref;
+		var y = v[1] - yref;
+		var z = v[2] - zref;
+		
+		/* |x|   | cos@   0   sin@|
+		 * |y| * |  0     1    0  |
+		 * |z|   |-sin@   0   cos@|		 
+		 */
+							
+		//Rotation Matrix Y		
+		var matriz3 = [
+			[Math.cos(degToRad(a)), 0.0, Math.sin(degToRad(a))],
+			[0.0, 1.0, 0.0],
+			[-Math.sin(degToRad(a)), 0.0, Math.cos(degToRad(a))]
+		];
+			
+		var nx = (matriz3[0][0]*x) + (matriz3[0][1]*y) + (matriz3[0][2]*z) + xref;
+		var ny = (matriz3[1][0]*x) + (matriz3[1][1]*y) + (matriz3[1][2]*z) + yref;
+		var nz = (matriz3[2][0]*x) + (matriz3[2][1]*y) + (matriz3[2][2]*z) + zref;
+		
+		v[0] = nx;		
+		v[1] = ny;
+		v[2] = nz;	
+		
+		return v;
+	}
+
+	/**
+	 * This function will me responsable to calculate the new vertice position after 
+	 * the aplication of the rotation matrix on Z axis.
+	 * @author mccarmo
+	 * @param v - vertice, a - angle
+	 */
 	this.rotateZ = function(v,a)
 	{				
-		var xref = 0.0; //Não há necessidade de usar o ponto de referência
-		var yref = 0.0; //de rotação, por isso vamos usar (0,0,0)
+		var xref = 0.0; //No need of a reference point for the rotation so we'll be using (0,0,0)
+		var yref = 0.0; 
 		var zref = 0.0;	
 			
 		var x = v[0] - xref;
@@ -203,7 +273,7 @@ function GeraCubo() {
 		 *|z|   | 0    0    1|		 
 		 */
 		
-		//Rotação eixo Z			
+		//Rotation Matrix Z			
 		var matriz1 = [
 				[Math.cos(degToRad(a)),-Math.sin(degToRad(a)), 0.0],
 				[Math.sin(degToRad(a)), Math.cos(degToRad(a)), 0.0],
@@ -222,80 +292,11 @@ function GeraCubo() {
 		return v;
 	}	
 
-	this.rotateX = function(v,a)
-	{
-		
-		var xref = 0.0; //Não há necessidade de usar o ponto de referência
-		var yref = 0.0; //de rotação, por isso vamos usar (0,0,0)
-		var zref = 0.0;		
-		var x = v[0] - xref;
-		var y = v[1] - yref;
-		var z = v[2] - zref;
-		
-		/*|x|   |1    0     0 |
-		 *|y| * |0   cos@ sen@|
-		 *|z|   |0  -sen@ cos@|		 
-		 */
-			
-		//Rotation on X axis					
-		var matriz2 = [
-			 [1.0, 0.0, 0.0],
-			 [0.0, Math.cos(degToRad(a)), Math.sin(degToRad(a))],
-			 [0.0, -Math.sin(degToRad(a)), Math.cos(degToRad(a))]
-		];
-
-		var nx = (matriz2[0][0]*x) + (matriz2[0][1]*y) + (matriz2[0][2]*z) + xref;
-		var ny = (matriz2[1][0]*x) + (matriz2[1][1]*y) + (matriz2[1][2]*z) + yref;
-		var nz = (matriz2[2][0]*x) + (matriz2[2][1]*y) + (matriz2[2][2]*z) + zref;
-		
-		v[0] = nx;		
-		v[1] = ny;
-		v[2] = nz;	
-		
-		return v;
-	}
-
-	this.rotateY = function(v,a)
-	{		
-		var xref = 0.0; //Não há necessidade de usar o ponto de referência
-		var yref = 0.0; //de rotação, por isso vamos usar (0,0,0)
-		var zref = 0.0;		
-		var x = v[0] - xref;
-		var y = v[1] - yref;
-		var z = v[2] - zref;
-		
-		/* |x|   | cos@   0   sin@|
-		 * |y| * |  0     1    0  |
-		 * |z|   |-sin@   0   cos@|		 
-		 */
-							
-		//Rotação eixo Y		
-		var matriz3 = [
-			[Math.cos(degToRad(a)), 0.0, Math.sin(degToRad(a))],
-			[0.0, 1.0, 0.0],
-			[-Math.sin(degToRad(a)), 0.0, Math.cos(degToRad(a))]
-		];
-			
-		var nx = (matriz3[0][0]*x) + (matriz3[0][1]*y) + (matriz3[0][2]*z) + xref;
-		var ny = (matriz3[1][0]*x) + (matriz3[1][1]*y) + (matriz3[1][2]*z) + yref;
-		var nz = (matriz3[2][0]*x) + (matriz3[2][1]*y) + (matriz3[2][2]*z) + zref;
-		
-		v[0] = nx;		
-		v[1] = ny;
-		v[2] = nz;	
-		
-		return v;
-	}
-
-	//Recebe o cubo e rotaciona em Z no angulo "angulo" todos os vértices	
-	this.rotateCubeZ = function(angulo) {
-		var thisCube = this;
-		thisCube.vertices.map(function(currentValue,index){
-			thisCube.vertices[index] = thisCube.rotateZ(currentValue,angulo)
-		});
-	}
-
-	//Recebe o cubo e rotaciona em X no angulo "angulo" todos os vértices	
+	/**
+	 * Rotates the cube on X axis on the passed angle. 
+	 * @author mccarmo
+	 * @param angle
+	 */	
 	this.rotateCubeX = function(angulo) {	
 		var thisCube = this;
 		thisCube.vertices.map(function(currentValue,index){
@@ -303,14 +304,35 @@ function GeraCubo() {
 		});							
 	}	
 
-	//Recebe o cubo e rotaciona em Y no angulo "angulo" todos os vértices
-	this.rotateCubeY = function(angulo) {
+	/**
+	 * Rotates the cube on Y axis on the passed angle. 
+	 * @author mccarmo
+	 * @param angle
+	 */
+	this.rotateCubeY = function(angle) {
 		var thisCube = this;
 		thisCube.vertices.map(function(currentValue,index){
-			thisCube.vertices[index] = thisCube.rotateY(currentValue,angulo)
+			thisCube.vertices[index] = thisCube.rotateY(currentValue,angle)
 		});									
 	}		
 	
+	/**
+	 * Rotates the cube on Z axis on the passed angle. 
+	 * @author mccarmo
+	 * @param angle
+	 */	
+	this.rotateCubeZ = function(angulo) {
+		var thisCube = this;
+		thisCube.vertices.map(function(currentValue,index){
+			thisCube.vertices[index] = thisCube.rotateZ(currentValue,angulo)
+		});
+	}
+
+	/**
+	 * Initializing the cube vertices based on the given 'x,y,z' position.
+	 * The Cube will have a size of "0.5" for each face.   
+	 * @author mccarmo
+	 */
 	this.setXYZ = function() {
     	this.vertices[0][0] = -0.5 + this.x;
 		this.vertices[0][1] = -0.5 + this.y;

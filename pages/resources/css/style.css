@@ -4,6 +4,36 @@
 }
 
 .canvas-class {
-	border: none; 
 	cursor: pointer;
+}
+
+.masterSection {
+	width: 50%;
+	margin: 0px auto 0px auto
+}
+
+.gameSection {
+	float: left;	
+}
+
+.gameControlsSection {
+	float: left;	
+}
+
+.initGame {
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	color: #fff;
+	font-weight: bold;
+	text-transform: uppercase;
+	width: 90px;
+	height: 38px;
+	background-color: #737373;
+	margin: 10px;
+	float: center;
+}
+
+.initGame:hover {
+	color: #ffa800;
 }

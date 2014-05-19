@@ -17,8 +17,7 @@ var theShaderVs = " attribute vec3 aVertexPosition; " +
 var lastTime = 0;
 var vCubos = new Array(26);//store the references for the 26 cubes
 var shaderProgram;
-var textureBlue,textureRed,textureMagent,
-	textureGreen,textureYellow,textureWhite,textureNoColor;
+var textureMap = new Array(6);
 var mvMatrix = mat4.create();
 var pMatrix = mat4.create();
 var mvMatrixStack = [];
@@ -44,13 +43,13 @@ function initGL(canvas) {
         gl.viewportHeight = canvas.height;
 
         for(i=0;i<vCubos.length;i++) {
-            vCubos[i] = new GeraCubo();
+            vCubos[i] = new Cube();
         }
         
     } catch (e) {
     }
     if (!gl) {
-        alert("Could not initialise WebGL.");
+        alert("Oh man!...Could not initialise WebGL. This is so sad! :(");
     }
 }
 
@@ -122,8 +121,12 @@ function setMatrixUniforms() {
 function degToRad(degrees) {
     return degrees * Math.PI / 180;
 }
-    
-function initBuffers() {    		
+
+/**
+ * Initializing the Cubes by passing a reference to the "gl", a cube "id" and the x,y,z of the cube
+ * @author mccarmo
+ */
+function initCubes() {    		
    //Front      
    vCubos[0].init(gl,1,-1.0,1.0,1.0);			 		
    vCubos[1] .init(gl,2,0.0,1.0,1.0);			 		
@@ -162,7 +165,7 @@ function drawScene() {
     mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
 
     mat4.identity(mvMatrix);
-    mat4.translate(mvMatrix, [0.0, 0.0, -10.0]);
+    mat4.translate(mvMatrix, [0.0, 0.0, -7.0]);
    
     //xRot+=0.5;
     //yRot+=0.5;        
@@ -212,10 +215,14 @@ if (currentlyPressedKeys[37]) {
     }
 }
 
+/**
+ * Handle the Key Down event, in case of the player wants to control the cube with the keyboard
+ * @author mccarmo
+ */
 function handleKeyDown(event) {
   currentlyPressedKeys[event.keyCode] = true;
   var currKey =  String.fromCharCode(event.keyCode);	
-  if (currKey  == "R") {
+  if (currKey  == "C") {
     xRot = 0;
     yRot = 0;
     xSpeed = 0;
@@ -223,92 +230,92 @@ function handleKeyDown(event) {
   }
   if (currKey == "Q") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnZaxis("Lista1 ->",8.0,10.0));
+		  movesArray.push(new eventOnZaxis(8.0,10.0));
 	  }
   } 
   if (currKey == "W") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnZaxis("Lista2 ->",0.0,10.0));
+		  movesArray.push(new eventOnZaxis(0.0,10.0));
 	  }
   } 	
   if (currKey == "E") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnZaxis("Lista3 ->",-8.0,10.0));
+		  movesArray.push(new eventOnZaxis(-8.0,10.0));
 	  }
   }   
   if (currKey == "A") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnZaxis("Lista1 <-",8.0,-10.0));
+		  movesArray.push(new eventOnZaxis(8.0,-10.0));
 	  }
   } 
   if (currKey == "S") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnZaxis("Lista2 <-",0.0,-10.0));
+		  movesArray.push(new eventOnZaxis(0.0,-10.0));
 	  }
   } 
   if (currKey == "D") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnZaxis("Lista3 <-",-8.0,-10.0));
+		  movesArray.push(new eventOnZaxis(-8.0,-10.0));
 	  }
   } 
   if (currKey == "R") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnXaxis("Lista4 ->",8.0,10.0));
+		  movesArray.push(new eventOnXaxis(8.0,10.0));
 	  }
   } 
   if (currKey == "T") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnXaxis("Lista5 ->",0.0,10.0));
+		  movesArray.push(new eventOnXaxis(0.0,10.0));
 	  }
   } 
   if (currKey == "Y") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnXaxis("Lista6 ->",-8.0,10.0));
+		  movesArray.push(new eventOnXaxis(-8.0,10.0));
 	  }
   }   
   if (currKey == "F") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnXaxis("Lista4 <-",8.0,-10.0));
+		  movesArray.push(new eventOnXaxis(8.0,-10.0));
 	  }
   } 
   if (currKey == "G") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnXaxis("Lista5 <-",0.0,-10.0));
+		  movesArray.push(new eventOnXaxis(0.0,-10.0));
 	  }
   } 
   if (currKey == "H") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnXaxis("Lista6 <-",-8.0,-10.0));
+		  movesArray.push(new eventOnXaxis(-8.0,-10.0));
 	  }
   } 
   if (currKey == "U") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnYaxis("Lista7 ->",8.0,10.0));
+		  movesArray.push(new eventOnYaxis(8.0,10.0));
 	  }
   } 
   if (currKey == "I") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnYaxis("Lista8 ->",0.0,10.0));
+		  movesArray.push(new eventOnYaxis(0.0,10.0));
 	  }
   } 
   if (currKey == "O") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnYaxis("Lista9 ->",-8.0,10.0));
+		  movesArray.push(new eventOnYaxis(-8.0,10.0));
 	  }
   }   
   if (currKey == "J") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnYaxis("Lista7 <-",8.0,-10.0));
+		  movesArray.push(new eventOnYaxis(8.0,-10.0));
 	  }
   }   
   if (currKey == "K") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnYaxis("Lista8 <-",0.0,-10.0));
+		  movesArray.push(new eventOnYaxis(0.0,-10.0));
 	  }
   } 
   if (currKey == "L") {
 	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnYaxis("Lista9 <-",-8.0,-10.0));
+		  movesArray.push(new eventOnYaxis(-8.0,-10.0));
 	  }	  
   } 
 }
@@ -328,6 +335,11 @@ function handleMouseUp(event) {
     mouseDown = false;
 }
 
+/**
+ * Controls the rotation of the Cube with the mouse.
+ * @author mccarmo
+ * @param event
+ */
 function handleMouseMove(event) {
     if (!mouseDown) {
         return;
@@ -352,6 +364,11 @@ function handleMouseMove(event) {
     lastMouseY = newY;
 }
 
+/**
+ * Handle the loaded texture
+ * @author mccarmo
+ * @param texture
+ */
 function handleLoadedTexture(texture) {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
@@ -360,74 +377,88 @@ function handleLoadedTexture(texture) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); //My textures are power-of-2
     gl.bindTexture(gl.TEXTURE_2D, null);
 	//Workaround...yes...it is...and yes i comment that here, sorry.
-	if(loadedTextures>=numTextures) {
+	if(loadedTextures==numTextures) {
 		tick();//Loaded the last texture, so i call here the "tick" for avoid texture warnings.
 	}
 }
 
+/**
+ * Initializing the Cube textures
+ * @author mccarmo
+ */
 function initTextures() {
+	var realTextures = ["/resources/img/blue.png","/resources/img/yellow.png","/resources/img/white.png",
+	                    "/resources/img/magent.png","/resources/img/green.png","/resources/img/red.png"];
+	
+	/*for(i=0;i<textureMap.length;i++) {
+		var texture = gl.createTexture();
+		texture.image = new Image();
+		texture.image.onload = function () {
+	    	loadedTextures++;
+	        handleLoadedTexture(texture);
+	    }
+		texture.image.src = realTextures[i];
+		textureMap[i] = texture;
+	}*/
+	
     textureBlue = gl.createTexture();
     textureBlue.image = new Image();
     textureBlue.image.onload = function () {
+    	loadedTextures++;
         handleLoadedTexture(textureBlue);
-		loadedTextures++;
     }
-    textureBlue.image.src = "/resources/img/blue.png";
+    textureBlue.image.src = realTextures[0];
 	
 	textureYellow = gl.createTexture();
     textureYellow.image = new Image();
     textureYellow.image.onload = function () {
+    	loadedTextures++;
         handleLoadedTexture(textureYellow);
-		loadedTextures++;
     }
-    textureYellow.image.src = "/resources/img/yellow.png";
+    textureYellow.image.src = realTextures[1];
 	
 	textureWhite = gl.createTexture();
     textureWhite.image = new Image();
     textureWhite.image.onload = function () {
-        handleLoadedTexture(textureWhite);
-		loadedTextures++;
+    	loadedTextures++;
+        handleLoadedTexture(textureWhite);		
     }
-    textureWhite.image.src = "/resources/img/white.png";
+    textureWhite.image.src = realTextures[2];
 	
 	textureMagent = gl.createTexture();
     textureMagent.image = new Image();
     textureMagent.image.onload = function () {
+    	loadedTextures++;
         handleLoadedTexture(textureMagent);
-		loadedTextures++;
     }
-    textureMagent.image.src = "/resources/img/magent.png";
+    textureMagent.image.src = realTextures[3];
 	
 	textureGreen = gl.createTexture();
     textureGreen.image = new Image();
     textureGreen.image.onload = function () {
-        handleLoadedTexture(textureGreen);
-		loadedTextures++;
+    	loadedTextures++;
+        handleLoadedTexture(textureGreen);		
     }
-    textureGreen.image.src = "/resources/img/green.png";
+    textureGreen.image.src = realTextures[4];
 	
     textureRed = gl.createTexture();
     textureRed.image = new Image();
     textureRed.image.onload = function () {
+    	loadedTextures++;
         handleLoadedTexture(textureRed);
-		loadedTextures++;
     }
-    textureRed.image.src = "/resources/img/red.png";
-
-    textureNoColor = gl.createTexture();
-    textureNoColor.image = new Image();
-    textureNoColor.image.onload = function () {
-        handleLoadedTexture(textureNoColor);
-		loadedTextures++;	    
-    }
-    textureNoColor.image.src = "/resources/img/nocolor.png";	
+    textureRed.image.src = realTextures[5];	
 }
 
-var eventOnXaxis = function (lista,comparacao,angulo) {
+/**
+ * This function schedules an action of rotation
+ * of the cube about the X axis.
+ * @author mccarmo
+ */
+var eventOnXaxis = function (reference,angulo) {
 	function evento() {
-		//console.log(lista);
 		vCubos.map(function(c){
-			if(Math.round(c.centro[0])==comparacao){
+			if(Math.round(c.centro[0])==reference){
 				c.rotateCubeX(angulo);
 			}
 		});
@@ -435,11 +466,15 @@ var eventOnXaxis = function (lista,comparacao,angulo) {
 	return evento;
 }	
 
-var eventOnYaxis = function(lista,comparacao,angulo) {
-	function evento() {
-		//console.log(lista);              			          			    	            		            
+/**
+ * This function schedules an action of rotation
+ * of the cube about the Y axis.
+ * @author mccarmo
+ */
+var eventOnYaxis = function(reference,angulo) {
+	function evento() {            			          			    	            		            
 		vCubos.map(function(c){
-			if(Math.round(c.centro[1])==comparacao){
+			if(Math.round(c.centro[1])==reference){
 				c.rotateCubeY(angulo);
 			}
 		});			
@@ -447,11 +482,15 @@ var eventOnYaxis = function(lista,comparacao,angulo) {
 	return evento;
 }	
 
-var eventOnZaxis = function (lista,comparacao,angulo) {
-	function evento() {
-		//console.log(lista);              			          			    	            		            	
+/**
+ * This function schedules an action of rotation
+ * of the cube about the Z axis.
+ * @author mccarmo
+ */
+var eventOnZaxis = function (reference,angulo) {
+	function evento() {             			          			    	            		            	
 		vCubos.map(function(c){
-			if(Math.round(c.centro[2])==comparacao){
+			if(Math.round(c.centro[2])==reference){
 				c.rotateCubeZ(angulo);
 			}
 		});
@@ -466,13 +505,17 @@ function tick() {
     animate();	
 }
 
+/**
+ * Inializing everything needed then starts the Rubik's Cube Game!
+ * @author mccarmo
+ */
 function webGLStart() {
     var canvas = document.getElementById("rubiks");
   
     initGL(canvas);
     initShaders();	
-    initBuffers();
 	initTextures();
+	initCubes();
 	
 	gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);

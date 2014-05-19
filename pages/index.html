@@ -8,7 +8,14 @@
 		<script type="text/javascript" src="/resources/js/geraCubo.js"></script>
 		<script type="text/javascript" src="/resources/js/cubeGame.js"></script>
 	</head>
-	<body onload="webGLStart();" class="body-class">
-	    <canvas id="rubiks" class="canvas-class" width="800" height="600"></canvas>
+	<body onload="webGLStart()" class="body-class">
+		<section class="masterSection">
+			<section class="gameSection">
+	    		<canvas id="rubiks" class="canvas-class" width="400" height="400"></canvas>
+	    	</section>
+	    	<section class="gameControlsSection">
+	    		<input class="initGame" type="button" value="New Game"/>
+	    	</section>
+	    </section>
 	</body>
 </html>
