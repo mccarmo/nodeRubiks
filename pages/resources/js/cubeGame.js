@@ -15,10 +15,9 @@ var theShaderVs = " attribute vec3 aVertexPosition; " +
 				  "    vTextureCoord = aTextureCoord; " +
 				  " }";
 var lastTime = 0;
-var vCubos = new Array(26);//store the references for the 26 cubes
-var vCubosSave = new Array(26);
+var cubeArray = new Array(26);//store the references for the 26 cubes
+var cubeArraySave = [];
 var shaderProgram;
-var textureMap = new Array(6);
 var mvMatrix = mat4.create();
 var pMatrix = mat4.create();
 var mvMatrixStack = [];
@@ -44,8 +43,8 @@ function initGL(canvas) {
         gl.viewportWidth = canvas.width;
         gl.viewportHeight = canvas.height;
 
-        for(i=0;i<vCubos.length;i++) {
-            vCubos[i] = new Cube();
+        for(i=0;i<cubeArray.length;i++) {
+            cubeArray[i] = new Cube();
         }
         
     } catch (e) {
@@ -130,34 +129,34 @@ function degToRad(degrees) {
  */
 function initCubes() {    		
    //Front      
-   vCubos[0].init(gl,1,-1.0,1.0,1.0);			 		
-   vCubos[1] .init(gl,2,0.0,1.0,1.0);			 		
-   vCubos[2].init(gl,3,1.0,1.0,1.0);
-   vCubos[3].init(gl,4,-1.0,0.0,1.0);
-   vCubos[4].init(gl,5,0.0,0.0,1.0);
-   vCubos[5].init(gl,6,1.0,0.0,1.0);
-   vCubos[6].init(gl,7,-1.0,-1.0,1.0);
-   vCubos[7].init(gl,8,0.0,-1.0,1.0);
-   vCubos[8].init(gl,9,1.0,-1.0,1.0);   			     		
+   cubeArray[0].init(gl,1,-1.0,1.0,1.0);			 		
+   cubeArray[1] .init(gl,2,0.0,1.0,1.0);			 		
+   cubeArray[2].init(gl,3,1.0,1.0,1.0);
+   cubeArray[3].init(gl,4,-1.0,0.0,1.0);
+   cubeArray[4].init(gl,5,0.0,0.0,1.0);
+   cubeArray[5].init(gl,6,1.0,0.0,1.0);
+   cubeArray[6].init(gl,7,-1.0,-1.0,1.0);
+   cubeArray[7].init(gl,8,0.0,-1.0,1.0);
+   cubeArray[8].init(gl,9,1.0,-1.0,1.0);   			     		
    //Middle
-   vCubos[9].init(gl,10,-1.0,1.0,0.0);       				 
-   vCubos[10].init(gl,11,0.0,1.0,0.0);          
-   vCubos[11].init(gl,12,1.0,1.0,0.0);		
-   vCubos[12].init(gl,13,-1.0,0.0,0.0);       				 	
-   vCubos[13].init(gl,14,1.0,0.0,0.0);
-   vCubos[14].init(gl,15,-1.0,-1.0,0.0);	
-   vCubos[15].init(gl,16,0.0,-1.0,0.0);        				
-   vCubos[16].init(gl,17,1.0,-1.0,0.0);
+   cubeArray[9].init(gl,10,-1.0,1.0,0.0);       				 
+   cubeArray[10].init(gl,11,0.0,1.0,0.0);          
+   cubeArray[11].init(gl,12,1.0,1.0,0.0);		
+   cubeArray[12].init(gl,13,-1.0,0.0,0.0);       				 	
+   cubeArray[13].init(gl,14,1.0,0.0,0.0);
+   cubeArray[14].init(gl,15,-1.0,-1.0,0.0);	
+   cubeArray[15].init(gl,16,0.0,-1.0,0.0);        				
+   cubeArray[16].init(gl,17,1.0,-1.0,0.0);
    //Back      
-   vCubos[17].init(gl,18,-1.0,1.0,-1.0);
-   vCubos[18].init(gl,19,0.0,1.0,-1.0);
-   vCubos[19].init(gl,20,1.0,1.0,-1.0);
-   vCubos[20].init(gl,21,-1.0,0.0,-1.0);
-   vCubos[21].init(gl,22,0.0,0.0,-1.0);
-   vCubos[22].init(gl,23,1.0,0.0,-1.0);
-   vCubos[23].init(gl,24,-1.0,-1.0,-1.0);
-   vCubos[24].init(gl,25,0.0,-1.0,-1.0);
-   vCubos[25].init(gl,26,1.0,-1.0,-1.0);    		      
+   cubeArray[17].init(gl,18,-1.0,1.0,-1.0);
+   cubeArray[18].init(gl,19,0.0,1.0,-1.0);
+   cubeArray[19].init(gl,20,1.0,1.0,-1.0);
+   cubeArray[20].init(gl,21,-1.0,0.0,-1.0);
+   cubeArray[21].init(gl,22,0.0,0.0,-1.0);
+   cubeArray[22].init(gl,23,1.0,0.0,-1.0);
+   cubeArray[23].init(gl,24,-1.0,-1.0,-1.0);
+   cubeArray[24].init(gl,25,0.0,-1.0,-1.0);
+   cubeArray[25].init(gl,26,1.0,-1.0,-1.0);    		      
 }
 
 function drawScene() {
@@ -186,13 +185,10 @@ function animate() {
         if(!gameStarted) {
         	xRot+=0.5;
             yRot+=0.5;
-        }  else {
-        	xRot = 0;
-        	yRot = 0;
-        } 
+        }  
         
-        vCubos.map(function(c){
-        	c.criaCubo();
+        cubeArray.map(function(c){
+        	c.generateCubo();
         });
                 
         var move = movesArray.shift();
@@ -207,19 +203,19 @@ function animate() {
 function handleKeys() {        
 if (currentlyPressedKeys[37]) {
       // Left cursor key
-      ySpeed -= 1;
+      yRot -= 5;
     }
     if (currentlyPressedKeys[39]) {
       // Right cursor key
-      ySpeed += 1;
+      yRot += 5;
     }
     if (currentlyPressedKeys[38]) {
       // Up cursor key
-      xSpeed -= 1;
+      xRot -= 5;
     }
     if (currentlyPressedKeys[40]) {
       // Down cursor key
-      xSpeed += 1;
+      xRot += 5;
     }
 }
 
@@ -228,6 +224,7 @@ if (currentlyPressedKeys[37]) {
  * @author mccarmo
  */
 function handleKeyDown(event) {
+  if(!gameStarted) return;	
   currentlyPressedKeys[event.keyCode] = true;
   var currKey =  String.fromCharCode(event.keyCode);	
   if (currKey  == "C") {
@@ -397,18 +394,7 @@ function handleLoadedTexture(texture) {
 function initTextures() {
 	var realTextures = ["/resources/img/blue.png","/resources/img/yellow.png","/resources/img/white.png",
 	                    "/resources/img/magent.png","/resources/img/green.png","/resources/img/red.png"];
-	
-	/*for(i=0;i<textureMap.length;i++) {
-		var texture = gl.createTexture();
-		texture.image = new Image();
-		texture.image.onload = function () {
-	    	loadedTextures++;
-	        handleLoadedTexture(texture);
-	    }
-		texture.image.src = realTextures[i];
-		textureMap[i] = texture;
-	}*/
-	
+			
     textureBlue = gl.createTexture();
     textureBlue.image = new Image();
     textureBlue.image.onload = function () {
@@ -465,7 +451,7 @@ function initTextures() {
  */
 var eventOnXaxis = function (reference,angulo) {
 	function evento() {
-		vCubos.map(function(c){
+		cubeArray.map(function(c){
 			if(Math.round(c.centro[0])==reference){
 				c.rotateCubeX(angulo);
 			}
@@ -481,7 +467,7 @@ var eventOnXaxis = function (reference,angulo) {
  */
 var eventOnYaxis = function(reference,angulo) {
 	function evento() {            			          			    	            		            
-		vCubos.map(function(c){
+		cubeArray.map(function(c){
 			if(Math.round(c.centro[1])==reference){
 				c.rotateCubeY(angulo);
 			}
@@ -497,7 +483,7 @@ var eventOnYaxis = function(reference,angulo) {
  */
 var eventOnZaxis = function (reference,angulo) {
 	function evento() {             			          			    	            		            	
-		vCubos.map(function(c){
+		cubeArray.map(function(c){
 			if(Math.round(c.centro[2])==reference){
 				c.rotateCubeZ(angulo);
 			}
@@ -511,14 +497,18 @@ var eventOnZaxis = function (reference,angulo) {
  * @author mccarmo
  */
 function cubeRandom() {
-	/*for(i=0;i<Math.floor((Math.random() * 10) + 1);i++) {
-		for(z=1;z<10;z++) {
-			var reference = Math.floor((Math.random() * 100) + 1);
-			var sign = Math.floor((Math.random() * 100) + 1);
-			var axis = Math.floor((Math.random() * 100) + 1);
-			movesArray.push(new eventOnXaxis(-8.0,10.0));
-		}
-	}*/
+	var referencesArray = [8.0,-8.0,0.0];
+	var signArray = [1.0,-1.0];
+	var axisArray = [eventOnXaxis,eventOnYaxis,eventOnZaxis];
+	
+	for(i=0;i<Math.floor((Math.random() * 200) + 1);i++) {		
+		var reference = referencesArray[Math.floor((Math.random() * 2) + 1)];
+		var sign = signArray[Math.floor((Math.random() * 1) + 1)];
+		var axis = axisArray[Math.floor((Math.random() * 2) + 1)](reference,sign * 10.0);						
+		for(i=1;i<10;i++) {
+			movesArray.push(axis);
+		}		
+	}
 }
 
 function tick() {
@@ -533,12 +523,10 @@ function tick() {
  */
 function initPageEvents() {
 	//New Game
-    document.getElementById("btNewGame").onclick = function() {
-    	gameStarted=true;
-    	
+    document.getElementById("btNewGame").onclick = function() {    	    	
     	//Random the Cube
     	cubeRandom();
-    	
+    	gameStarted=true;
     	this.value="Reset";
     	this.onclick = function() {
     		alert("This will be the reset button for now on!");
@@ -546,16 +534,15 @@ function initPageEvents() {
     };
     //Save Game
     document.getElementById("btSaveGame").onclick = function() {
-    	for(i=0;i<vCubosSave.length;i++){
-    		vCubosSave[i] = new Cube();
-    		vCubosSave[i].vertices = vCubos[i].vertices.slice();
+    	for(i=0;i<cubeArray.length;i++){    		
+    		cubeArraySave.push(cubeArray[i].vertices.slice());
     	}
     };
     //Load Game
-    document.getElementById("btLoadGame").onclick = function() {
-    	if(typeof(vCubosSave)!='undefined') {
-    		for(i=0;i<vCubos.length;i++){
-    			vCubos[i].vertices = vCubosSave[i].vertices.slice();
+    document.getElementById("btLoadGame").onclick = function() {		
+    	if(typeof(cubeArraySave)!='undefined') {
+    		for(i=0;i<cubeArray.length;i++){
+    			cubeArray[i].vertices = cubeArraySave[i];
         	}
     	}
     };
@@ -571,10 +558,10 @@ function webGLStart() {
     initGL(canvas);
     initPageEvents();
     initShaders();	
-	initTextures();
-	initCubes();
+    initTextures();
+    initCubes();
 	
-	gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
 	
     canvas.onmousedown = handleMouseDown;
