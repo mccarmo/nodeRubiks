@@ -30,7 +30,7 @@ function Cube() {
 		this.cubeVertexTextureCoordBuffer = this.gl.createBuffer();
 		this.cubeVertexIndexBuffer = this.gl.createBuffer();
 	}
-	this.criaCubo = function() {	
+	this.generateCubo = function() {	
 	    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.cubeVertexPositionBuffer);           	
             var facesVertices = [
 			this.vertices[0][0],this.vertices[0][1],this.vertices[0][2], //Front
@@ -335,8 +335,8 @@ function Cube() {
 	 */
 	this.setXYZ = function() {
     	this.vertices[0][0] = -0.5 + this.x;
-		this.vertices[0][1] = -0.5 + this.y;
-		this.vertices[0][2] =  0.5 + this.z;		
+	this.vertices[0][1] = -0.5 + this.y;
+	this.vertices[0][2] =  0.5 + this.z;		
     	
     	this.vertices[1][0] =  0.5 + this.x;    		
     	this.vertices[1][1] = -0.5 + this.y;
