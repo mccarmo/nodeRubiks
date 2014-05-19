@@ -16,6 +16,7 @@ var theShaderVs = " attribute vec3 aVertexPosition; " +
 				  " }";
 var lastTime = 0;
 var vCubos = new Array(26);//store the references for the 26 cubes
+var vCubosSave = new Array(26);
 var shaderProgram;
 var textureMap = new Array(6);
 var mvMatrix = mat4.create();
@@ -33,6 +34,7 @@ var numTextures = 6;
 var loadedTextures = 0;
 var movesArray = [];
 var currentlyPressedKeys = {};
+var gameStarted = false;
 
 mat4.identity(rotationMatrix);
 
@@ -165,10 +167,7 @@ function drawScene() {
     mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
 
     mat4.identity(mvMatrix);
-    mat4.translate(mvMatrix, [0.0, 0.0, -7.0]);
-   
-    //xRot+=0.5;
-    //yRot+=0.5;        
+    mat4.translate(mvMatrix, [0.0, 0.0, -7.0]);     
 
     mat4.rotate(mvMatrix, degToRad(xRot), [1, 0, 0]);
     mat4.rotate(mvMatrix, degToRad(yRot), [0, 1, 0]);
@@ -182,6 +181,15 @@ function animate() {
         var elapsed = timeNow - lastTime;
         xRot += (xSpeed * elapsed) / 1000.0;
         yRot += (ySpeed * elapsed) / 1000.0;
+        
+        //If game not started put some animation on the Cube...just for fun
+        if(!gameStarted) {
+        	xRot+=0.5;
+            yRot+=0.5;
+        }  else {
+        	xRot = 0;
+        	yRot = 0;
+        } 
         
         vCubos.map(function(c){
         	c.criaCubo();
@@ -506,6 +514,35 @@ function tick() {
 }
 
 /**
+ * Handle the Page Events like button events.
+ */
+function initPageEvents() {
+	//New Game
+    document.getElementById("btNewGame").onclick = function() {
+    	gameStarted=true;
+    	this.value="Reset";
+    	this.onclick = function() {
+    		alert("This will be the reset button for now on!");
+    	}
+    };
+    //Save Game
+    document.getElementById("btSaveGame").onclick = function() {
+    	for(i=0;i<vCubosSave.length;i++){
+    		vCubosSave[i] = new Cube();
+    		vCubosSave[i].vertices = vCubos[i].vertices.slice();
+    	}
+    };
+    //Load Game
+    document.getElementById("btLoadGame").onclick = function() {
+    	if(typeof(vCubosSave)!='undefined') {
+    		for(i=0;i<vCubos.length;i++){
+    			vCubos[i].vertices = vCubosSave[i].vertices;
+        	}
+    	}
+    };
+}
+
+/**
  * Inializing everything needed then starts the Rubik's Cube Game!
  * @author mccarmo
  */
@@ -513,6 +550,7 @@ function webGLStart() {
     var canvas = document.getElementById("rubiks");
   
     initGL(canvas);
+    initPageEvents();
     initShaders();	
 	initTextures();
 	initCubes();
@@ -525,5 +563,6 @@ function webGLStart() {
     document.onmousemove = handleMouseMove;
     document.onkeydown = handleKeyDown;
     document.onkeyup = handleKeyUp;	
+    
 }		
 
