@@ -1,6 +1,6 @@
 .body-class {
 	text-align: center; 
-	background-color: black;	
+	background-color: white;	
 }
 
 .canvas-class {
@@ -20,19 +20,21 @@
 }
 
 .btGame {
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	color: #fff;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border-bottom-color: #000000;
+	color: #000000;
 	font-weight: bold;
 	text-transform: uppercase;
 	width: 100px;
 	height: 38px;
-	background-color: #737373;
+	background-color: #FFFFFF;
 	margin: 10px;
 	float: center;
 }
 
 .btGame:hover {
-	color: #ffa800;
+	color: #FFFFFF;
+	background-color: #000000;
 }
