@@ -16,8 +16,6 @@ var theShaderVs = " attribute vec3 aVertexPosition; " +
 				  " }";
 var lastTime = 0;
 var cubeArray = new Array(26);//store the references for the 26 cubes
-var cubeArrayInitSate = [];
-var cubeArraySavedState = [];
 var shaderProgram;
 var mvMatrix = mat4.create();
 var pMatrix = mat4.create();
@@ -221,109 +219,54 @@ if (currentlyPressedKeys[37]) {
 }
 
 /**
+ * Schedule Movements 10 degrees each for animation smoothness 
+ */
+function scheduleMoveAnimationEvents(event) {
+	for(i=1;i<10;i++) {
+		movesArray.push(event);
+	}
+}
+
+/**
  * Handle the Key Down event, in case of the player wants to control the cube with the keyboard
  * @author mccarmo
  */
 function handleKeyDown(event) {
+  
   if(!gameStarted) return;	
+  
   currentlyPressedKeys[event.keyCode] = true;
+  
   var currKey =  String.fromCharCode(event.keyCode);	
+  
   if (currKey  == "C") {
     xRot = 0;
     yRot = 0;
     xSpeed = 0;
     ySpeed = 0;
   }
-  if (currKey == "Q") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnZaxis(8.0,10.0));
-	  }
-  } 
-  if (currKey == "W") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnZaxis(0.0,10.0));
-	  }
-  } 	
-  if (currKey == "E") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnZaxis(-8.0,10.0));
-	  }
-  }   
-  if (currKey == "A") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnZaxis(8.0,-10.0));
-	  }
-  } 
-  if (currKey == "S") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnZaxis(0.0,-10.0));
-	  }
-  } 
-  if (currKey == "D") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnZaxis(-8.0,-10.0));
-	  }
-  } 
-  if (currKey == "R") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnXaxis(8.0,10.0));
-	  }
-  } 
-  if (currKey == "T") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnXaxis(0.0,10.0));
-	  }
-  } 
-  if (currKey == "Y") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnXaxis(-8.0,10.0));
-	  }
-  }   
-  if (currKey == "F") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnXaxis(8.0,-10.0));
-	  }
-  } 
-  if (currKey == "G") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnXaxis(0.0,-10.0));
-	  }
-  } 
-  if (currKey == "H") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnXaxis(-8.0,-10.0));
-	  }
-  } 
-  if (currKey == "U") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnYaxis(8.0,10.0));
-	  }
-  } 
-  if (currKey == "I") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnYaxis(0.0,10.0));
-	  }
-  } 
-  if (currKey == "O") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnYaxis(-8.0,10.0));
-	  }
-  }   
-  if (currKey == "J") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnYaxis(8.0,-10.0));
-	  }
-  }   
-  if (currKey == "K") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnYaxis(0.0,-10.0));
-	  }
-  } 
-  if (currKey == "L") {
-	  for(i=1;i<10;i++) {
-		  movesArray.push(new eventOnYaxis(-8.0,-10.0));
-	  }	  
-  } 
+  
+  switch(currKey) {
+     case "Q": scheduleMoveAnimationEvents(new eventOnZaxis(8.0,10.0)); break;
+     case "W": scheduleMoveAnimationEvents(new eventOnZaxis(0.0,10.0)); break;
+     case "E": scheduleMoveAnimationEvents(new eventOnZaxis(-8.0,10.0)); break;
+     case "A": scheduleMoveAnimationEvents(new eventOnZaxis(8.0,-10.0)); break;
+     case "S": scheduleMoveAnimationEvents(new eventOnZaxis(0.0,-10.0)); break;
+     case "D": scheduleMoveAnimationEvents(new eventOnZaxis(-8.0,-10.0));break;  
+     case "R": scheduleMoveAnimationEvents(new eventOnXaxis(8.0,10.0)); break;
+     case "T": scheduleMoveAnimationEvents(new eventOnXaxis(0.0,10.0));	break;  
+     case "Y": scheduleMoveAnimationEvents(new eventOnXaxis(-8.0,10.0)); break;	 
+     case "F": scheduleMoveAnimationEvents(new eventOnXaxis(8.0,-10.0)); break;	  
+     case "G": scheduleMoveAnimationEvents(new eventOnXaxis(0.0,-10.0)); break;	 
+     case "H": scheduleMoveAnimationEvents(new eventOnXaxis(-8.0,-10.0)); break;	  
+     case "U": scheduleMoveAnimationEvents(new eventOnYaxis(8.0,10.0)); break;	 
+     case "I": scheduleMoveAnimationEvents(new eventOnYaxis(0.0,10.0)); break;  
+     case "O": scheduleMoveAnimationEvents(new eventOnYaxis(-8.0,10.0)); break;	 
+     case "J": scheduleMoveAnimationEvents(new eventOnYaxis(8.0,-10.0)); break;	 
+     case "K": scheduleMoveAnimationEvents(new eventOnYaxis(0.0,-10.0)); break;	  
+     case "L": scheduleMoveAnimationEvents(new eventOnYaxis(-8.0,-10.0)); break;
+  }
+ 
 }
 
 function handleKeyUp(event) {
@@ -525,26 +468,40 @@ function tick() {
 function initPageEvents() {
 	//New Game
     document.getElementById("btNewGame").onclick = function() {
+    	//Initializing the Cube
     	initCubes();
+    	
+    	//Store the Init State for Compare
+    	var cubeArrayInitSate = [];
+    	for(i=0;i<cubeArray.length;i++){    	
+    		cubeArrayInitSate.push(JSON.parse(JSON.stringify(cubeArray[i].vertices)));
+    	}
+    	localStorage["cubeArrayInitSate"] = cubeArrayInitSate;
+    	
+    	
     	//Random the Cube
     	cubeRandom();
+    	
+    	//Game Started
     	gameStarted=true;
     };
     //Save Game
     document.getElementById("btSaveGame").onclick = function() {
     	if(gameStarted){
+    		var cubeArraySavedState  = [];
 	    	for(i=0;i<cubeArray.length;i++){    	
 	    		cubeArraySavedState.push(JSON.parse(JSON.stringify(cubeArray[i].vertices)));
 	    	}
+	    	localStorage["cubeSavedState"] = JSON.stringify(cubeArraySavedState);	    	
     	}
     };
     //Load Game
     document.getElementById("btLoadGame").onclick = function() {	
-    	if(typeof(cubeArraySavedState)!='undefined' && cubeArraySavedState.length==26) {
+    	var cubeArraySavedState = JSON.parse(localStorage["cubeSavedState"]);
+    	if(gameStarted && typeof(cubeArraySavedState)!='undefined' && cubeArraySavedState.length==26) {    		
     		for(i=0;i<cubeArray.length;i++){
     			cubeArray[i].vertices = JSON.parse(JSON.stringify(cubeArraySavedState[i]));
         	}
-    		cubeArraySavedState = [];
     	}
     };
 }
