@@ -487,7 +487,9 @@ function initPageEvents() {
     };
     //Save Game
     document.getElementById("btSaveGame").onclick = function() {
-    	if(gameStarted){
+    	//Only Save The Game when the Game is Started and there is no game movement in schedule
+    	
+    	if(gameStarted && movesArray.length==0){
     		var cubeArraySavedState  = [];
 	    	for(i=0;i<cubeArray.length;i++){    	
 	    		cubeArraySavedState.push(JSON.parse(JSON.stringify(cubeArray[i].vertices)));
@@ -497,11 +499,12 @@ function initPageEvents() {
     };
     //Load Game
     document.getElementById("btLoadGame").onclick = function() {	
+    	//Only Loads The Game when the Game is Started The Game when there is no game movement in schedule
     	var cubeArraySavedState = JSON.parse(localStorage["cubeSavedState"]);
-    	if(gameStarted && typeof(cubeArraySavedState)!='undefined' && cubeArraySavedState.length==26) {    		
-    		for(i=0;i<cubeArray.length;i++){
-    			cubeArray[i].vertices = JSON.parse(JSON.stringify(cubeArraySavedState[i]));
-        	}
+    	if(gameStarted && typeof(cubeArraySavedState)!='undefined' && cubeArraySavedState.length==26 && movesArray.length==0) {	    	    		
+	    	for(i=0;i<cubeArray.length;i++){
+	    		cubeArray[i].vertices = JSON.parse(JSON.stringify(cubeArraySavedState[i]));
+	        }	    	
     	}
     };
 }
