@@ -16,7 +16,8 @@ var theShaderVs = " attribute vec3 aVertexPosition; " +
 				  " }";
 var lastTime = 0;
 var cubeArray = new Array(26);//store the references for the 26 cubes
-var cubeArraySave = [];
+var cubeArrayInitSate = [];
+var cubeArraySavedState = [];
 var shaderProgram;
 var mvMatrix = mat4.create();
 var pMatrix = mat4.create();
@@ -523,26 +524,25 @@ function tick() {
  */
 function initPageEvents() {
 	//New Game
-    document.getElementById("btNewGame").onclick = function() {    	    	
+    document.getElementById("btNewGame").onclick = function() {
+    	initCubes();
     	//Random the Cube
     	cubeRandom();
     	gameStarted=true;
-    	this.value="Reset";
-    	this.onclick = function() {
-    		alert("This will be the reset button for now on!");
-    	}
     };
     //Save Game
     document.getElementById("btSaveGame").onclick = function() {
-    	for(i=0;i<cubeArray.length;i++){    		
-    		cubeArraySave.push(cubeArray[i].vertices.slice());
+    	if(gameStarted){
+	    	for(i=0;i<cubeArray.length;i++){    	
+	    		cubeArraySavedState.push(JSON.parse(JSON.stringify(cubeArray[i].vertices)));
+	    	}
     	}
     };
     //Load Game
-    document.getElementById("btLoadGame").onclick = function() {		
-    	if(typeof(cubeArraySave)!='undefined') {
+    document.getElementById("btLoadGame").onclick = function() {	
+    	if(typeof(cubeArraySavedState)!='undefined') {
     		for(i=0;i<cubeArray.length;i++){
-    			cubeArray[i].vertices = cubeArraySave[i];
+    			cubeArray[i].vertices = JSON.parse(JSON.stringify(cubeArraySavedState[i]));
         	}
     	}
     };
