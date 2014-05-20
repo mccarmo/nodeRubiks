@@ -540,10 +540,11 @@ function initPageEvents() {
     };
     //Load Game
     document.getElementById("btLoadGame").onclick = function() {	
-    	if(typeof(cubeArraySavedState)!='undefined') {
+    	if(typeof(cubeArraySavedState)!='undefined' && cubeArraySavedState.length==26) {
     		for(i=0;i<cubeArray.length;i++){
     			cubeArray[i].vertices = JSON.parse(JSON.stringify(cubeArraySavedState[i]));
         	}
+    		cubeArraySavedState = [];
     	}
     };
 }
