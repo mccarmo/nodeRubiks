@@ -334,37 +334,37 @@ function Cube() {
 	 * @author mccarmo
 	 */
 	this.setXYZ = function() {
-    	this.vertices[0][0] = -0.5 + this.x;
-    	this.vertices[0][1] = -0.5 + this.y;
-    	this.vertices[0][2] =  0.5 + this.z;		
+    	this.vertices[0][0] = -1 + this.x;
+    	this.vertices[0][1] = -1 + this.y;
+    	this.vertices[0][2] =  1 + this.z;		
     	
-    	this.vertices[1][0] =  0.5 + this.x;    		
-    	this.vertices[1][1] = -0.5 + this.y;
-    	this.vertices[1][2] =  0.5 + this.z;
+    	this.vertices[1][0] =  1 + this.x;    		
+    	this.vertices[1][1] = -1 + this.y;
+    	this.vertices[1][2] =  1 + this.z;
     	
-    	this.vertices[2][0] =  0.5 + this.x;
-    	this.vertices[2][1] =  0.5 + this.y;
-    	this.vertices[2][2] =  0.5 + this.z;
+    	this.vertices[2][0] =  1 + this.x;
+    	this.vertices[2][1] =  1 + this.y;
+    	this.vertices[2][2] =  1 + this.z;
     	
-    	this.vertices[3][0] = -0.5 + this.x;
-    	this.vertices[3][1] =  0.5 + this.y;
-    	this.vertices[3][2] =  0.5 + this.z;
+    	this.vertices[3][0] = -1 + this.x;
+    	this.vertices[3][1] =  1 + this.y;
+    	this.vertices[3][2] =  1 + this.z;
     	
-    	this.vertices[4][0] = -0.5 + this.x;
-    	this.vertices[4][1] = -0.5 + this.y;
-    	this.vertices[4][2] = -0.5 + this.z;
+    	this.vertices[4][0] = -1 + this.x;
+    	this.vertices[4][1] = -1 + this.y;
+    	this.vertices[4][2] = -1 + this.z;
     			
-    	this.vertices[5][0] = -0.5 + this.x;
-    	this.vertices[5][1] =  0.5 + this.y;
-    	this.vertices[5][2] = -0.5 + this.z;
+    	this.vertices[5][0] = -1 + this.x;
+    	this.vertices[5][1] =  1 + this.y;
+    	this.vertices[5][2] = -1 + this.z;
     		
-    	this.vertices[6][0] =  0.5 + this.x;
-    	this.vertices[6][1] =  0.5 + this.y;
-    	this.vertices[6][2] = -0.5 + this.z;								
+    	this.vertices[6][0] =  1 + this.x;
+    	this.vertices[6][1] =  1 + this.y;
+    	this.vertices[6][2] = -1 + this.z;								
     	
-    	this.vertices[7][0] =  0.5 + this.x;
-    	this.vertices[7][1] = -0.5 + this.y;
-    	this.vertices[7][2] = -0.5 + this.z;
+    	this.vertices[7][0] =  1 + this.x;
+    	this.vertices[7][1] = -1 + this.y;
+    	this.vertices[7][2] = -1 + this.z;
     } 
 }
 

@@ -131,34 +131,34 @@ function degToRad(degrees) {
  */
 function initCubes() {    		
    //Front      
-   cubeArray[0].init(gl,1,-1.0,1.0,1.0);			 		
-   cubeArray[1] .init(gl,2,0.0,1.0,1.0);			 		
-   cubeArray[2].init(gl,3,1.0,1.0,1.0);
-   cubeArray[3].init(gl,4,-1.0,0.0,1.0);
-   cubeArray[4].init(gl,5,0.0,0.0,1.0);
-   cubeArray[5].init(gl,6,1.0,0.0,1.0);
-   cubeArray[6].init(gl,7,-1.0,-1.0,1.0);
-   cubeArray[7].init(gl,8,0.0,-1.0,1.0);
-   cubeArray[8].init(gl,9,1.0,-1.0,1.0);   			     		
+   cubeArray[0].init(gl,1,-2.0,2.0,2.0);			 		
+   cubeArray[1] .init(gl,2,0.0,2.0,2.0);			 		
+   cubeArray[2].init(gl,3,2.0,2.0,2.0);
+   cubeArray[3].init(gl,4,-2.0,0.0,2.0);
+   cubeArray[4].init(gl,5,0.0,0.0,2.0);
+   cubeArray[5].init(gl,6,2.0,0.0,2.0);
+   cubeArray[6].init(gl,7,-2.0,-2.0,2.0);
+   cubeArray[7].init(gl,8,0.0,-2.0,2.0);
+   cubeArray[8].init(gl,9,2.0,-2.0,2.0);   			     		
    //Middle
-   cubeArray[9].init(gl,10,-1.0,1.0,0.0);       				 
-   cubeArray[10].init(gl,11,0.0,1.0,0.0);          
-   cubeArray[11].init(gl,12,1.0,1.0,0.0);		
-   cubeArray[12].init(gl,13,-1.0,0.0,0.0);       				 	
-   cubeArray[13].init(gl,14,1.0,0.0,0.0);
-   cubeArray[14].init(gl,15,-1.0,-1.0,0.0);	
-   cubeArray[15].init(gl,16,0.0,-1.0,0.0);        				
-   cubeArray[16].init(gl,17,1.0,-1.0,0.0);
+   cubeArray[9].init(gl,10,-2.0,2.0,0.0);       				 
+   cubeArray[10].init(gl,11,0.0,2.0,0.0);          
+   cubeArray[11].init(gl,12,2.0,2.0,0.0);		
+   cubeArray[12].init(gl,13,-2.0,0.0,0.0);       				 	
+   cubeArray[13].init(gl,14,2.0,0.0,0.0);
+   cubeArray[14].init(gl,15,-2.0,-2.0,0.0);	
+   cubeArray[15].init(gl,16,0.0,-2.0,0.0);        				
+   cubeArray[16].init(gl,17,2.0,-2.0,0.0);
    //Back      
-   cubeArray[17].init(gl,18,-1.0,1.0,-1.0);
-   cubeArray[18].init(gl,19,0.0,1.0,-1.0);
-   cubeArray[19].init(gl,20,1.0,1.0,-1.0);
-   cubeArray[20].init(gl,21,-1.0,0.0,-1.0);
-   cubeArray[21].init(gl,22,0.0,0.0,-1.0);
-   cubeArray[22].init(gl,23,1.0,0.0,-1.0);
-   cubeArray[23].init(gl,24,-1.0,-1.0,-1.0);
-   cubeArray[24].init(gl,25,0.0,-1.0,-1.0);
-   cubeArray[25].init(gl,26,1.0,-1.0,-1.0);    		      
+   cubeArray[17].init(gl,18,-2.0,2.0,-2.0);
+   cubeArray[18].init(gl,19,0.0,2.0,-2.0);
+   cubeArray[19].init(gl,20,2.0,2.0,-2.0);
+   cubeArray[20].init(gl,21,-2.0,0.0,-2.0);
+   cubeArray[21].init(gl,22,0.0,0.0,-2.0);
+   cubeArray[22].init(gl,23,2.0,0.0,-2.0);
+   cubeArray[23].init(gl,24,-2.0,-2.0,-2.0);
+   cubeArray[24].init(gl,25,0.0,-2.0,-2.0);
+   cubeArray[25].init(gl,26,2.0,-2.0,-2.0);    		      
 }
 
 function drawScene() {
@@ -168,7 +168,7 @@ function drawScene() {
     mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
 
     mat4.identity(mvMatrix);
-    mat4.translate(mvMatrix, [0.0, 0.0, -7.0]);     
+    mat4.translate(mvMatrix, [0.0, 0.0, -14.0]);     
 
     mat4.rotate(mvMatrix, degToRad(xRot), [1, 0, 0]);
     mat4.rotate(mvMatrix, degToRad(yRot), [0, 1, 0]);
@@ -199,18 +199,7 @@ function animate() {
         	move();
         };
         
-        //Here we check if the Game has Ended (if the current state of the cube is equal the init state)!
-        if(gameStarted && movesArray.length==0) {
-        	var cubeState = [];
-        	for(i=0;i<cubeArray.length;i++){    	
-        		cubeState.push(JSON.parse(JSON.stringify(cubeArray[i].vertices)));
-        	}
-        	//Still not working...because of the precisions :(
-        	if(JSON.stringify(cubeState)==localStorage["cubeArrayInitSate"]) {
-        		alert("Good Job!");
-        		gameStarted = false;
-        	}
-        }
+        checkIfGameEnded();
         
     }
     lastTime = timeNow;
@@ -264,24 +253,24 @@ function handleKeyDown(event) {
   }
   
   switch(currKey) {
-     case "Q": scheduleMoveAnimationEvents(new eventOnZaxis(8.0,10.0)); break;
+     case "Q": scheduleMoveAnimationEvents(new eventOnZaxis(16.0,10.0)); break;
      case "W": scheduleMoveAnimationEvents(new eventOnZaxis(0.0,10.0)); break;
-     case "E": scheduleMoveAnimationEvents(new eventOnZaxis(-8.0,10.0)); break;
-     case "A": scheduleMoveAnimationEvents(new eventOnZaxis(8.0,-10.0)); break;
+     case "E": scheduleMoveAnimationEvents(new eventOnZaxis(-16.0,10.0)); break;
+     case "A": scheduleMoveAnimationEvents(new eventOnZaxis(16.0,-10.0)); break;
      case "S": scheduleMoveAnimationEvents(new eventOnZaxis(0.0,-10.0)); break;
-     case "D": scheduleMoveAnimationEvents(new eventOnZaxis(-8.0,-10.0));break;  
-     case "R": scheduleMoveAnimationEvents(new eventOnXaxis(8.0,10.0)); break;
+     case "D": scheduleMoveAnimationEvents(new eventOnZaxis(-16.0,-10.0));break;  
+     case "R": scheduleMoveAnimationEvents(new eventOnXaxis(16.0,10.0)); break;
      case "T": scheduleMoveAnimationEvents(new eventOnXaxis(0.0,10.0));	break;  
-     case "Y": scheduleMoveAnimationEvents(new eventOnXaxis(-8.0,10.0)); break;	 
-     case "F": scheduleMoveAnimationEvents(new eventOnXaxis(8.0,-10.0)); break;	  
+     case "Y": scheduleMoveAnimationEvents(new eventOnXaxis(-16.0,10.0)); break;	 
+     case "F": scheduleMoveAnimationEvents(new eventOnXaxis(16.0,-10.0)); break;	  
      case "G": scheduleMoveAnimationEvents(new eventOnXaxis(0.0,-10.0)); break;	 
-     case "H": scheduleMoveAnimationEvents(new eventOnXaxis(-8.0,-10.0)); break;	  
-     case "U": scheduleMoveAnimationEvents(new eventOnYaxis(8.0,10.0)); break;	 
+     case "H": scheduleMoveAnimationEvents(new eventOnXaxis(-16.0,-10.0)); break;	  
+     case "U": scheduleMoveAnimationEvents(new eventOnYaxis(16.0,10.0)); break;	 
      case "I": scheduleMoveAnimationEvents(new eventOnYaxis(0.0,10.0)); break;  
-     case "O": scheduleMoveAnimationEvents(new eventOnYaxis(-8.0,10.0)); break;	 
-     case "J": scheduleMoveAnimationEvents(new eventOnYaxis(8.0,-10.0)); break;	 
+     case "O": scheduleMoveAnimationEvents(new eventOnYaxis(-16.0,10.0)); break;	 
+     case "J": scheduleMoveAnimationEvents(new eventOnYaxis(16.0,-10.0)); break;	 
      case "K": scheduleMoveAnimationEvents(new eventOnYaxis(0.0,-10.0)); break;	  
-     case "L": scheduleMoveAnimationEvents(new eventOnYaxis(-8.0,-10.0)); break;
+     case "L": scheduleMoveAnimationEvents(new eventOnYaxis(-16.0,-10.0)); break;
   }
  
 }
@@ -458,7 +447,7 @@ var eventOnZaxis = function (reference,angulo) {
  * @author mccarmo
  */
 function cubeRandom() {
-	var referencesArray = [8.0,-8.0,0.0];
+	var referencesArray = [16.0,-16.0,0.0];
 	var signArray = [1.0,-1.0];
 	var axisArray = [eventOnXaxis,eventOnYaxis,eventOnZaxis];
 	
@@ -479,6 +468,32 @@ function tick() {
     animate();	
 }
 
+/**
+ * This function will check if the current Game Configuration match the "Winner!" State of the Cube!
+ * @author mccarmo
+ */
+function checkIfGameEnded() {
+	//Here we check if the Game has Ended (if the current state of the cube is equal the init state)!
+    //This is a creep way to do that...but for now this will remain here. If you imagine a better way, 
+    //please help! :)
+    if(gameStarted && movesArray.length==0) {
+    	var cubeState = [];
+    	for(i=0;i<cubeArray.length;i++){    	
+    		var verticesArray = JSON.parse(JSON.stringify(cubeArray[i].vertices)); 
+    		for(z=0;z<verticesArray.length;z++) {
+    			var vet = verticesArray[z];
+    			for(w=0;w<vet.length;w++) {
+    				vet[w] = Math.round(vet[w]);
+    			}
+    		}
+    		cubeState.push(verticesArray);        		
+    	}
+    	if(JSON.stringify(cubeState)==localStorage["cubeArrayInitSate"]) {
+    		alert("Good Job! :)");
+    		gameStarted = false;
+    	}
+    }
+}
 /**
  * Handle the Page Events like button events.
  */
