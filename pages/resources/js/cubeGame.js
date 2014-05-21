@@ -1,3 +1,6 @@
+/**
+ * This port was made thanks to the great tutorials found at http://learningwebgl.com/
+ */
 var gl;
 var theShaderFs = " precision mediump float; " +
 		          " varying vec2 vTextureCoord; " +
@@ -189,11 +192,25 @@ function animate() {
         cubeArray.map(function(c){
         	c.generateCubo();
         });
-                
+        
+        //Here the scheduled moves are called...
         var move = movesArray.shift();
         if(typeof(move)=='function'){
         	move();
         };
+        
+        //Here we check if the Game has Ended (if the current state of the cube is equal the init state)!
+        if(gameStarted && movesArray.length==0) {
+        	var cubeState = [];
+        	for(i=0;i<cubeArray.length;i++){    	
+        		cubeState.push(JSON.parse(JSON.stringify(cubeArray[i].vertices)));
+        	}
+        	//Still not working...because of the precisions :(
+        	if(JSON.stringify(cubeState)==localStorage["cubeArrayInitSate"]) {
+        		alert("Good Job!");
+        		gameStarted = false;
+        	}
+        }
         
     }
     lastTime = timeNow;
@@ -469,6 +486,7 @@ function initPageEvents() {
 	//New Game
     document.getElementById("btNewGame").onclick = function() {
     	//Initializing the Cube
+    	movesArray = [];
     	initCubes();
     	
     	//Store the Init State for Compare
@@ -476,7 +494,7 @@ function initPageEvents() {
     	for(i=0;i<cubeArray.length;i++){    	
     		cubeArrayInitSate.push(JSON.parse(JSON.stringify(cubeArray[i].vertices)));
     	}
-    	localStorage["cubeArrayInitSate"] = cubeArrayInitSate;
+    	localStorage["cubeArrayInitSate"] = JSON.stringify(cubeArrayInitSate);
     	
     	
     	//Random the Cube
