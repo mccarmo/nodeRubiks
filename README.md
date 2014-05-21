@@ -1,6 +1,6 @@
 nodeRubiks (WIP)
 ============================================================================
-This is a Work In Progress.
+This is a Work In Progress and this port was made thanks to the great tutorials found at http://learningwebgl.com/ .
 One day i hope this will be a simple Node.js Rubik's Cube cooperative game.
 
 To start the game run the "server.js" through node.js and go to localhost:8002.
