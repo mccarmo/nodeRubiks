@@ -206,7 +206,7 @@ function animate() {
 }
 
 function handleKeys() {        
-if (currentlyPressedKeys[37]) {
+	if (currentlyPressedKeys[37]) {
       // Left cursor key
       yRot -= 5;
     }
@@ -302,7 +302,24 @@ function handleMouseMove(event) {
     var newX = event.clientX;
     var newY = event.clientY;
     
-    handleCubeRotationByMove(newX,newY);
+    xRot = 0;
+    yRot = 0;
+	xSpeed = 0;
+    ySpeed = 0;
+    
+    var newRotationMatrix = mat4.create();
+    mat4.identity(newRotationMatrix);
+    
+    var deltaX = newX - lastMouseX
+    mat4.rotate(newRotationMatrix, degToRad(deltaX / 7), [0, 1, 0]);
+
+    var deltaY = newY - lastMouseY;
+    mat4.rotate(newRotationMatrix, degToRad(deltaY / 7), [1, 0, 0]);
+
+    mat4.multiply(newRotationMatrix, rotationMatrix, rotationMatrix);
+
+    lastMouseX = newX
+    lastMouseY = newY;
 }
 
 /**
@@ -316,34 +333,21 @@ function handleTouchMove(event) {
 	var newX = event.targetTouches[0].clientX;
     var newY = event.targetTouches[0].clientY;
 
-    handleCubeRotationByMove(newX,newY);
-}
-
-/**
- * Handle the Rotation of Cube based on the mouse or touch moves.
- * @author mccarmo
- * @param newX
- * @param newY
- */
-function handleCubeRotationByMove(newX,newY) {
-	xRot = 0;
-    yRot = 0;
-	xSpeed = 0;
-    ySpeed = 0;
+    if(Math.abs(newX-lastMouseX) > Math.abs(newY-lastMouseY)) {
+    	if(newX > lastMouseX) {
+    		yRot += 2.0;
+    	} else {
+    		yRot -= 2.0;
+    	}
+	} else {
+		if(newY > lastMouseY) {
+    		xRot += 2.0;
+    	} else {
+    		xRot -= 2.0;
+    	}
+	}
     
-    var deltaX = newX - lastMouseX
-    
-    var newRotationMatrix = mat4.create();
-    
-    mat4.identity(newRotationMatrix);
-    mat4.rotate(newRotationMatrix, degToRad(deltaX / 7), [0, 1, 0]);
-
-    var deltaY = newY - lastMouseY;
-    mat4.rotate(newRotationMatrix, degToRad(deltaY / 7), [1, 0, 0]);
-
-    mat4.multiply(newRotationMatrix, rotationMatrix, rotationMatrix);
-
-    lastMouseX = newX
+    lastMouseX = newX;
     lastMouseY = newY;
 }
 
@@ -479,6 +483,8 @@ function cubeRandom() {
 	var signArray = [1.0,-1.0];
 	var axisArray = [eventOnXaxis,eventOnYaxis,eventOnZaxis];
 	
+	xRot = yRot = 45; //Rotate de Cube 45 degrees about X and Y for a best view. 
+	
 	for(i=0;i<Math.floor((Math.random() * 200) + 1);i++) {		
 		var reference = referencesArray[Math.floor((Math.random() * 2) + 1)];
 		var sign = signArray[Math.floor((Math.random() * 1) + 1)];
@@ -587,13 +593,13 @@ function webGLStart() {
     initTextures();
     initCubes();
 	
-    gl.clearColor(1.0, 1.0, 1.0, 1.0);
+    gl.clearColor(0.5, 0.5, 0.5, 1.0);
     gl.enable(gl.DEPTH_TEST);
 	
     canvas.addEventListener("touchmove",handleTouchMove);
     canvas.onmousedown = handleMouseDown;
     document.onmouseup = handleMouseUp;
-    document.onmousemove = handleMouseMove;
+    //document.onmousemove = handleMouseMove;
     document.onkeydown = handleKeyDown;
     document.onkeyup = handleKeyUp;	
     
