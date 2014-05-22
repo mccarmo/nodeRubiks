@@ -519,6 +519,8 @@ function checkIfGameEnded() {
     	if(JSON.stringify(cubeState)==localStorage["cubeArrayInitSate"]) {
     		alert("Good Job! :)");
     		gameStarted = false;
+			//Remove saved game state from the localStorage
+			localStorage.removeItem("cubeSavedState");
     	}
     }
 }
@@ -561,12 +563,14 @@ function initPageEvents() {
     //Load Game
     document.getElementById("btLoadGame").onclick = function() {	
     	//Only Loads The Game when the Game is Started The Game when there is no game movement in schedule
-    	var cubeArraySavedState = JSON.parse(localStorage["cubeSavedState"]);
-    	if(gameStarted && typeof(cubeArraySavedState)!='undefined' && cubeArraySavedState.length==26 && movesArray.length==0) {	    	    		
-	    	for(i=0;i<cubeArray.length;i++){
-	    		cubeArray[i].vertices = JSON.parse(JSON.stringify(cubeArraySavedState[i]));
-	        }	    	
-    	}
+	if(localStorage["cubeSavedState"]!=undefined) {
+		var cubeArraySavedState = JSON.parse(localStorage["cubeSavedState"]);
+		if(gameStarted && typeof(cubeArraySavedState)!='undefined' && cubeArraySavedState.length==26 && movesArray.length==0) {	    	    		
+			for(i=0;i<cubeArray.length;i++){
+				cubeArray[i].vertices = JSON.parse(JSON.stringify(cubeArraySavedState[i]));
+			}	    	
+		}
+	}
     };
 }
 
@@ -580,10 +584,10 @@ function webGLStart() {
     initGL(canvas);
     initPageEvents();
     initShaders();	
-	initTextures();
-	initCubes();
+    initTextures();
+    initCubes();
 	
-	gl.clearColor(1.0, 1.0, 1.0, 1.0);
+    gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
 	
     canvas.addEventListener("touchmove",handleTouchMove);
