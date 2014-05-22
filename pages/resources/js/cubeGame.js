@@ -301,12 +301,40 @@ function handleMouseMove(event) {
     }
     var newX = event.clientX;
     var newY = event.clientY;
-    xRot = 0;
+    
+    handleCubeRotationByMove(newX,newY);
+}
+
+/**
+ * Controls the rotation of the Cube with the touch.
+ * @author mccarmo
+ * @param event
+ */
+function handleTouchMove(event) {
+	event.preventDefault();
+	
+	var newX = event.targetTouches[0].clientX;
+    var newY = event.targetTouches[0].clientY;
+
+    handleCubeRotationByMove(newX,newY);
+}
+
+/**
+ * Handle the Rotation of Cube based on the mouse or touch moves.
+ * @author mccarmo
+ * @param newX
+ * @param newY
+ */
+function handleCubeRotationByMove(newX,newY) {
+	xRot = 0;
     yRot = 0;
-    xSpeed = 0;
+	xSpeed = 0;
     ySpeed = 0;
+    
     var deltaX = newX - lastMouseX
+    
     var newRotationMatrix = mat4.create();
+    
     mat4.identity(newRotationMatrix);
     mat4.rotate(newRotationMatrix, degToRad(deltaX / 7), [0, 1, 0]);
 
@@ -548,7 +576,7 @@ function initPageEvents() {
  */
 function webGLStart() {
     var canvas = document.getElementById("rubiks");
-  
+      
     initGL(canvas);
     initPageEvents();
     initShaders();	
@@ -558,6 +586,7 @@ function webGLStart() {
 	gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
 	
+    canvas.addEventListener("touchmove",handleTouchMove);
     canvas.onmousedown = handleMouseDown;
     document.onmouseup = handleMouseUp;
     document.onmousemove = handleMouseMove;
