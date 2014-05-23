@@ -16,8 +16,8 @@ io.configure(function () {
 });
 
 io.sockets.on('connection', function (socket) {
-	console.log("socket connected...")
+	console.log("socket connected...");
 })
 
 server.listen(process.env.PORT || 8002,"127.0.0.1");
-console.log("Server starded...")
+console.log("Server starded on port " + (process.env.PORT || 8002));

@@ -330,7 +330,7 @@ function Cube() {
 
 	/**
 	 * Initializing the cube vertices based on the given 'x,y,z' position.
-	 * The Cube will have a size of "0.5" for each face.   
+	 * The Cube will have a size of "1.0" for each face.   
 	 * @author mccarmo
 	 */
 	this.setXYZ = function() {
