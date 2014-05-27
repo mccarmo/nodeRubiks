@@ -1,6 +1,7 @@
 nodeRubiks (WIP)
 ============================================================================
-This is a Work In Progress and this port was made thanks to the great tutorials found at http://learningwebgl.com/ .
+This is a Work In Progress and this port was made thanks to the great tutorials found at http://learningwebgl.com/ and http://www.html5rocks.com/ .
+
 One day i hope this will be a simple Node.js Rubik's Cube cooperative game.
 
 To start the game run the "server.js" through node.js and go to localhost:8002.
@@ -14,8 +15,8 @@ Arrow Keys -> Rotates the Cube.
 Keys from "Q" to "O" and from "A" to "L" -> Game Moves.
 
 Mobile:
-Touch -> Rotates de Cube.
-Game moves not yet implemented on mobile. :(
+Two Fingers Touch -> Rotates de Cube.
+One Finger Touch -> Game moves not yet implemented on mobile. :(
 
 All:
 "New Game" -> Starts a new game
