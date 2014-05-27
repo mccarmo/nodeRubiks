@@ -39,12 +39,14 @@ var gameStarted = false;
 
 mat4.identity(rotationMatrix);
 
+
+
 function initGL(canvas) {
     try {
         gl = canvas.getContext("experimental-webgl");
-        gl.viewportWidth = canvas.width;
-        gl.viewportHeight = canvas.height;
-
+      
+        resizeCanvas();
+        
         for(i=0;i<cubeArray.length;i++) {
             cubeArray[i] = new Cube();
         }
@@ -168,12 +170,24 @@ function drawScene() {
     mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
 
     mat4.identity(mvMatrix);
-    mat4.translate(mvMatrix, [0.0, 0.0, -14.0]);     
+    mat4.translate(mvMatrix, [0.0, 0.0, -16.0]);     
 
     mat4.rotate(mvMatrix, degToRad(xRot), [1, 0, 0]);
     mat4.rotate(mvMatrix, degToRad(yRot), [0, 1, 0]);
     mat4.multiply(mvMatrix, rotationMatrix);
     
+}
+
+function resizeCanvas() {
+   var canvas = document.getElementById("rubiks");
+   var width = canvas.clientWidth;
+   var height = canvas.clientHeight;
+   if (canvas.width != width || canvas.height != height) {
+     canvas.width = width;
+     canvas.height = height;
+     gl.viewportWidth = canvas.width;
+     gl.viewportHeight = canvas.height;
+   }
 }
 
 function animate() {
@@ -332,23 +346,29 @@ function handleTouchMove(event) {
 	
 	var newX = event.targetTouches[0].clientX;
     var newY = event.targetTouches[0].clientY;
-
-    if(Math.abs(newX-lastMouseX) > Math.abs(newY-lastMouseY)) {
-    	if(newX > lastMouseX) {
-    		yRot += 2.0;
-    	} else {
-    		yRot -= 2.0;
-    	}
-	} else {
-		if(newY > lastMouseY) {
-    		xRot += 2.0;
-    	} else {
-    		xRot -= 2.0;
-    	}
-	}
     
-    lastMouseX = newX;
-    lastMouseY = newY;
+    //if There is one finger...make the game moves
+    if (event.targetTouches.length == 1) {
+	
+    //if There is two fingers...rotate the cube
+    } else if(event.targetTouches.length == 2) {
+    	if(Math.abs(newX-lastMouseX) > Math.abs(newY-lastMouseY)) {
+	    	if(newX > lastMouseX) {
+	    		yRot += 2.0;
+	    	} else {
+	    		yRot -= 2.0;
+	    	}
+		} else {
+			if(newY > lastMouseY) {
+	    		xRot += 2.0;
+	    	} else {
+	    		xRot -= 2.0;
+	    	}
+		}
+	    
+	    lastMouseX = newX;
+	    lastMouseY = newY;
+    }
 }
 
 /**
@@ -593,14 +613,16 @@ function webGLStart() {
     initTextures();
     initCubes();
 	
-    gl.clearColor(0.5, 0.5, 0.5, 1.0);
+    gl.clearColor(0.1, 0.1, 0.1, 1.0);
     gl.enable(gl.DEPTH_TEST);
 	
     canvas.addEventListener("touchmove",handleTouchMove);
     canvas.onmousedown = handleMouseDown;
+    
     document.onmouseup = handleMouseUp;
     //document.onmousemove = handleMouseMove;
     document.onkeydown = handleKeyDown;
     document.onkeyup = handleKeyUp;	
     
+    window.addEventListener('resize',resizeCanvas);
 }		

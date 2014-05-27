@@ -9,16 +9,14 @@
 		<script type="text/javascript" src="/resources/js/geraCubo.js"></script>
 		<script type="text/javascript" src="/resources/js/cubeGame.js"></script>
 	</head>
-	<body onload="webGLStart()" class="body-class">
-		<section class="masterSection">
-			<section class="gameSection">
-	    		<canvas id="rubiks" class="canvas-class" width="400" height="400"></canvas>
-	    	</section>
-	    	<section class="gameControlsSection">
-	    		<input class="btGame" type="button" value="New Game" id="btNewGame"/>
-	    		<input class="btGame" type="button" value="Save State" id="btSaveGame"/>
-	    		<input class="btGame" type="button" value="Load State" id="btLoadGame"/>
-	    	</section>
-	    </section>
+	<body onload="webGLStart()" class="body-class">		
+		<section class="gameSection">
+	    		<canvas id="rubiks" class="canvas-class"></canvas>
+    	</section>	
+	    <footer  class="gameControlsSection">
+	    	<input class="btGame" type="button" value="New Game" id="btNewGame"/>
+	    	<input class="btGame" type="button" value="Save State" id="btSaveGame"/>
+	    	<input class="btGame" type="button" value="Load State" id="btLoadGame"/>
+	    </footer>
 	</body>
 </html>
